@@ -66,7 +66,6 @@ This package ignores this advice. Beware.
 | insitu\_replace(x, pos, values)            | Replace values in x with given values starting from the given position | Yes     | Yes  | Yes       |
 | insitu\_reverse(x)                         | Reverse vector                                                         | Yes     | Yes  | Yes       |
 | insitu\_shuffle(x)                         | Shuffle the elements of a vector                                       | Yes     | Yes  | Yes       |
-| insitu\_shuffle\_fast(x)                   | Shuffle the elements of a vector                                       | Yes     | Yes  | Yes       |
 | insitu\_sort(x)                            | Sort the elements of a vector                                          | Yes     | Yes  |           |
 |                                            |                                                                        |         |      |           |
 
@@ -74,9 +73,9 @@ This package ignores this advice. Beware.
 
 The `_fast` versions of some functions use their own random-number
 generator rather than the one supplied in R. This generator is
-[lehmer64](https://lemire.me/blog/2019/03/19/the-fastest-conventional-random-number-generator-that-can-pass-big-crush/).
-It is very fast, but has different properties from R’s built in random
-number generator. Use with caution.
+[xoshiro256++](http://prng.di.unimi.it/). It is very fast, but has
+different properties from R’s built in random number generator. Use with
+caution.
 
 #### ALTREP utils
 
@@ -148,18 +147,18 @@ res_rel %>%
 
 | expression                 |       min |    median |   itr/sec | mem\_alloc |
 | :------------------------- | --------: | --------: | --------: | ---------: |
-| replace(x, idx, ins)       |  1.196573 |  1.172176 |  1.000000 |        NaN |
-| insitu\_replace(x, 1, ins) |  1.000000 |  1.000000 |  1.269699 |        NaN |
-| replace(x, idx, ins)       |  2.067353 |  2.124646 |  1.000000 |   2.446429 |
-| insitu\_replace(x, 1, ins) |  1.000000 |  1.000000 |  2.414546 |   1.000000 |
-| replace(x, idx, ins)       |  4.812500 |  6.597468 |  1.000000 |   2.494071 |
-| insitu\_replace(x, 1, ins) |  1.000000 |  1.000000 |  6.335685 |   1.000000 |
-| replace(x, idx, ins)       | 14.899316 | 25.762939 |  1.000000 |   2.499401 |
-| insitu\_replace(x, 1, ins) |  1.000000 |  1.000000 | 26.161848 |   1.000000 |
-| replace(x, idx, ins)       | 19.484796 | 32.479221 |  1.000000 |   2.499940 |
-| insitu\_replace(x, 1, ins) |  1.000000 |  1.000000 | 30.132984 |   1.000000 |
-| replace(x, idx, ins)       | 19.922236 | 18.236982 |  1.000000 |   2.499994 |
-| insitu\_replace(x, 1, ins) |  1.000000 |  1.000000 | 17.722262 |   1.000000 |
+| replace(x, idx, ins)       |  1.241861 |  1.233105 |  1.000000 |        NaN |
+| insitu\_replace(x, 1, ins) |  1.000000 |  1.000000 |  1.311755 |        NaN |
+| replace(x, idx, ins)       |  2.040300 |  2.276765 |  1.000000 |   2.446429 |
+| insitu\_replace(x, 1, ins) |  1.000000 |  1.000000 |  2.460077 |   1.000000 |
+| replace(x, idx, ins)       |  5.338397 |  7.134181 |  1.000000 |   2.494071 |
+| insitu\_replace(x, 1, ins) |  1.000000 |  1.000000 |  6.750720 |   1.000000 |
+| replace(x, idx, ins)       | 15.452247 | 26.413083 |  1.000000 |   2.499401 |
+| insitu\_replace(x, 1, ins) |  1.000000 |  1.000000 | 25.646324 |   1.000000 |
+| replace(x, idx, ins)       | 19.619739 | 33.642784 |  1.000000 |   2.499940 |
+| insitu\_replace(x, 1, ins) |  1.000000 |  1.000000 | 30.651642 |   1.000000 |
+| replace(x, idx, ins)       | 19.402404 | 18.190081 |  1.000000 |   2.499994 |
+| insitu\_replace(x, 1, ins) |  1.000000 |  1.000000 | 17.813360 |   1.000000 |
 
 ``` r
 
@@ -187,18 +186,18 @@ res_abs %>%
 
 | expression                 |      min |   median |     itr/sec | mem\_alloc |
 | :------------------------- | -------: | -------: | ----------: | ---------: |
-| replace(x, idx, ins)       |    1.4µs |   1.66µs | 499763.6125 |         0B |
-| insitu\_replace(x, 1, ins) |   1.11µs |   1.41µs | 513883.7531 |         0B |
-| replace(x, idx, ins)       |   2.21µs |   2.91µs | 278613.6649 |     1.07KB |
-| insitu\_replace(x, 1, ins) |   1.06µs |   1.45µs | 606769.3872 |       448B |
-| replace(x, idx, ins)       |   6.25µs |    7.9µs | 108973.9122 |     9.86KB |
-| insitu\_replace(x, 1, ins) |   1.38µs |    1.6µs | 549490.7656 |     3.95KB |
-| replace(x, idx, ins)       |   44.8µs |  87.84µs |  10798.7962 |    97.75KB |
-| insitu\_replace(x, 1, ins) |   2.98µs |   3.47µs | 264614.5698 |    39.11KB |
-| replace(x, idx, ins)       | 429.45µs | 810.51µs |   1236.4251 |   976.66KB |
-| insitu\_replace(x, 1, ins) |  21.99µs |  25.37µs |  33703.2323 |   390.67KB |
-| replace(x, idx, ins)       |   5.03ms |   5.57ms |    153.1147 |     9.54MB |
-| insitu\_replace(x, 1, ins) | 247.41µs | 322.88µs |   2448.9522 |     3.81MB |
+| replace(x, idx, ins)       |   1.29µs |   1.59µs | 546007.5980 |         0B |
+| insitu\_replace(x, 1, ins) |   1.07µs |   1.27µs | 699029.4479 |         0B |
+| replace(x, idx, ins)       |   2.13µs |   2.62µs | 297293.8467 |     1.07KB |
+| insitu\_replace(x, 1, ins) |   1.06µs |   1.22µs | 681761.0951 |       448B |
+| replace(x, idx, ins)       |    6.3µs |   7.78µs | 110956.3977 |     9.86KB |
+| insitu\_replace(x, 1, ins) |    1.2µs |   1.43µs | 576792.5439 |     3.95KB |
+| replace(x, idx, ins)       |  44.24µs |  87.97µs |  10798.0014 |    97.75KB |
+| insitu\_replace(x, 1, ins) |   2.94µs |   3.37µs | 262770.7713 |    39.11KB |
+| replace(x, idx, ins)       | 426.07µs | 825.45µs |   1182.7554 |   976.66KB |
+| insitu\_replace(x, 1, ins) |  21.68µs |  25.06µs |  33944.6554 |   390.67KB |
+| replace(x, idx, ins)       |   4.94ms |   5.53ms |    164.1017 |     9.54MB |
+| insitu\_replace(x, 1, ins) | 247.25µs | 322.64µs |   2378.8128 |     3.81MB |
 
 </details>
 
@@ -249,18 +248,18 @@ res_rel %>%
 
 | expression           |      min |   median |  itr/sec | mem\_alloc |
 | :------------------- | -------: | -------: | -------: | ---------: |
-| replace(x, idx, ins) | 1.294597 | 1.283034 | 1.000000 |        NaN |
-| insitu\_fill(x, ins) | 1.000000 | 1.000000 | 1.184036 |        NaN |
-| replace(x, idx, ins) | 1.453295 | 1.638786 | 1.000000 |        Inf |
-| insitu\_fill(x, ins) | 1.000000 | 1.000000 | 1.727016 |        NaN |
-| replace(x, idx, ins) | 1.000000 | 1.086737 | 1.000000 |        Inf |
-| insitu\_fill(x, ins) | 1.039746 | 1.000000 | 1.217489 |        NaN |
-| replace(x, idx, ins) | 1.000000 | 1.582475 | 1.000000 |        Inf |
-| insitu\_fill(x, ins) | 1.322781 | 1.000000 | 1.637680 |        NaN |
-| replace(x, idx, ins) | 1.000000 | 1.492545 | 1.000000 |        Inf |
-| insitu\_fill(x, ins) | 1.350085 | 1.000000 | 1.445815 |        NaN |
+| replace(x, idx, ins) | 1.418259 | 1.434664 | 1.000000 |        NaN |
+| insitu\_fill(x, ins) | 1.000000 | 1.000000 | 1.524706 |        NaN |
+| replace(x, idx, ins) | 1.583133 | 1.936554 | 1.000000 |        Inf |
+| insitu\_fill(x, ins) | 1.000000 | 1.000000 | 2.170449 |        NaN |
+| replace(x, idx, ins) | 1.054626 | 1.202658 | 1.000000 |        Inf |
+| insitu\_fill(x, ins) | 1.000000 | 1.000000 | 1.272733 |        NaN |
+| replace(x, idx, ins) | 1.000000 | 1.756241 | 1.000000 |        Inf |
+| insitu\_fill(x, ins) | 1.229603 | 1.000000 | 1.751837 |        NaN |
+| replace(x, idx, ins) | 1.000000 | 1.600853 | 1.000000 |        Inf |
+| insitu\_fill(x, ins) | 1.102361 | 1.000000 | 1.537459 |        NaN |
 | replace(x, idx, ins) | 1.000000 | 1.000000 | 1.000000 |        Inf |
-| insitu\_fill(x, ins) | 1.166219 | 1.032048 | 1.097336 |        NaN |
+| insitu\_fill(x, ins) | 1.092076 | 1.040353 | 1.112988 |        NaN |
 
 ``` r
 
@@ -287,18 +286,18 @@ res_abs %>%
 
 | expression           |      min |   median |     itr/sec | mem\_alloc |
 | :------------------- | -------: | -------: | ----------: | ---------: |
-| replace(x, idx, ins) |   1.21µs |   1.69µs | 492051.7639 |         0B |
-| insitu\_fill(x, ins) |   1.01µs |   1.22µs | 704502.1931 |         0B |
-| replace(x, idx, ins) |   1.96µs |   2.37µs | 315831.5886 |     1.27KB |
-| insitu\_fill(x, ins) |   1.28µs |   1.59µs | 511827.6193 |         0B |
-| replace(x, idx, ins) |   4.73µs |   7.51µs | 118794.0405 |    11.81KB |
-| insitu\_fill(x, ins) |   4.91µs |   5.33µs | 173484.4944 |         0B |
-| replace(x, idx, ins) |   29.9µs |  71.49µs |  12992.4226 |   117.28KB |
-| insitu\_fill(x, ins) |  40.83µs |  44.12µs |  21557.2898 |         0B |
-| replace(x, idx, ins) | 275.54µs | 653.23µs |   1536.4061 |     1.15MB |
-| insitu\_fill(x, ins) | 370.32µs | 424.86µs |   2326.9036 |         0B |
-| replace(x, idx, ins) |   3.32ms |   4.06ms |    201.3681 |    11.44MB |
-| insitu\_fill(x, ins) |   3.82ms |   4.36ms |    225.7616 |         0B |
+| replace(x, idx, ins) |    1.3µs |   1.55µs | 550433.2834 |         0B |
+| insitu\_fill(x, ins) |    945ns |    1.1µs | 786129.7150 |         0B |
+| replace(x, idx, ins) |   1.92µs |   2.35µs | 333706.1717 |     1.27KB |
+| insitu\_fill(x, ins) |   1.26µs |   1.42µs | 617234.3035 |         0B |
+| replace(x, idx, ins) |   4.46µs |   7.22µs | 131239.2460 |    11.81KB |
+| insitu\_fill(x, ins) |   4.49µs |   4.74µs | 198650.4758 |         0B |
+| replace(x, idx, ins) |  29.47µs |  70.36µs |  13303.6225 |   117.28KB |
+| insitu\_fill(x, ins) |  36.62µs |   39.8µs |  23890.7319 |         0B |
+| replace(x, idx, ins) |  309.7µs | 651.62µs |   1525.3561 |     1.15MB |
+| insitu\_fill(x, ins) | 330.21µs | 392.95µs |   2480.4136 |         0B |
+| replace(x, idx, ins) |   3.29ms |   4.01ms |    208.9375 |    11.44MB |
+| insitu\_fill(x, ins) |   3.56ms |   4.03ms |    239.2026 |         0B |
 
 </details>
 
@@ -347,18 +346,18 @@ res_rel %>%
 
 | expression      |       min |    median |   itr/sec | mem\_alloc |
 | :-------------- | --------: | --------: | --------: | ---------: |
-| sort(x)         | 36.688074 | 37.221236 |  1.000000 |        NaN |
-| insitu\_sort(x) |  1.000000 |  1.000000 | 38.695174 |        NaN |
-| sort(x)         | 23.880363 | 24.584972 |  1.000000 |        Inf |
-| insitu\_sort(x) |  1.000000 |  1.000000 | 23.866136 |        NaN |
-| sort(x)         |  6.409326 |  7.047000 |  1.000000 |        Inf |
-| insitu\_sort(x) |  1.000000 |  1.000000 |  7.917572 |        NaN |
-| sort(x)         |  2.016700 |  2.526580 |  1.000000 |        Inf |
-| insitu\_sort(x) |  1.000000 |  1.000000 |  2.653967 |        NaN |
-| sort(x)         |  1.100797 |  1.805110 |  1.000000 |        Inf |
-| insitu\_sort(x) |  1.000000 |  1.000000 |  1.817177 |        NaN |
-| sort(x)         |  1.014717 |  1.492425 |  1.000000 |        Inf |
-| insitu\_sort(x) |  1.000000 |  1.000000 |  1.415460 |        NaN |
+| sort(x)         | 41.278671 | 43.203405 |  1.000000 |        NaN |
+| insitu\_sort(x) |  1.000000 |  1.000000 | 42.303925 |        NaN |
+| sort(x)         | 25.698803 | 26.551185 |  1.000000 |        Inf |
+| insitu\_sort(x) |  1.000000 |  1.000000 | 25.076374 |        NaN |
+| sort(x)         |  6.526590 |  7.414666 |  1.000000 |        Inf |
+| insitu\_sort(x) |  1.000000 |  1.000000 |  7.613729 |        NaN |
+| sort(x)         |  1.733806 |  2.618806 |  1.000000 |        Inf |
+| insitu\_sort(x) |  1.000000 |  1.000000 |  2.725311 |        NaN |
+| sort(x)         |  1.129045 |  1.755064 |  1.000000 |        Inf |
+| insitu\_sort(x) |  1.000000 |  1.000000 |  1.776082 |        NaN |
+| sort(x)         |  1.079406 |  1.450852 |  1.000000 |        Inf |
+| insitu\_sort(x) |  1.000000 |  1.000000 |  1.472845 |        NaN |
 
 ``` r
 
@@ -383,18 +382,18 @@ res_abs %>%
 
 | expression      |      min |   median |     itr/sec | mem\_alloc |
 | :-------------- | -------: | -------: | ----------: | ---------: |
-| sort(x)         |  39.75µs |  47.38µs |  18680.1080 |         0B |
-| insitu\_sort(x) |    913ns |   1.32µs | 609800.6083 |         0B |
-| sort(x)         |  41.57µs |  48.59µs |  17957.1350 |     1.27KB |
-| insitu\_sort(x) |   1.68µs |   2.03µs | 404762.2060 |         0B |
-| sort(x)         |  47.59µs |  56.24µs |  15206.6809 |    11.81KB |
-| insitu\_sort(x) |   7.17µs |   8.04µs | 119283.6715 |         0B |
-| sort(x)         | 111.09µs |  174.1µs |   5179.8989 |   117.28KB |
-| insitu\_sort(x) |  60.58µs |  68.73µs |  14102.0267 |         0B |
-| sort(x)         | 653.51µs |   1.21ms |    795.1924 |     1.15MB |
-| insitu\_sort(x) | 592.32µs | 677.57µs |   1442.6479 |         0B |
-| sort(x)         |   6.91ms |   9.83ms |    100.1024 |    11.44MB |
-| insitu\_sort(x) |   6.31ms |   6.94ms |    140.1463 |         0B |
+| sort(x)         |  39.51µs |  46.84µs |  19478.4944 |         0B |
+| insitu\_sort(x) |    954ns |   1.16µs | 733700.8515 |         0B |
+| sort(x)         |  40.27µs |  49.11µs |  18295.3131 |     1.27KB |
+| insitu\_sort(x) |   1.55µs |    1.8µs | 483616.6163 |         0B |
+| sort(x)         |  43.66µs |  54.94µs |  16291.7566 |    11.81KB |
+| insitu\_sort(x) |   7.11µs |   7.84µs | 123944.3259 |         0B |
+| sort(x)         | 109.58µs | 173.75µs |   5333.7207 |   117.28KB |
+| insitu\_sort(x) |  60.35µs |  67.76µs |  14507.3767 |         0B |
+| sort(x)         | 688.35µs |   1.21ms |    792.5908 |     1.15MB |
+| insitu\_sort(x) | 592.11µs | 672.98µs |   1477.7928 |         0B |
+| sort(x)         |   6.62ms |   9.78ms |    101.3818 |    11.44MB |
+| insitu\_sort(x) |   6.33ms |   6.75ms |    144.2143 |         0B |
 
 </details>
 
@@ -406,10 +405,11 @@ res_abs %>%
 current vector rather than creating a new one.
 
 ``` r
+set.seed(1)
 x <- c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
 insitu_shuffle(x)
 x
-#>  [1] 7 0 3 5 4 1 8 6 2 9
+#>  [1] 0 9 6 8 7 1 5 4 3 2
 ```
 
 <details>
@@ -430,7 +430,6 @@ res_rel <- bench::press(
     bench::mark(
       sample(x),
       insitu_shuffle(x),
-      insitu_shuffle_fast(x),
       check    = FALSE,
       relative = TRUE
     )
@@ -442,26 +441,20 @@ res_rel %>%
   knitr::kable()
 ```
 
-| expression               |       min |    median |   itr/sec | mem\_alloc |
-| :----------------------- | --------: | --------: | --------: | ---------: |
-| sample(x)                |  6.259382 |  6.661726 |  1.000000 |        Inf |
-| insitu\_shuffle(x)       |  1.000000 |  1.000000 |  8.848097 |        NaN |
-| insitu\_shuffle\_fast(x) |  2.137969 |  2.118134 |  4.050106 |        Inf |
-| sample(x)                |  5.027027 |  5.681964 |  1.000000 |        Inf |
-| insitu\_shuffle(x)       |  1.000000 |  1.000000 |  5.661318 |        NaN |
-| insitu\_shuffle\_fast(x) |  1.194054 |  1.201010 |  4.731081 |        Inf |
-| sample(x)                |  7.989859 |  7.604354 |  1.000000 |        Inf |
-| insitu\_shuffle(x)       |  2.262911 |  2.168541 |  3.517602 |        NaN |
-| insitu\_shuffle\_fast(x) |  1.000000 |  1.000000 |  7.369995 |        Inf |
-| sample(x)                | 11.629346 | 13.003945 |  1.000000 |        Inf |
-| insitu\_shuffle(x)       |  3.165762 |  3.235819 |  4.139560 |        NaN |
-| insitu\_shuffle\_fast(x) |  1.000000 |  1.000000 | 12.961142 |        Inf |
-| sample(x)                | 14.737991 | 15.555305 |  1.000000 |        Inf |
-| insitu\_shuffle(x)       |  3.289309 |  3.539353 |  3.932282 |        NaN |
-| insitu\_shuffle\_fast(x) |  1.000000 |  1.000000 | 14.582776 |        Inf |
-| sample(x)                | 12.965562 | 10.378325 |  1.000000 |        Inf |
-| insitu\_shuffle(x)       |  2.893763 |  2.520475 |  3.880060 |        NaN |
-| insitu\_shuffle\_fast(x) |  1.000000 |  1.000000 |  9.736874 |        Inf |
+| expression         |      min |   median |  itr/sec | mem\_alloc |
+| :----------------- | -------: | -------: | -------: | ---------: |
+| sample(x)          | 6.894231 | 7.064299 | 1.000000 |        Inf |
+| insitu\_shuffle(x) | 1.000000 | 1.000000 | 7.316364 |        NaN |
+| sample(x)          | 5.347292 | 5.880952 | 1.000000 |        Inf |
+| insitu\_shuffle(x) | 1.000000 | 1.000000 | 5.662780 |        NaN |
+| sample(x)          | 3.544081 | 3.496057 | 1.000000 |        Inf |
+| insitu\_shuffle(x) | 1.000000 | 1.000000 | 3.522028 |        NaN |
+| sample(x)          | 3.791260 | 3.955682 | 1.000000 |        Inf |
+| insitu\_shuffle(x) | 1.000000 | 1.000000 | 4.040656 |        NaN |
+| sample(x)          | 4.400853 | 4.313949 | 1.000000 |        Inf |
+| insitu\_shuffle(x) | 1.000000 | 1.000000 | 4.176216 |        NaN |
+| sample(x)          | 3.947524 | 3.666679 | 1.000000 |        Inf |
+| insitu\_shuffle(x) | 1.000000 | 1.000000 | 3.453054 |        NaN |
 
 ``` r
 
@@ -473,7 +466,6 @@ res_abs <- bench::press(
     bench::mark(
       sample(x),
       insitu_shuffle(x),
-      insitu_shuffle_fast(x),
       check    = FALSE,
       relative = FALSE
     )
@@ -485,26 +477,20 @@ res_abs %>%
   knitr::kable()
 ```
 
-| expression               |      min |   median |      itr/sec | mem\_alloc |
-| :----------------------- | -------: | -------: | -----------: | ---------: |
-| sample(x)                |   5.85µs |   7.32µs | 112421.62112 |     2.49KB |
-| insitu\_shuffle(x)       |    907ns |   1.15µs | 765712.37753 |         0B |
-| insitu\_shuffle\_fast(x) |   1.95µs |   2.49µs | 298574.52156 |     2.49KB |
-| sample(x)                |   9.28µs |  11.39µs |  77254.12133 |      4.2KB |
-| insitu\_shuffle(x)       |   1.87µs |   2.29µs | 373351.40143 |         0B |
-| insitu\_shuffle\_fast(x) |   2.26µs |   2.83µs | 315730.52471 |     2.49KB |
-| sample(x)                |  42.69µs |  47.48µs |  19213.32502 |    18.27KB |
-| insitu\_shuffle(x)       |  11.83µs |  13.77µs |  66976.90278 |         0B |
-| insitu\_shuffle\_fast(x) |   5.43µs |    6.3µs | 145422.79031 |     2.49KB |
-| sample(x)                | 415.44µs | 507.87µs |   1841.52711 |   158.89KB |
-| insitu\_shuffle(x)       | 112.62µs | 128.21µs |   7629.90942 |         0B |
-| insitu\_shuffle\_fast(x) |   35.4µs |  40.94µs |  22687.22319 |     2.49KB |
-| sample(x)                |    5.5ms |    7.6ms |    132.22042 |     1.53MB |
-| insitu\_shuffle(x)       |   1.26ms |   1.59ms |    595.08847 |         0B |
-| insitu\_shuffle\_fast(x) | 382.71µs | 435.46µs |   2125.17540 |     2.49KB |
-| sample(x)                |  82.24ms |     87ms |     11.46565 |    15.26MB |
-| insitu\_shuffle(x)       |  18.98ms |  23.38ms |     41.66396 |         0B |
-| insitu\_shuffle\_fast(x) |   6.29ms |   7.91ms |    117.64934 |     2.49KB |
+| expression         |      min |   median |     itr/sec | mem\_alloc |
+| :----------------- | -------: | -------: | ----------: | ---------: |
+| sample(x)          |   5.98µs |   7.19µs | 124827.2530 |     2.49KB |
+| insitu\_shuffle(x) |    794ns |    976ns | 946183.9866 |         0B |
+| sample(x)          |   9.55µs |  11.86µs |  74778.1284 |      4.2KB |
+| insitu\_shuffle(x) |   1.82µs |   2.12µs | 429224.4327 |         0B |
+| sample(x)          |  42.57µs |  46.61µs |  20370.7246 |    18.27KB |
+| insitu\_shuffle(x) |  11.85µs |  13.67µs |  68856.2140 |         0B |
+| sample(x)          | 412.91µs | 505.66µs |   1893.3209 |   158.89KB |
+| insitu\_shuffle(x) | 112.38µs | 127.59µs |   7711.6986 |         0B |
+| sample(x)          |   5.34ms |   6.25ms |    158.2409 |     1.53MB |
+| insitu\_shuffle(x) |   1.25ms |   1.44ms |    659.7863 |         0B |
+| sample(x)          |  72.06ms |  77.33ms |     12.0217 |    15.26MB |
+| insitu\_shuffle(x) |  18.02ms |  22.72ms |     42.6206 |         0B |
 
 </details>
 
@@ -553,18 +539,18 @@ res_rel %>%
 
 | expression         |      min |    median |   itr/sec | mem\_alloc |
 | :----------------- | -------: | --------: | --------: | ---------: |
-| rev(x)             | 3.576020 |  4.069719 |  1.000000 |        NaN |
-| insitu\_reverse(x) | 1.000000 |  1.000000 |  4.449041 |        NaN |
-| rev(x)             | 3.843678 |  4.472789 |  1.000000 |        Inf |
-| insitu\_reverse(x) | 1.000000 |  1.000000 |  4.742882 |        NaN |
-| rev(x)             | 4.912664 |  5.399563 |  1.000000 |        Inf |
-| insitu\_reverse(x) | 1.000000 |  1.000000 |  5.621031 |        NaN |
-| rev(x)             | 5.742399 | 15.978815 |  1.000000 |        Inf |
-| insitu\_reverse(x) | 1.000000 |  1.000000 | 15.474308 |        NaN |
-| rev(x)             | 5.937002 | 19.903847 |  1.000000 |        Inf |
-| insitu\_reverse(x) | 1.000000 |  1.000000 | 18.451631 |        NaN |
-| rev(x)             | 6.414645 |  6.462813 |  1.000000 |        Inf |
-| insitu\_reverse(x) | 1.000000 |  1.000000 |  6.767398 |        NaN |
+| rev(x)             | 4.039941 |  4.593596 |  1.000000 |        NaN |
+| insitu\_reverse(x) | 1.000000 |  1.000000 |  4.867159 |        NaN |
+| rev(x)             | 4.493225 |  5.113663 |  1.000000 |        Inf |
+| insitu\_reverse(x) | 1.000000 |  1.000000 |  5.168320 |        NaN |
+| rev(x)             | 5.188818 |  6.103535 |  1.000000 |        Inf |
+| insitu\_reverse(x) | 1.000000 |  1.000000 |  6.598503 |        NaN |
+| rev(x)             | 5.774873 | 16.068639 |  1.000000 |        Inf |
+| insitu\_reverse(x) | 1.000000 |  1.000000 | 16.203002 |        NaN |
+| rev(x)             | 6.724603 | 17.457932 |  1.000000 |        Inf |
+| insitu\_reverse(x) | 1.000000 |  1.000000 | 17.238845 |        NaN |
+| rev(x)             | 7.152706 |  7.128707 |  1.000000 |        Inf |
+| insitu\_reverse(x) | 1.000000 |  1.000000 |  7.833366 |        NaN |
 
 ``` r
 
@@ -587,20 +573,20 @@ res_abs %>%
   knitr::kable()
 ```
 
-| expression         |      min |   median |     itr/sec | mem\_alloc |
-| :----------------- | -------: | -------: | ----------: | ---------: |
-| rev(x)             |   2.89µs |   3.81µs | 211295.2926 |         0B |
-| insitu\_reverse(x) |    757ns |    989ns | 793828.7726 |         0B |
-| rev(x)             |   3.19µs |   4.26µs | 174660.5541 |     1.27KB |
-| insitu\_reverse(x) |    766ns |      1µs | 819534.9571 |         0B |
-| rev(x)             |    5.7µs |   7.32µs | 108322.3970 |    11.81KB |
-| insitu\_reverse(x) |   1.13µs |    1.4µs | 569731.4864 |         0B |
-| rev(x)             |  26.57µs |  88.73µs |   9677.0156 |   117.28KB |
-| insitu\_reverse(x) |   4.82µs |   5.47µs | 160942.8703 |         0B |
-| rev(x)             | 245.06µs | 899.01µs |   1011.6112 |     1.15MB |
-| insitu\_reverse(x) |   39.6µs |  45.39µs |  19656.7879 |         0B |
-| rev(x)             |   3.08ms |   4.08ms |    197.7598 |    11.44MB |
-| insitu\_reverse(x) | 439.96µs |  578.6µs |   1508.0490 |         0B |
+| expression         |      min |   median |      itr/sec | mem\_alloc |
+| :----------------- | -------: | -------: | -----------: | ---------: |
+| rev(x)             |   2.67µs |   3.51µs |  258742.0867 |         0B |
+| insitu\_reverse(x) |    686ns |    825ns |  979483.0583 |         0B |
+| rev(x)             |    3.1µs |   3.92µs |  205716.4316 |     1.27KB |
+| insitu\_reverse(x) |    719ns |    862ns | 1045618.6652 |         0B |
+| rev(x)             |   5.36µs |   7.21µs |  113599.0774 |    11.81KB |
+| insitu\_reverse(x) |   1.07µs |   1.19µs |  765417.6909 |         0B |
+| rev(x)             |  29.75µs |   85.3µs |   10855.9289 |   117.28KB |
+| insitu\_reverse(x) |    4.6µs |   5.18µs |  185400.7858 |         0B |
+| rev(x)             | 259.89µs |  783.1µs |    1224.2031 |     1.15MB |
+| insitu\_reverse(x) |  39.51µs |  45.13µs |   20544.7953 |         0B |
+| rev(x)             |   2.95ms |   3.73ms |     223.9566 |    11.44MB |
+| insitu\_reverse(x) | 444.07µs | 595.25µs |    1409.2116 |         0B |
 
 </details>
 
@@ -612,10 +598,11 @@ res_abs %>%
 the current vector rather than creating a new one.
 
 ``` r
+set.seed(1)
 x <- integer(10)
 insitu_fill_runif(x, 10, 15)
 x
-#>  [1] 11 15 14 10 14 12 12 14 13 13
+#>  [1] 11 12 13 15 11 15 15 13 13 10
 ```
 
 <details>
@@ -648,26 +635,26 @@ res_rel %>%
   knitr::kable()
 ```
 
-| expression                         |       min |    median |   itr/sec | mem\_alloc |
-| :--------------------------------- | --------: | --------: | --------: | ---------: |
-| runif(x)                           |  2.217512 |  2.129139 |  1.000000 |        Inf |
-| insitu\_fill\_runif(x, 0, 1)       |  1.000000 |  1.000000 |  2.248070 |        NaN |
-| insitu\_fill\_runif\_fast(x, 0, 1) |  2.043318 |  1.848344 |  1.215003 |        Inf |
-| runif(x)                           |  2.638207 |  2.540683 |  1.000000 |        Inf |
-| insitu\_fill\_runif(x, 0, 1)       |  1.000000 |  1.000000 |  2.622694 |        NaN |
-| insitu\_fill\_runif\_fast(x, 0, 1) |  1.185699 |  1.284148 |  1.940192 |        Inf |
-| runif(x)                           |  7.687628 |  7.233287 |  1.000000 |        Inf |
-| insitu\_fill\_runif(x, 0, 1)       |  2.804415 |  2.814008 |  2.160172 |        NaN |
-| insitu\_fill\_runif\_fast(x, 0, 1) |  1.000000 |  1.000000 |  6.395486 |        Inf |
-| runif(x)                           | 16.937764 | 18.316994 |  1.000000 |        Inf |
-| insitu\_fill\_runif(x, 0, 1)       |  5.732299 |  5.791610 |  2.997671 |        NaN |
-| insitu\_fill\_runif\_fast(x, 0, 1) |  1.000000 |  1.000000 | 17.840202 |        Inf |
-| runif(x)                           | 19.780708 | 21.423552 |  1.000000 |        Inf |
-| insitu\_fill\_runif(x, 0, 1)       |  6.614378 |  6.775963 |  3.073381 |        NaN |
-| insitu\_fill\_runif\_fast(x, 0, 1) |  1.000000 |  1.000000 | 20.705291 |        Inf |
-| runif(x)                           | 21.513446 | 20.998086 |  1.000000 |        Inf |
-| insitu\_fill\_runif(x, 0, 1)       |  7.261796 |  6.853383 |  3.024274 |        NaN |
-| insitu\_fill\_runif\_fast(x, 0, 1) |  1.000000 |  1.000000 | 20.671712 |        Inf |
+| expression                         |      min |   median |  itr/sec | mem\_alloc |
+| :--------------------------------- | -------: | -------: | -------: | ---------: |
+| runif(x)                           | 1.870017 | 2.008148 | 1.000000 |        Inf |
+| insitu\_fill\_runif(x, 0, 1)       | 1.000000 | 1.000000 | 2.048875 |        NaN |
+| insitu\_fill\_runif\_fast(x, 0, 1) | 1.787695 | 1.936296 | 1.215929 |        Inf |
+| runif(x)                           | 2.442684 | 2.409111 | 1.000000 |        Inf |
+| insitu\_fill\_runif(x, 0, 1)       | 1.000000 | 1.000000 | 2.318678 |        NaN |
+| insitu\_fill\_runif\_fast(x, 0, 1) | 1.277338 | 1.372098 | 1.670423 |        Inf |
+| runif(x)                           | 5.231884 | 4.928995 | 1.000000 |        Inf |
+| insitu\_fill\_runif(x, 0, 1)       | 1.844746 | 1.735290 | 2.831551 |        NaN |
+| insitu\_fill\_runif\_fast(x, 0, 1) | 1.000000 | 1.000000 | 4.722702 |        Inf |
+| runif(x)                           | 8.132951 | 9.077627 | 1.000000 |        Inf |
+| insitu\_fill\_runif(x, 0, 1)       | 2.749339 | 2.805251 | 3.237286 |        NaN |
+| insitu\_fill\_runif\_fast(x, 0, 1) | 1.000000 | 1.000000 | 8.850086 |        Inf |
+| runif(x)                           | 8.265000 | 9.116339 | 1.000000 |        Inf |
+| insitu\_fill\_runif(x, 0, 1)       | 2.813682 | 2.853143 | 3.150033 |        NaN |
+| insitu\_fill\_runif\_fast(x, 0, 1) | 1.000000 | 1.000000 | 9.017577 |        Inf |
+| runif(x)                           | 8.683844 | 8.902556 | 1.000000 |        Inf |
+| insitu\_fill\_runif(x, 0, 1)       | 2.906579 | 2.897405 | 3.015936 |        NaN |
+| insitu\_fill\_runif\_fast(x, 0, 1) | 1.000000 | 1.000000 | 8.616409 |        Inf |
 
 ``` r
 
@@ -693,24 +680,24 @@ res_abs %>%
 
 | expression                         |      min |   median |      itr/sec | mem\_alloc |
 | :--------------------------------- | -------: | -------: | -----------: | ---------: |
-| runif(x)                           |   2.36µs |   3.05µs | 292462.98375 |     2.49KB |
-| insitu\_fill\_runif(x, 0, 1)       |   1.28µs |   1.48µs | 613275.36448 |         0B |
-| insitu\_fill\_runif\_fast(x, 0, 1) |   2.23µs |    2.8µs | 337753.42221 |     2.49KB |
-| runif(x)                           |   4.89µs |   5.82µs | 149451.57361 |     3.32KB |
-| insitu\_fill\_runif(x, 0, 1)       |   2.05µs |   2.31µs | 391793.93905 |         0B |
-| insitu\_fill\_runif\_fast(x, 0, 1) |   2.33µs |   2.88µs | 322692.43165 |     2.49KB |
-| runif(x)                           |  29.15µs |  32.52µs |  28605.67413 |    10.35KB |
-| insitu\_fill\_runif(x, 0, 1)       |  10.54µs |  11.74µs |  79427.81157 |         0B |
-| insitu\_fill\_runif\_fast(x, 0, 1) |   3.76µs |   4.63µs | 188473.01298 |     2.49KB |
-| runif(x)                           |  283.5µs | 351.07µs |   2781.31751 |    80.66KB |
-| insitu\_fill\_runif(x, 0, 1)       |  95.98µs | 105.38µs |   9029.35038 |         0B |
-| insitu\_fill\_runif\_fast(x, 0, 1) |  16.85µs |  18.11µs |  51579.87000 |     2.49KB |
-| runif(x)                           |   2.73ms |   3.41ms |    291.10757 |   783.79KB |
-| insitu\_fill\_runif(x, 0, 1)       |  974.6µs |   1.09ms |    889.84381 |         0B |
-| insitu\_fill\_runif\_fast(x, 0, 1) | 147.99µs | 155.81µs |   6088.42809 |     2.49KB |
-| runif(x)                           |  30.29ms |  33.39ms |     29.73056 |     7.63MB |
-| insitu\_fill\_runif(x, 0, 1)       |  10.21ms |  10.96ms |     89.33462 |         0B |
-| insitu\_fill\_runif\_fast(x, 0, 1) |   1.43ms |   1.61ms |    599.67207 |     2.49KB |
+| runif(x)                           |   2.15µs |   2.64µs | 332633.90432 |     2.49KB |
+| insitu\_fill\_runif(x, 0, 1)       |   1.16µs |   1.43µs | 594461.29803 |         0B |
+| insitu\_fill\_runif\_fast(x, 0, 1) |   2.03µs |   2.65µs | 347844.47682 |     2.49KB |
+| runif(x)                           |   4.66µs |   5.42µs | 171388.46748 |     3.32KB |
+| insitu\_fill\_runif(x, 0, 1)       |   1.93µs |   2.29µs | 372149.17391 |         0B |
+| insitu\_fill\_runif\_fast(x, 0, 1) |   2.42µs |   3.02µs | 305247.59400 |     2.49KB |
+| runif(x)                           |  28.84µs |     32µs |  29063.97655 |    10.35KB |
+| insitu\_fill\_runif(x, 0, 1)       |  10.16µs |  11.43µs |  83540.17602 |         0B |
+| insitu\_fill\_runif\_fast(x, 0, 1) |   5.56µs |   6.77µs | 131305.03980 |     2.49KB |
+| runif(x)                           | 287.35µs | 349.97µs |   2813.90250 |    80.66KB |
+| insitu\_fill\_runif(x, 0, 1)       |  95.88µs | 108.98µs |   9076.22115 |         0B |
+| insitu\_fill\_runif\_fast(x, 0, 1) |  35.97µs |  38.31µs |  24486.54854 |     2.49KB |
+| runif(x)                           |   2.87ms |   3.37ms |    295.66992 |   783.79KB |
+| insitu\_fill\_runif(x, 0, 1)       | 976.13µs |   1.08ms |    911.68201 |         0B |
+| insitu\_fill\_runif\_fast(x, 0, 1) | 336.77µs | 369.54µs |   2650.25203 |     2.49KB |
+| runif(x)                           |  30.13ms |  32.68ms |     30.75942 |     7.63MB |
+| insitu\_fill\_runif(x, 0, 1)       |  10.05ms |  10.95ms |     90.51580 |         0B |
+| insitu\_fill\_runif\_fast(x, 0, 1) |   3.35ms |   3.69ms |    264.26280 |     2.49KB |
 
 </details>
 

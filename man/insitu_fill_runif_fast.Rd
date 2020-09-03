@@ -2,7 +2,7 @@
 % Please edit documentation in R/insitu-fill.R
 \name{insitu_fill_runif_fast}
 \alias{insitu_fill_runif_fast}
-\title{Write random values into a vector in-situ. Uses lehmer64 for RNG}
+\title{Write random values into a vector in-situ. Uses xoshiro256++ for RNG}
 \usage{
 insitu_fill_runif_fast(x, lower, upper)
 }
@@ -12,5 +12,5 @@ insitu_fill_runif_fast(x, lower, upper)
 \item{lower, upper}{limits of random numbers generated}
 }
 \description{
-Write random values into a vector in-situ. Uses lehmer64 for RNG
+Write random values into a vector in-situ. Uses xoshiro256++ for RNG
 }

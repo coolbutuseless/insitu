@@ -2,12 +2,9 @@
 % Please edit documentation in R/insitu-shuffle.R
 \name{insitu_shuffle}
 \alias{insitu_shuffle}
-\alias{insitu_shuffle_fast}
 \title{Shuffle a vector in place}
 \usage{
 insitu_shuffle(x)
-
-insitu_shuffle_fast(x)
 }
 \arguments{
 \item{x}{vector of values}
@@ -16,6 +13,6 @@ insitu_shuffle_fast(x)
 Uses fisher-yates.
 }
 \details{
-The \emph{fast} variant of this function uses a lehmer64 PRNG which is
+The \emph{fast} variant of this function uses a xoshiro256++ PRNG which is
 much faster than sourcing randomness from R's random number generator.
 }

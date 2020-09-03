@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "rand-lehmer64.h"
+#include "rand-xoshiro256p.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Assignment to a vector in-place
@@ -84,15 +84,12 @@ SEXP insitu_fill_runif_(SEXP x_, SEXP min_, SEXP max_) {
 }
 
 
-void runif_lehmer64_(double *x, int n, double dmin, double dmax) {
+void runif_xoshiro256p_(double *x, int n, double dmin, double dmax) {
 
   double drange = dmax - dmin;
 
   for (int i = 0; i < n; ++i) {
-    g_lehmer64_state *= 0xda942042e4dd58b5;
-
-    uint64_t result = g_lehmer64_state >> 64;
-    *x++ = (result >> 11) * 0x1.0p-53 * drange + dmin;
+    *x++ = (next_xoshiro256p() >> 11) * 0x1.0p-53 * drange + dmin;
   }
 
 }
@@ -106,7 +103,7 @@ void runif_lehmer64_(double *x, int n, double dmin, double dmax) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 SEXP insitu_fill_runif_fast_(SEXP x_, SEXP min_, SEXP max_) {
 
-  lehmer64_set_seed();
+  xoshiro256p_set_seed();
 
   switch(TYPEOF(x_)) {
   case INTSXP: case LGLSXP: {
@@ -114,13 +111,13 @@ SEXP insitu_fill_runif_fast_(SEXP x_, SEXP min_, SEXP max_) {
     const int max   = isInteger(max_) ? INTEGER(max_)[0] : (int)round(REAL(max_)[0]);
     int *x = INTEGER(x_);
     for (int i = 0; i < length(x_); ++i) {
-      x[i] = nearlydivisionless(max) + min + 1;
+      x[i] = random_integer_on_interval_java(max) + min + 1;
     }
   } break;
   case REALSXP: {
     const double min   = isReal(min_) ? REAL(min_)[0] : (double)INTEGER(min_)[0];
     const double max   = isReal(max_) ? REAL(max_)[0] : (double)INTEGER(max_)[0];
-    runif_lehmer64_(REAL(x_), length(x_), min, max);
+    runif_xoshiro256p_(REAL(x_), length(x_), min, max);
   } break;
   default: {
     error("insitu_fill_runif_runif(): type not supported");
