@@ -43,6 +43,10 @@ within R internals.
 **Warning**: Unless you are very confident on who has references to your data,
 do not use this package for in-place modification.
 
+See the "References" vignette for an example of the differences in how 
+references behave under copy-on-modify and in-situ modification: `vignette('references', package = 'insitu')`
+
+
 ## Modifying vectors in-place
 
 
