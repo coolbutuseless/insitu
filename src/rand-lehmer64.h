@@ -1,5 +1,6 @@
 
 
+#include <stdint.h>
 
 
 extern __uint128_t g_lehmer64_state;
