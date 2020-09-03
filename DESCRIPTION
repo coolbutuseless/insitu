@@ -1,6 +1,6 @@
 Package: insitu
 Type: Package
-Title: In-situ Vector Modification
+Title: In-Situ Vector Modification
 Version: 0.1.1
 Author: mikefc
 Maintainer: mikefc <mikefc@coolbutuseless.com>

@@ -38,7 +38,6 @@ SEXP insitu_fill_(SEXP x_, SEXP value_) {
   } break;
   case STRSXP: {
     SEXP value = STRING_ELT(value_, 0);
-    int *x = INTEGER(x_);
     for (int i = 0; i < length(x_); ++i) {
       SET_STRING_ELT(x_, i, value);
     }
