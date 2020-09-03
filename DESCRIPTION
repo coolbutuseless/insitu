@@ -1,7 +1,7 @@
 Package: insitu
 Type: Package
 Title: In-situ Vector Modification
-Version: 0.1.0
+Version: 0.1.1
 Author: mikefc
 Maintainer: mikefc <mikefc@coolbutuseless.com>
 Description: Functions for in-situ modification of vectors.
@@ -11,5 +11,6 @@ LazyData: true
 RoxygenNote: 7.1.1
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    pryr
 VignetteBuilder: knitr

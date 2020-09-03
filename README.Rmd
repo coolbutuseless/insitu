@@ -28,6 +28,7 @@ library(insitu)
 <!-- badges: start -->
 ![](https://img.shields.io/badge/cool-useless-green.svg)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![R build status](https://github.com/coolbutuseless/insitu/workflows/R-CMD-check/badge.svg)](https://github.com/coolbutuseless/insitu/actions)
 <!-- badges: end -->
 
 `insitu` provides some functions for modifying vectors *in-situ* (in place) 
