@@ -1,5 +1,5 @@
 
-
+#ifdef _WIN32
 
 #include <R.h>
 #include <Rinternals.h>
@@ -10,7 +10,7 @@
 #include <time.h>
 #include <stdint.h>
 
-#include "rand-xoshiro256p.h"
+#include "random64.h"
 
 /* This is xoshiro256+ 1.0, our best and fastest generator for floating-point
  numbers. We suggest to use its upper bits for floating-point
@@ -37,11 +37,13 @@ static inline uint64_t rotl(const uint64_t x, int k) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 static uint64_t xoshiro256p_state[4];
 
+int random64_has_been_initialised = 0;
+
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Original PRNG
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-uint64_t next_xoshiro256p(void) {
+uint64_t random64(void) {
   const uint64_t result = rotl(xoshiro256p_state[0] + xoshiro256p_state[3], 23) + xoshiro256p_state[0];
 
   const uint64_t t = xoshiro256p_state[1] << 17;
@@ -62,7 +64,9 @@ uint64_t next_xoshiro256p(void) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Random-numbers
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void xoshiro256p_set_seed() {
+void random64_set_seed() {
+
+  //Rprintf("Seeding xoshirto\n");
 
   GetRNGstate();
   // Seed RNG using calls to R's built-in RNG
@@ -81,12 +85,12 @@ void xoshiro256p_set_seed() {
 // https://lemire.me/blog/2019/06/06/nearly-divisionless-random-integer-generation-on-various-systems/
 // Java method: https://arxiv.org/pdf/1805.10941.pdf
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-uint64_t  random_integer_on_interval_java(uint64_t s) {
-  uint64_t x = next_xoshiro256p();
+uint64_t  random_integer_on_interval(uint64_t s) {
+  uint64_t x = random64();
   uint64_t r = x % s;
 
   while(x - r > UINT64_MAX - s + 1) {
-    x = next_xoshiro256p();
+    x = random64();
     r = x % s;
   }
   return r;
@@ -95,6 +99,20 @@ uint64_t  random_integer_on_interval_java(uint64_t s) {
 
 
 
+
+void runif_random64_(double *x, int n, double dmin, double dmax) {
+
+  double drange = dmax - dmin;
+
+  for (int i = 0; i < n; ++i) {
+    *x++ = (random64() >> 11) * 0x1.0p-53 * drange + dmin;
+  }
+
+}
+
+
+
+#endif
 
 
 

@@ -11,10 +11,13 @@ extern SEXP duplicate_();
 extern SEXP insitu_replace_();
 extern SEXP insitu_sort_();
 extern SEXP insitu_shuffle_();
+extern SEXP insitu_shuffle_fast_();
 extern SEXP insitu_reverse_();
 extern SEXP insitu_fill_();
 extern SEXP insitu_fill_runif_();
 extern SEXP insitu_fill_runif_fast_();
+
+extern SEXP set_seed_random64_();
 
 static const R_CallMethodDef CEntries[] = {
 
@@ -26,10 +29,13 @@ static const R_CallMethodDef CEntries[] = {
   {"insitu_replace_"        , (DL_FUNC) &insitu_replace_        , 3},
   {"insitu_sort_"           , (DL_FUNC) &insitu_sort_           , 2},
   {"insitu_shuffle_"        , (DL_FUNC) &insitu_shuffle_        , 1},
+  {"insitu_shuffle_fast_"   , (DL_FUNC) &insitu_shuffle_fast_   , 1},
   {"insitu_reverse_"        , (DL_FUNC) &insitu_reverse_        , 1},
   {"insitu_fill_"           , (DL_FUNC) &insitu_fill_           , 2},
   {"insitu_fill_runif_"     , (DL_FUNC) &insitu_fill_runif_     , 3},
   {"insitu_fill_runif_fast_", (DL_FUNC) &insitu_fill_runif_fast_, 3},
+
+  {"set_seed_random64_"     , (DL_FUNC) &set_seed_random64_     , 0},
   {NULL , NULL, 0}
 };
 

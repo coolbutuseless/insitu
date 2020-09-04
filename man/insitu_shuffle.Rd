@@ -2,9 +2,12 @@
 % Please edit documentation in R/insitu-shuffle.R
 \name{insitu_shuffle}
 \alias{insitu_shuffle}
+\alias{insitu_shuffle_fast}
 \title{Shuffle a vector in place}
 \usage{
 insitu_shuffle(x)
+
+insitu_shuffle_fast(x)
 }
 \arguments{
 \item{x}{vector of values}

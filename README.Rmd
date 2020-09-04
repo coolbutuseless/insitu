@@ -90,20 +90,28 @@ This package ignores this advice. Beware.
 | insitu_replace(x, pos, values)          | Replace values in x with given values starting from the given position | Yes     | Yes  | Yes       |
 | insitu_reverse(x)                       | Reverse vector                                                         | Yes     | Yes  | Yes       |
 | insitu_shuffle(x)                       | Shuffle the elements of a vector                                       | Yes     | Yes  | Yes       |
+| insitu_shuffle_fast(x)                  | Shuffle the elements of a vector                                       | Yes     | Yes  | Yes       |
 | insitu_sort(x)                          | Sort the elements of a vector                                          | Yes     | Yes  |           |
 |                                         |                                                                        |         |      |           |
 
 #### Fast Variants
 
 The `_fast` versions of some functions use their own random-number generator 
-rather than the one supplied in R.  This generator is [xoshiro256++](http://prng.di.unimi.it/).
-It is very fast, but has different properties from R's built in random 
+rather than the one supplied in R.  
+
+* On **windows** this RNG is [xoshiro256++](http://prng.di.unimi.it/).  This does 
+  not require a `uint128_t` and compiles cleanly on the GitHub CI test server.
+* On **other platforms** this RNG is [lehmer](https://lemire.me/blog/2019/03/19/the-fastest-conventional-random-number-generator-that-can-pass-big-crush/).
+Use of `uint128_t` on these platforms allows for faster generation of random 
+integers on an interval.
+
+Both of these RNGs are very fast, but have different properties to R's built in random 
 number generator. Use with caution.
 
 #### ALTREP utils
 
 * `is_altrep(x)` tests whether an object is an ALTREP
-* `is_mutable(x)` tests whether an object is mutable in-place by checking its
+* `is_mutable(x)` tests whether an object is mutable by checking its
   reference count
 * `get_refcnt(x)` returns the reference count for the object 
 
@@ -466,6 +474,7 @@ res_rel <- bench::press(
     bench::mark(
       sample(x),
       insitu_shuffle(x),
+      insitu_shuffle_fast(x),
       check    = FALSE,
       relative = TRUE
     )
@@ -484,6 +493,7 @@ res_abs <- bench::press(
     bench::mark(
       sample(x),
       insitu_shuffle(x),
+      insitu_shuffle_fast(x),
       check    = FALSE,
       relative = FALSE
     )
