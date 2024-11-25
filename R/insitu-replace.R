@@ -9,8 +9,8 @@
 #'
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-insitu_replace <- function(x, idx, values) {
-  invisible(.Call(insitu_replace_, x, idx, values))
+ins_replace <- function(x, idx, values) {
+  invisible(.Call(ins_replace_, x, idx, values))
 }
 
 

@@ -44,6 +44,15 @@ void random64_set_seed(void) {
 }
 
 
+
+
+SEXP set_seed_random64_(void) {
+  random64_set_seed();
+  return R_NilValue;
+}
+
+
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // https://lemire.me/blog/2019/06/06/nearly-divisionless-random-integer-generation-on-various-systems/
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

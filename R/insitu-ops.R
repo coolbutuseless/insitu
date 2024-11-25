@@ -7,57 +7,57 @@
 #' @return \code{x} modified in-place and returned invisibly
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_plus <- function(x, y) {
-  invisible(.Call(ins_plus_, x, y))
+ins_add <- function(x, y) {
+  invisible(.Call(ins_add_, x, y))
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_plus
+#' @rdname ins_add
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-"%+=%" <- ins_plus
+"%+=%" <- ins_add
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_plus
+#' @rdname ins_add
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_minus <- function(x, y) {
-  invisible(.Call(ins_minus_, x, y))
+ins_sub <- function(x, y) {
+  invisible(.Call(ins_sub_, x, y))
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_plus
+#' @rdname ins_add
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-"%-=%" <- ins_minus
+"%-=%" <- ins_sub
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_plus
+#' @rdname ins_add
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_mult <- function(x, y) {
-  invisible(.Call(ins_mult_, x, y))
+ins_mul <- function(x, y) {
+  invisible(.Call(ins_mul_, x, y))
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_plus
+#' @rdname ins_add
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-"%*=%" <- ins_mult
+"%*=%" <- ins_mul
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_plus
+#' @rdname ins_add
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_divide <- function(x, y) {
-  invisible(.Call(ins_divide_, x, y))
+ins_div <- function(x, y) {
+  invisible(.Call(ins_div_, x, y))
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_plus
+#' @rdname ins_add
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-"%/=%" <- ins_divide
+"%/=%" <- ins_div
 
 
 
@@ -69,7 +69,7 @@ if (FALSE) {
 
   bench::mark(  
     x + y,
-    ins_plus(x, y),
+    ins_add(x, y),
     check = FALSE
   )
   

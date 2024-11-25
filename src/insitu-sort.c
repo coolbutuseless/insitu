@@ -30,7 +30,7 @@ int dbl_cmpfunc_dec (const void * a, const void * b) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Sort a numeric/integer vector
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SEXP insitu_sort_(SEXP x_, SEXP decreasing_) {
+SEXP ins_sort_(SEXP x_, SEXP decreasing_) {
 
   qsort(REAL(x_), (size_t)length(x_), sizeof(double), asLogical(decreasing_) ? dbl_cmpfunc_dec : dbl_cmpfunc_inc);
 

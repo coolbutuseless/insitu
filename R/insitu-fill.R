@@ -8,8 +8,8 @@
 #'
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-insitu_fill <- function(x, value) {
-  invisible(.Call(insitu_fill_, x, value))
+ins_fill <- function(x, value) {
+  invisible(.Call(ins_fill_, x, value))
 }
 
 
@@ -21,6 +21,6 @@ insitu_fill <- function(x, value) {
 #'
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-insitu_fill_runif_fast <- function(x, lower, upper) {
-  invisible(.Call(insitu_fill_runif_fast_, x, lower, upper))
+ins_runif <- function(x, lower, upper) {
+  invisible(.Call(ins_runif_, x, lower, upper))
 }

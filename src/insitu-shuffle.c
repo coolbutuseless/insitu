@@ -10,7 +10,7 @@
 #include "random64.h"
 
 
-SEXP insitu_shuffle_fast_(SEXP x_)  {
+SEXP ins_shuffle_(SEXP x_)  {
   
   if (!random64_has_been_initialised) {
     random64_has_been_initialised = 1;

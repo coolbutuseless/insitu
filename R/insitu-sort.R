@@ -8,8 +8,8 @@
 #'
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-insitu_sort <- function(x, decreasing = FALSE) {
-  invisible(.Call(insitu_sort_, x, decreasing))
+ins_sort <- function(x, decreasing = FALSE) {
+  invisible(.Call(ins_sort_, x, decreasing))
 }
 
 

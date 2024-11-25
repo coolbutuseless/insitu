@@ -9,11 +9,11 @@ test_that("ops plus workds", {
   
   # vector y
   x <- duplicate(xorig)
-  expect_equal(ins_plus(x, y), xorig + y)
+  expect_equal(ins_add(x, y), xorig + y)
   
   # scalar y
   x <- duplicate(xorig)
-  expect_equal(ins_plus(x, 2), xorig + 2)
+  expect_equal(ins_add(x, 2), xorig + 2)
 })
 
 
@@ -27,11 +27,11 @@ test_that("ops minus workds", {
   
   # vector y
   x <- duplicate(xorig)
-  expect_equal(ins_minus(x, y), xorig - y)
+  expect_equal(ins_sub(x, y), xorig - y)
   
   # scalar y
   x <- duplicate(xorig)
-  expect_equal(ins_minus(x, 2), xorig - 2)
+  expect_equal(ins_sub(x, 2), xorig - 2)
 })
 
 
@@ -45,11 +45,11 @@ test_that("ops mult workds", {
   
   # vector y
   x <- duplicate(xorig)
-  expect_equal(ins_mult(x, y), xorig * y)
+  expect_equal(ins_mul(x, y), xorig * y)
   
   # scalar y
   x <- duplicate(xorig)
-  expect_equal(ins_mult(x, 2), xorig * 2)
+  expect_equal(ins_mul(x, 2), xorig * 2)
 })
 
 
@@ -64,9 +64,9 @@ test_that("ops divide workds", {
   
   # vector y
   x <- duplicate(xorig)
-  expect_equal(ins_divide(x, y), xorig / y)
+  expect_equal(ins_div(x, y), xorig / y)
   
   # scalar y
   x <- duplicate(xorig)
-  expect_equal(ins_divide(x, 2), xorig / 2)
+  expect_equal(ins_div(x, 2), xorig / 2)
 })

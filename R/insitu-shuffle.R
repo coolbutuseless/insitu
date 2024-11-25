@@ -12,6 +12,6 @@
 #'
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-insitu_shuffle_fast <- function(x) {
-  invisible(.Call(insitu_shuffle_fast_, x))
+ins_shuffle <- function(x) {
+  invisible(.Call(ins_shuffle_, x))
 }

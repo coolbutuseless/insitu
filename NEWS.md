@@ -1,6 +1,10 @@
 
-# insitu 0.1.3.9001
+# insitu 0.1.3.9002
 
+* [9002] Use prefix `ins_`
+* [9002] Remove benchmarks from readme
+* [9002] Remove xoshiro. Use lehmer64 on all platforms. Needs testing 
+         on windows.
 * [9001] Add fused multiply add (and variants)
 * [9001] Add in-place addition, subtration, division and multiplication
 * [9001] Remove use of R's `runif()`
@@ -14,7 +18,7 @@
     * the actual RNGs are about the same speed, but uint128_t support means
     we can use the much faster method for random integers on an interval
     https://lemire.me/blog/2019/06/06/nearly-divisionless-random-integer-generation-on-various-systems/
-* re-introduces `insitu_shuffle_fast()`
+* re-introduces `ins_shuffle()`
 
 # insitu 0.1.2
 

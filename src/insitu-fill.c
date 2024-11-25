@@ -15,7 +15,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Assignment to a vector in-place
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SEXP insitu_fill_(SEXP x_, SEXP value_) {
+SEXP ins_fill_(SEXP x_, SEXP value_) {
   
   double value = asReal(value_);
   double *x = REAL(x_);
@@ -39,7 +39,7 @@ SEXP insitu_fill_(SEXP x_, SEXP value_) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Fill a vector in-place with runif values using R's runif
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SEXP insitu_fill_runif_fast_(SEXP x_, SEXP min_, SEXP max_) {
+SEXP ins_runif_(SEXP x_, SEXP min_, SEXP max_) {
   
   if (!random64_has_been_initialised) {
     random64_has_been_initialised = 1;

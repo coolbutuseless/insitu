@@ -90,13 +90,13 @@ references behave under copy-on-modify and in-situ modification: `vignette('refe
 | insitu                                  | description                                                            |
 |-----------------------------------------|------------------------------------------------------------------------|
 | fmadd, fmsub, fnmadd, fnmsub            | Fused multiply add                                                     |
-| ins_plus, ins_minus, ins_mult, ins_divide | inplace `+=`, `-=`, `*=`, `/=`                                       |
-| insitu_fill(x, value)                   | Fill vector with the given value                                       |
-| insitu_fill_runif_fast(x, lower, upper) | Fill vector with uniform random numbers                                |
-| insitu_replace(x, pos, values)          | Replace values in x with given values starting from the given position |
-| insitu_reverse(x)                       | Reverse vector                                                         |
-| insitu_shuffle_fast(x)                  | Shuffle the elements of a vector                                       |
-| insitu_sort(x)                          | Sort the elements of a vector                                          |
+| ins_add, ins_sub, ins_mul, ins_div | inplace `+=`, `-=`, `*=`, `/=`                                       |
+| ins_fill(x, value)                   | Fill vector with the given value                                       |
+| ins_runif(x, lower, upper) | Fill vector with uniform random numbers                                |
+| ins_replace(x, pos, values)          | Replace values in x with given values starting from the given position |
+| ins_reverse(x)                       | Reverse vector                                                         |
+| ins_shuffle(x)                  | Shuffle the elements of a vector                                       |
+| ins_sort(x)                          | Sort the elements of a vector                                          |
 
 #### Fast Variants
 
@@ -125,627 +125,118 @@ number generator. Use with caution.
 You can install from [GitHub](https://github.com/coolbutuseless/insitu) with:
 
 ``` r
-# install.package('remotes')
+# install.packages('remotes')
 remotes::install_github('coolbutuseless/insitu')
 ```
 
 
-## Future possibilities
-
-* In-place radix sort - instead of using `qsort()`
-* `cummin`, `cummax` etc
-* `negate`
-* `diff`
 
 
-## In-situ Replacement
+## Replace
 
-`insitu_replace()` is analogous to `replace()` but replaces values in the current 
+`ins_replace()` is analogous to `replace()` but replaces values in the current 
 vector rather than creating a new one.
 
 ```{r}
 x <- numeric(10)
-insitu_replace(x, 6, c(1, 2, 3, 4, 5))
+ins_replace(x, 6, c(1, 2, 3, 4, 5))
 x
 ```
 
 
 
-
-<details>
-<summary> Click to show/hide benchmark code & results </summary>
-
-```{r message=FALSE}
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Assign values into a vector
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-N = c(1e1, 1e2, 1e3, 1e4, 1e5, 1e6)
-
-res_rel <- bench::press(
-  N = N,
-  {
-    x <- numeric(N)
-    x[1] <- x[1]
-    idx <- seq(1, N/2)
-    ins <- as.numeric(idx)
-    
-    bench::mark(
-      replace(x, idx, ins),
-      insitu_replace(x, 1, ins),
-      check    = TRUE,
-      relative = TRUE
-    )
-  }
-)
-
-res_rel %>%
-  select(expression, min, median, `itr/sec`, mem_alloc) %>%
-  knitr::kable()
-
-res_abs <- bench::press(
-  N = N,
-  {
-    x <- numeric(N)
-    x[1] <- x[1]
-    idx <- seq(1, N/2)
-    ins <- as.numeric(idx)
-    
-    bench::mark(
-      replace(x, idx, ins),
-      insitu_replace(x, 1, ins),
-      check    = TRUE,
-      relative = FALSE
-    )
-  }
-)
-
-res_abs %>%
-  select(expression, min, median, `itr/sec`, mem_alloc) %>%
-  knitr::kable()
-```
+## Fill
 
 
-</details>
-
-```{r echo=FALSE}
-
-p_rel <- ggplot(res_rel, aes(N, min,colour=as.character(expression))) +
-  geom_point() + 
-  geom_line(aes(group = as.character(expression))) +
-  theme_bw() + 
-  scale_x_log10(breaks = N) + 
-  theme(legend.position = 'bottom') + 
-  labs(
-    x        = "Vector Length",
-    y        = "Relative duration compared to fastest method"
-  )
-
-
-p_abs <- ggplot(res_abs, aes(N, min,colour=as.character(expression))) +
-  geom_point() + 
-  geom_line(aes(group = as.character(expression))) +
-  theme_bw() + 
-  scale_x_log10(breaks = N) + 
-  theme(legend.position = 'bottom') + 
-  labs(
-    x        = "Vector Length",
-    y        = "Minimum time for call"
-  )
-
-p <- p_rel + p_abs + plot_annotation(
-  title = "in-situ assignment vs copy-on-modify assignment",
-  subtitle = "Assign N/2 values at the start of a vector of length N\nLower is better",
-  theme = theme(legend.position = 'bottom')
-) + 
-  plot_layout(guides = 'collect') 
-
-p
-```
-
-
-
-
-## In-situ fill
-
-
-`insitu_fill()` is analogous to `replace()` but assigns the value into the current 
+`ins_fill()` is analogous to `replace()` but assigns the value into the current 
 vector rather than creating a new one.
 
 
 ```{r}
 x <- numeric(10)
-insitu_fill(x, 3)
+ins_fill(x, 3)
 x
 ```
 
-<details>
-<summary> Click to show/hide benchmark code & results </summary>
 
-```{r message=FALSE}
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Assign values into a vector
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# N = c(1e1, 1e2, 1e3, 1e4, 1e5, 1e6)
+## Sort
 
-res_rel <- bench::press(
-  N = N,
-  {
-    x <- numeric(N)
-    idx <- 1:N
-    ins <- 99
-    
-    bench::mark(
-      replace(x, idx, ins),
-      insitu_fill(x, ins),
-      check    = TRUE,
-      relative = TRUE
-    )
-  }
-)
-
-res_rel %>%
-  select(expression, min, median, `itr/sec`, mem_alloc) %>%
-  knitr::kable()
-
-res_abs <- bench::press(
-  N = N,
-  {
-    x <- numeric(N)
-    idx <- 1:N
-    ins <- 99
-    
-    bench::mark(
-      replace(x, idx, ins),
-      insitu_fill(x, ins),
-      check    = TRUE,
-      relative = FALSE
-    )
-  }
-)
-
-res_abs %>%
-  select(expression, min, median, `itr/sec`, mem_alloc) %>%
-  knitr::kable()
-```
-
-
-</details>
-
-```{r echo=FALSE}
-
-p_rel <- ggplot(res_rel, aes(N, min,colour=as.character(expression))) +
-  geom_point() + 
-  geom_line(aes(group = as.character(expression))) +
-  theme_bw() + 
-  scale_x_log10(breaks = N) + 
-  theme(legend.position = 'bottom') + 
-  labs(
-    x        = "Vector Length",
-    y        = "Relative duration compared to fastest method"
-  )
-
-
-p_abs <- ggplot(res_abs, aes(N, min,colour=as.character(expression))) +
-  geom_point() + 
-  geom_line(aes(group = as.character(expression))) +
-  theme_bw() + 
-  scale_x_log10(breaks = N) + 
-  theme(legend.position = 'bottom') + 
-  labs(
-    x        = "Vector Length",
-    y        = "Minimum time for call"
-  )
-
-p <- p_rel + p_abs + plot_annotation(
-  title = "Fill: in-situ vs copy-on-modify",
-  subtitle = "Fill a vector with a given single value\nLower is better",
-  theme = theme(legend.position = 'bottom')
-) + 
-  plot_layout(guides = 'collect') 
-
-p
-```
-
-
-
-
-## In-situ sort
-
-`insitu_sort()` is analogous to `sort()` but sorts values in the current 
+`ins_sort()` is analogous to `sort()` but sorts values in the current 
 vector rather than creating a new one.
 
 ```{r}
 x <- as.numeric(sample(10))
 x
-insitu_sort(x)
+ins_sort(x)
 x
 ```
 
-<details>
-<summary> Click to show/hide benchmark code & results </summary>
-
-```{r message=FALSE}
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Assign values into a vector
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# N = c(1e1, 1e2, 1e3, 1e4, 1e5, 1e6)
-
-res_rel <- bench::press(
-  N = N,
-  {
-    x <- runif(N)
-
-    bench::mark(
-      sort(x),
-      insitu_sort(x),
-      check    = TRUE,
-      relative = TRUE
-    )
-  }
-)
-
-res_rel %>%
-  select(expression, min, median, `itr/sec`, mem_alloc) %>%
-  knitr::kable()
-
-res_abs <- bench::press(
-  N = N,
-  {
-    x <- runif(N)
-    
-    bench::mark(
-      sort(x),
-      insitu_sort(x),
-      check    = TRUE,
-      relative = FALSE
-    )
-  }
-)
-
-res_abs %>%
-  select(expression, min, median, `itr/sec`, mem_alloc) %>%
-  knitr::kable()
-```
 
 
-</details>
-
-```{r echo=FALSE}
-
-p_rel <- ggplot(res_rel, aes(N, min,colour=as.character(expression))) +
-  geom_point() + 
-  geom_line(aes(group = as.character(expression))) +
-  theme_bw() + 
-  scale_x_log10(breaks = N) + 
-  theme(legend.position = 'bottom') + 
-  labs(
-    x        = "Vector Length",
-    y        = "Relative duration compared to fastest method"
-  )
+## Shuffle
 
 
-p_abs <- ggplot(res_abs, aes(N, min,colour=as.character(expression))) +
-  geom_point() + 
-  geom_line(aes(group = as.character(expression))) +
-  theme_bw() + 
-  scale_x_log10(breaks = N) + 
-  theme(legend.position = 'bottom') + 
-  labs(
-    x        = "Vector Length",
-    y        = "Minimum time for call"
-  )
-
-p <- p_rel + p_abs + plot_annotation(
-  title = "Sort: in-situ vs copy-on-modify",
-  subtitle = "Sort a vector\nLower is better",
-  theme = theme(legend.position = 'bottom')
-) + 
-  plot_layout(guides = 'collect') 
-
-p
-```
-
-
-
-## In-situ Shuffle
-
-
-`insitu_shuffle()` is analogous to `sample()` but shuffles values in the current 
+`ins_shuffle()` is analogous to `sample()` but shuffles values in the current 
 vector rather than creating a new one.
 
 ```{r}
 set.seed(1)
 x <- c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
-insitu_shuffle_fast(x)
+ins_shuffle(x)
 x
 ```
 
 
-<details>
-<summary> Click to show/hide benchmark code & results </summary>
-
-```{r message=FALSE}
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Assign values into a vector
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# N = c(1e1, 1e2, 1e3, 1e4, 1e5, 1e6)
-
-res_rel <- bench::press(
-  N = N,
-  {
-    x <- runif(N)
-
-    bench::mark(
-      sample(x),
-      insitu_shuffle_fast(x),
-      check    = FALSE,
-      relative = TRUE
-    )
-  }
-)
-
-res_rel %>%
-  select(expression, min, median, `itr/sec`, mem_alloc) %>%
-  knitr::kable()
-
-res_abs <- bench::press(
-  N = N,
-  {
-    x <- runif(N)
-    
-    bench::mark(
-      sample(x),
-      insitu_shuffle_fast(x),
-      check    = FALSE,
-      relative = FALSE
-    )
-  }
-)
-
-res_abs %>%
-  select(expression, min, median, `itr/sec`, mem_alloc) %>%
-  knitr::kable()
-```
 
 
-</details>
+## Reverse
 
-```{r echo=FALSE}
-
-p_rel <- ggplot(res_rel, aes(N, min,colour=as.character(expression))) +
-  geom_point() + 
-  geom_line(aes(group = as.character(expression))) +
-  theme_bw() + 
-  scale_x_log10(breaks = N) + 
-  theme(legend.position = 'bottom') + 
-  labs(
-    x        = "Vector Length",
-    y        = "Relative duration compared to fastest method"
-  )
-
-
-p_abs <- ggplot(res_abs, aes(N, min,colour=as.character(expression))) +
-  geom_point() + 
-  geom_line(aes(group = as.character(expression))) +
-  theme_bw() + 
-  scale_x_log10(breaks = N) + 
-  theme(legend.position = 'bottom') + 
-  labs(
-    x        = "Vector Length",
-    y        = "Minimum time for call"
-  )
-
-p <- p_rel + p_abs + plot_annotation(
-  title = "Shuffle: in-situ vs copy-on-modify",
-  subtitle = "Randomly shuffle a vector\nLower is better",
-  theme = theme(legend.position = 'bottom')
-) + 
-  plot_layout(guides = 'collect') 
-
-p
-```
-
-
-
-
-## In-situ Reverse
-
-`insitu_reverse()` is analogous to `rev()` but reverses values in the current 
+`ins_reverse()` is analogous to `rev()` but reverses values in the current 
 vector rather than creating a new one.
 
 
 ```{r}
 x <- c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
-insitu_reverse(x)
+ins_reverse(x)
 x
 ```
 
 
-<details>
-<summary> Click to show/hide benchmark code & results </summary>
-
-```{r message=FALSE}
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Assign values into a vector
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# N = c(1e1, 1e2, 1e3, 1e4, 1e5, 1e6)
-
-res_rel <- bench::press(
-  N = N,
-  {
-    x <- runif(N)
-
-    bench::mark(
-      rev(x),
-      insitu_reverse(x),
-      check    = TRUE,
-      relative = TRUE
-    )
-  }
-)
-
-res_rel %>%
-  select(expression, min, median, `itr/sec`, mem_alloc) %>%
-  knitr::kable()
-
-res_abs <- bench::press(
-  N = N,
-  {
-    x <- runif(N)
-    
-    bench::mark(
-      rev(x),
-      insitu_reverse(x),
-      check    = TRUE,
-      relative = FALSE
-    )
-  }
-)
-
-res_abs %>%
-  select(expression, min, median, `itr/sec`, mem_alloc) %>%
-  knitr::kable()
-```
-
-
-</details>
-
-```{r echo=FALSE}
-
-p_rel <- ggplot(res_rel, aes(N, min,colour=as.character(expression))) +
-  geom_point() + 
-  geom_line(aes(group = as.character(expression))) +
-  theme_bw() + 
-  scale_x_log10(breaks = N) + 
-  theme(legend.position = 'bottom') + 
-  labs(
-    x        = "Vector Length",
-    y        = "Relative duration compared to fastest method"
-  )
-
-
-p_abs <- ggplot(res_abs, aes(N, min,colour=as.character(expression))) +
-  geom_point() + 
-  geom_line(aes(group = as.character(expression))) +
-  theme_bw() + 
-  scale_x_log10(breaks = N) + 
-  theme(legend.position = 'bottom') + 
-  labs(
-    x        = "Vector Length",
-    y        = "Minimum time for call"
-  )
-
-p <- p_rel + p_abs + plot_annotation(
-  title = "Reverse: in-situ vs copy-on-modify",
-  subtitle = "Reverse a vector\nLower is better",
-  theme = theme(legend.position = 'bottom')
-) + 
-  plot_layout(guides = 'collect') 
-
-p
-```
 
 
 
 
 
+## Fill with random
 
-
-## In-situ fill with random
-
-`insitu_fill_runif()` is analogous to `runif()` but generates values in the current 
+`ins_runif()` is analogous to `runif()` but generates values in the current 
 vector rather than creating a new one.
 
 
 ```{r}
 set.seed(1)
 x <- numeric(10)
-insitu_fill_runif_fast(x, 10, 15)
+ins_runif(x, 10, 15)
 x
 ```
 
-<details>
-<summary> Click to show/hide benchmark code & results </summary>
-
-```{r message=FALSE}
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Assign values into a vector
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# N = c(1e1, 1e2, 1e3, 1e4, 1e5, 1e6)
-
-res_rel <- bench::press(
-  N = N,
-  {
-    x <- numeric(N)
-
-    bench::mark(
-      runif(x),
-      insitu_fill_runif_fast(x, 0, 1),
-      check    = FALSE,
-      relative = TRUE
-    )
-  }
-)
-
-res_rel %>%
-  select(expression, min, median, `itr/sec`, mem_alloc) %>%
-  knitr::kable()
-
-res_abs <- bench::press(
-  N = N,
-  {
-    x <- numeric(N)
-    
-    bench::mark(
-      runif(x),
-      insitu_fill_runif_fast(x, 0, 1),
-      check    = FALSE,
-      relative = FALSE
-    )
-  }
-)
-
-res_abs %>%
-  select(expression, min, median, `itr/sec`, mem_alloc) %>%
-  knitr::kable()
-```
 
 
-</details>
 
-```{r echo=FALSE}
+## Fused multiply add (FMA)
 
-p_rel <- ggplot(res_rel, aes(N, min,colour=as.character(expression))) +
-  geom_point() + 
-  geom_line(aes(group = as.character(expression))) +
-  theme_bw() + 
-  scale_x_log10(breaks = N) + 
-  theme(legend.position = 'bottom') + 
-  labs(
-    x        = "Vector Length",
-    y        = "Relative duration compared to fastest method"
-  )
+* `fmadd(x, a, b)` in-situ `x * a + b`
+* `fmsub(x, a, b)` in-situ `x * a - b`
+* `fnmadd(x, a, b)` in-situ `-x * a + b`
+* `fnmsub(x, a, b)` in-situ `-x * a - b`
 
 
-p_abs <- ggplot(res_abs, aes(N, min,colour=as.character(expression))) +
-  geom_point() + 
-  geom_line(aes(group = as.character(expression))) +
-  theme_bw() + 
-  scale_x_log10(breaks = N) + 
-  theme(legend.position = 'bottom') + 
-  labs(
-    x        = "Vector Length",
-    y        = "Minimum time for call"
-  )
-
-p <- p_rel + p_abs + plot_annotation(
-  title = "Random Fill: in-situ vs copy-on-modify",
-  subtitle = "Fill a vector with uniform random values\nLower is better",
-  theme = theme(legend.position = 'bottom')
-) + 
-  plot_layout(guides = 'collect') 
-
-p
+```{r}
+x <- as.numeric(1:10)
+a <- 2
+b <- as.numeric(1:10)
+fmadd(x, a, b)
+x
 ```
 
 

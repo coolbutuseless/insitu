@@ -14,12 +14,12 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Assignment to a vector in-place
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SEXP insitu_replace_(SEXP x_, SEXP n_, SEXP value_) {
+SEXP ins_replace_(SEXP x_, SEXP n_, SEXP value_) {
   
   int n = asInteger(n_) - 1;
   
   if (n < 0 || n + length(value_) > length(x_)) {
-    error("insitu_replace(): out of bounds");
+    error("ins_replace(): out of bounds");
   }
   
   memcpy(REAL(x_) + n, REAL(value_), (size_t)length(value_) * sizeof(double));

@@ -7,7 +7,7 @@
 #'
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-insitu_reverse <- function(x) {
-  invisible(.Call(insitu_reverse_, x))
+ins_reverse <- function(x) {
+  invisible(.Call(ins_reverse_, x))
 }
 
