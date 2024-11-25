@@ -1,5 +1,4 @@
 
-#ifndef _WIN32
 
 #include <R.h>
 #include <Rinternals.h>
@@ -87,5 +86,4 @@ void runif_random64_(double *x, int n, double dmin, double dmax) {
 }
 
 
-#endif
 
