@@ -129,7 +129,7 @@ SEXP fmadd_(SEXP x_, SEXP a_, SEXP b_) {
     return fma_sab_(x_, a_, b_, 1, 1);
   }
   
-  error("fmadd(): Lengths not compatible: x = %li, a = %li, b = %li", lx, la, lb);
+  error("fmadd(): Lengths not compatible: x = %.0f, a = %.0f, b = %.0f", (double)lx, (double)la, (double)lb);
 }
 
 
@@ -154,7 +154,7 @@ SEXP fmsub_(SEXP x_, SEXP a_, SEXP b_) {
     return fma_sab_(x_, a_, b_, 1, -1);
   }
   
-  error("fmsub(): Lengths not compatible: x = %li, a = %li, b = %li", lx, la, lb);
+  error("fmsub(): Lengths not compatible: x = %.0f, a = %.0f, b = %.0f", (double)lx, (double)la, (double)lb);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -176,7 +176,7 @@ SEXP fnmadd_(SEXP x_, SEXP a_, SEXP b_) {
     return fma_sab_(x_, a_, b_, -1, 1);
   }
   
-  error("fnmadd(): Lengths not compatible: x = %li, a = %li, b = %li", lx, la, lb);
+  error("fnmadd(): Lengths not compatible: x = %.0f, a = %.0f, b = %.0f", (double)lx, (double)la, (double)lb);
 }
 
 
@@ -201,5 +201,5 @@ SEXP fnmsub_(SEXP x_, SEXP a_, SEXP b_) {
     return fma_sab_(x_, a_, b_, -1, -1);
   }
   
-  error("fnmsub(): Lengths not compatible: x = %li, a = %li, b = %li", lx, la, lb);
+  error("fnmsub(): Lengths not compatible: x = %.0f, a = %.0f, b = %.0f", (double)lx, (double)la, (double)lb);
 }

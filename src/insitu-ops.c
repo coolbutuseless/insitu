@@ -70,7 +70,7 @@ SEXP ins_plus_(SEXP x_, SEXP y_) {
     return ins_plus_sy_(x_, y_);
   }
   
-  error("ins_plus(): Lengths not compatible: x = %li, y = %li", lx, ly);
+  error("ins_plus(): Lengths not compatible: x = %.0f, y = %.0f", (double)lx, (double)ly);
 }
 
 
@@ -136,7 +136,7 @@ SEXP ins_minus_(SEXP x_, SEXP y_) {
     return ins_minus_sy_(x_, y_);
   }
   
-  error("ins_minus(): Lengths not compatible: x = %li, y = %li", lx, ly);
+  error("ins_minus(): Lengths not compatible: x = %.0f, y = %.0f", (double)lx, (double)ly);
 }
 
 
@@ -203,7 +203,7 @@ SEXP ins_mult_(SEXP x_, SEXP y_) {
     return ins_mult_sy_(x_, y_);
   }
   
-  error("ins_mult(): Lengths not compatible: x = %li, y = %li", lx, ly);
+  error("ins_mult(): Lengths not compatible: x = %.0f, y = %.0f", (double)lx, (double)ly);
 }
 
 
@@ -270,6 +270,6 @@ SEXP ins_divide_(SEXP x_, SEXP y_) {
     return ins_divide_sy_(x_, y_);
   }
   
-  error("ins_divide(): Lengths not compatible: x = %li, y = %li", lx, ly);
+  error("ins_divide(): Lengths not compatible: x = %.0f, y = %.0f", (double)lx, (double)ly);
 }
 
