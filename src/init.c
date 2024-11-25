@@ -3,21 +3,21 @@
 #include <R.h>
 #include <Rinternals.h>
 
-extern SEXP is_altrep_();
-extern SEXP is_mutable_();
-extern SEXP get_refcnt_();
-extern SEXP duplicate_();
+extern SEXP is_altrep_(SEXP x_);
+extern SEXP is_mutable_(SEXP x_);
+extern SEXP get_refcnt_(SEXP x_);
+extern SEXP duplicate_(SEXP x_);
 
-extern SEXP insitu_replace_();
-extern SEXP insitu_sort_();
-extern SEXP insitu_shuffle_();
-extern SEXP insitu_shuffle_fast_();
-extern SEXP insitu_reverse_();
-extern SEXP insitu_fill_();
-extern SEXP insitu_fill_runif_();
-extern SEXP insitu_fill_runif_fast_();
+extern SEXP insitu_replace_(SEXP x_, SEXP n_, SEXP value_);
+extern SEXP insitu_sort_(SEXP x_, SEXP decreasing_);
+extern SEXP insitu_shuffle_(SEXP x_);
+extern SEXP insitu_shuffle_fast_(SEXP x_);
+extern SEXP insitu_reverse_(SEXP x_);
+extern SEXP insitu_fill_(SEXP x_, SEXP value_);
+extern SEXP insitu_fill_runif_(SEXP x_, SEXP min_, SEXP max_);
+extern SEXP insitu_fill_runif_fast_(SEXP x_, SEXP min_, SEXP max_);
 
-extern SEXP set_seed_random64_();
+extern SEXP set_seed_random64_(void);
 
 static const R_CallMethodDef CEntries[] = {
 

@@ -1,6 +1,4 @@
 
-#ifdef _WIN32
-
 #include <R.h>
 #include <Rinternals.h>
 #include <Rdefines.h>
@@ -11,6 +9,9 @@
 #include <stdint.h>
 
 #include "random64.h"
+
+#ifdef _WIN32
+
 
 /* This is xoshiro256+ 1.0, our best and fastest generator for floating-point
  numbers. We suggest to use its upper bits for floating-point
@@ -64,7 +65,7 @@ uint64_t random64(void) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Random-numbers
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void random64_set_seed() {
+void random64_set_seed(void) {
 
   //Rprintf("Seeding xoshirto\n");
 

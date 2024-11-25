@@ -11,7 +11,7 @@
 #include "random64.h"
 
 
-SEXP set_seed_random64_() {
+SEXP set_seed_random64_(void) {
   random64_set_seed();
   return R_NilValue;
 }

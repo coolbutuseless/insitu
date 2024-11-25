@@ -6,3 +6,5 @@
 ^\.github$
 ^doc$
 ^Meta$
+^man/figures$
+^LICENSE.md$

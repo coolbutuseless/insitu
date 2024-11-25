@@ -33,10 +33,10 @@ SEXP insitu_replace_(SEXP x_, SEXP n_, SEXP value_) {
 
   switch(TYPEOF(x_)) {
   case INTSXP: case LGLSXP: {
-    memcpy(INTEGER(x_) + n, INTEGER(value_), length(value_) * sizeof(int));
+    memcpy(INTEGER(x_) + n, INTEGER(value_), (size_t)length(value_) * sizeof(int));
   } break;
   case REALSXP: {
-    memcpy(REAL(x_) + n, REAL(value_), length(value_) * sizeof(double));
+    memcpy(REAL(x_) + n, REAL(value_), (size_t)length(value_) * sizeof(double));
   } break;
   case STRSXP: {
     for (int i = 0; i < length(value_); ++i) {

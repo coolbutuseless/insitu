@@ -18,7 +18,7 @@ __uint128_t g_lehmer64_state;
 
 int random64_has_been_initialised = 0;
 
-uint64_t lehmer64() {
+uint64_t lehmer64(void) {
   g_lehmer64_state *= 0xda942042e4dd58b5;
   return g_lehmer64_state >> 64;
 }
@@ -27,13 +27,14 @@ uint64_t lehmer64() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Random-numbers
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void random64_set_seed() {
+void random64_set_seed(void) {
 
   //Rprintf("Seeding lehmer64\n");
 
   GetRNGstate();
   // Seed lehmer64's seed using 4 calls to R's built-in RNG
-  g_lehmer64_state = unif_rand() * INT_MAX +
+  g_lehmer64_state = 
+    ((__uint128_t)(unif_rand() * INT_MAX)      ) +
     ((__uint128_t)(unif_rand() * INT_MAX) << 32) +
     ((__uint128_t)(unif_rand() * INT_MAX) << 64) +
     ((__uint128_t)(unif_rand() * INT_MAX) << 96);

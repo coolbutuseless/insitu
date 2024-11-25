@@ -1,14 +1,18 @@
 Package: insitu
 Type: Package
 Title: In-Situ Vector Modification
-Version: 0.1.2
-Author: mikefc
-Maintainer: mikefc <mikefc@coolbutuseless.com>
+Version: 0.1.3.9000
+Authors@R: c(
+    person("Mike", "Cheng", role = c("aut", "cre", 'cph'), email = "mikefc@coolbutuseless.com")
+    )
+Maintainer: Mike Cheng <mikefc@coolbutuseless.com>
+URL: https://github.com/coolbutuseless/insitu
+BugReports: https://github.com/coolbutuseless/insitu/issues
 Description: Functions for in-situ modification of vectors.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.3.2
 Suggests: 
     knitr,
     rmarkdown,

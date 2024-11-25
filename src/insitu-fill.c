@@ -98,11 +98,11 @@ SEXP insitu_fill_runif_fast_(SEXP x_, SEXP min_, SEXP max_) {
 
   switch(TYPEOF(x_)) {
   case INTSXP: case LGLSXP: {
-    const int min   = isInteger(min_) ? INTEGER(min_)[0] : (int)round(REAL(min_)[0]);
-    const int max   = isInteger(max_) ? INTEGER(max_)[0] : (int)round(REAL(max_)[0]);
+    const uint64_t min   = isInteger(min_) ? (uint64_t)INTEGER(min_)[0] : (uint64_t)round(REAL(min_)[0]);
+    const uint64_t max   = isInteger(max_) ? (uint64_t)INTEGER(max_)[0] : (uint64_t)round(REAL(max_)[0]);
     int *x = INTEGER(x_);
     for (int i = 0; i < length(x_); ++i) {
-      x[i] = random_integer_on_interval(max) + min + 1;
+      x[i] = (int)(random_integer_on_interval(max) + min + 1);
     }
   } break;
   case REALSXP: {
