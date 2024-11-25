@@ -8,3 +8,4 @@
 ^Meta$
 ^man/figures$
 ^LICENSE.md$
+^.devcontainer$

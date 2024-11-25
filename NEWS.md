@@ -1,7 +1,12 @@
 
-# insitu 0.1.3.9000
+# insitu 0.1.3.9001
 
-* Update package infrastructure
+* [9001] Add fused multiply add (and variants)
+* [9001] Add in-place addition, subtration, division and multiplication
+* [9001] Remove use of R's `runif()`
+* [9001] Remove support for integer vectors and character vectors
+* [9001] switch from `pryr::address()` to `rlang::obj_address()`
+* [9000] Update package infrastructure
 
 # insitu 0.1.3
 

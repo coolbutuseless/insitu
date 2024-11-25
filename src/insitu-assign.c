@@ -15,39 +15,15 @@
 // Assignment to a vector in-place
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 SEXP insitu_replace_(SEXP x_, SEXP n_, SEXP value_) {
-
-  if (ALTREP(x_)) {
-    error("insitu: ALTREP objects are not supported");
-  }
-
-  int n = isReal(n_) ? (int)asReal(n_) : asInteger(n_);
-  n--;
-
+  
+  int n = asInteger(n_) - 1;
+  
   if (n < 0 || n + length(value_) > length(x_)) {
     error("insitu_replace(): out of bounds");
   }
-
-  if (TYPEOF(x_) != TYPEOF(value_)) {
-    error("insitu_replace(): Type mismatch");
-  }
-
-  switch(TYPEOF(x_)) {
-  case INTSXP: case LGLSXP: {
-    memcpy(INTEGER(x_) + n, INTEGER(value_), (size_t)length(value_) * sizeof(int));
-  } break;
-  case REALSXP: {
-    memcpy(REAL(x_) + n, REAL(value_), (size_t)length(value_) * sizeof(double));
-  } break;
-  case STRSXP: {
-    for (int i = 0; i < length(value_); ++i) {
-      SET_STRING_ELT(x_, n + i, STRING_ELT(value_, i));
-    }
-  } break;
-  default: {
-    error("insitu_replace(): type not supported");
-  }
-  }
-
+  
+  memcpy(REAL(x_) + n, REAL(value_), (size_t)length(value_) * sizeof(double));
+  
   return x_;
 }
 

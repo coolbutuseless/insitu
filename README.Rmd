@@ -14,7 +14,6 @@ knitr::opts_chunk$set(
 )
 
 library(dplyr)
-library(pryr)
 library(ggplot2)
 library(bench)
 library(tidyr)
@@ -30,14 +29,8 @@ library(insitu)
 [![R-CMD-check](https://github.com/coolbutuseless/insitu/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/coolbutuseless/insitu/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-`insitu` provides some functions for modifying vectors *in-situ* (in place) 
+`insitu` provides some functions for modifying numeric vectors *in-situ* (in place a.k.a. by reference) 
 without allocating a new vector.
-
-This is an experimental package I wrote to try and figure out just how fast things 
-could be in R.
-
-**Warning**: Modifying vectors in-situ can be fast, but doing so violates some very strong norms
-within R internals.  
 
 **Warning**: Unless you are very confident on who has references to your data,
 do not use this package for in-place modification.
@@ -70,33 +63,44 @@ references behave under copy-on-modify and in-situ modification: `vignette('refe
 
 
 
-In the words of Luke Tierney in his User2020 keynote:
+## Ops
 
-    You should never modify something without duplicating it.
-
-This package ignores this advice. Beware.
-
-
-
-
+* Group: Math
+    * abs, sign, sqrt, floor, ceiling, trunc, round, signif
+    * exp, log, expm1, log1p, cos, sin, tan, cospi, sinpi, tanpi, acos, asin, atan
+    * cosh, sinh, tanh, acosh, asinh, atanh
+    * lgamma, gamma, digamma, trigamma
+    * cumsum, cumprod, cummax, cummin
+* Group: Ops
+    * "+", "-", "*", "/", "^", "%%", "%/%"
+    * "&", "|", "!"
+    * "==", "!=", "<", "<=", ">=", ">"
+    
+* Other
+    * Sort
+    * fill with uniform random 
+    * Fused multiply add:
+        * fmadd  ` x * a + b`
+        * fnmadd `-x * a + b`
+        * fmsub  ` x * a - b`
+        * fnmsub `-x * a - b`
+    
 ## What's in the box
 
-| insitu                                  | description                                                            | integer | real | character |
-|-----------------------------------------|------------------------------------------------------------------------|---------|------|-----------|
-| insitu_fill(x, value)                   | Fill vector with the given value                                       | Yes     | Yes  | Yes       |
-| insitu_fill_runif(x, lower, upper)      | Fill vector with uniform random numbers                                | Yes     | Yes  |           |
-| insitu_fill_runif_fast(x, lower, upper) | Fill vector with uniform random numbers                                | Yes     | Yes  |           |
-| insitu_replace(x, pos, values)          | Replace values in x with given values starting from the given position | Yes     | Yes  | Yes       |
-| insitu_reverse(x)                       | Reverse vector                                                         | Yes     | Yes  | Yes       |
-| insitu_shuffle(x)                       | Shuffle the elements of a vector                                       | Yes     | Yes  | Yes       |
-| insitu_shuffle_fast(x)                  | Shuffle the elements of a vector                                       | Yes     | Yes  | Yes       |
-| insitu_sort(x)                          | Sort the elements of a vector                                          | Yes     | Yes  |           |
-|                                         |                                                                        |         |      |           |
+| insitu                                  | description                                                            |
+|-----------------------------------------|------------------------------------------------------------------------|
+| fmadd, fmsub, fnmadd, fnmsub            | Fused multiply add                                                     |
+| ins_plus, ins_minus, ins_mult, ins_divide | inplace `+=`, `-=`, `*=`, `/=`                                       |
+| insitu_fill(x, value)                   | Fill vector with the given value                                       |
+| insitu_fill_runif_fast(x, lower, upper) | Fill vector with uniform random numbers                                |
+| insitu_replace(x, pos, values)          | Replace values in x with given values starting from the given position |
+| insitu_reverse(x)                       | Reverse vector                                                         |
+| insitu_shuffle_fast(x)                  | Shuffle the elements of a vector                                       |
+| insitu_sort(x)                          | Sort the elements of a vector                                          |
 
 #### Fast Variants
 
-The `_fast` versions of some functions use their own random-number generator 
-rather than the one supplied in R.  
+A custom random-number generator rather than the one supplied in R.  
 
 * On **windows** this RNG is [xoshiro256++](http://prng.di.unimi.it/).  This does 
   not require a `uint128_t` and compiles cleanly on the GitHub CI test server.
@@ -140,8 +144,8 @@ remotes::install_github('coolbutuseless/insitu')
 vector rather than creating a new one.
 
 ```{r}
-x <- integer(10)
-insitu_replace(x, 6, 1:5)
+x <- numeric(10)
+insitu_replace(x, 6, c(1, 2, 3, 4, 5))
 x
 ```
 
@@ -249,8 +253,8 @@ vector rather than creating a new one.
 
 
 ```{r}
-x <- integer(10)
-insitu_fill(x, 3L)
+x <- numeric(10)
+insitu_fill(x, 3)
 x
 ```
 
@@ -351,7 +355,8 @@ p
 vector rather than creating a new one.
 
 ```{r}
-x <- sample(10)
+x <- as.numeric(sample(10))
+x
 insitu_sort(x)
 x
 ```
@@ -451,7 +456,7 @@ vector rather than creating a new one.
 ```{r}
 set.seed(1)
 x <- c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
-insitu_shuffle(x)
+insitu_shuffle_fast(x)
 x
 ```
 
@@ -472,7 +477,6 @@ res_rel <- bench::press(
 
     bench::mark(
       sample(x),
-      insitu_shuffle(x),
       insitu_shuffle_fast(x),
       check    = FALSE,
       relative = TRUE
@@ -491,7 +495,6 @@ res_abs <- bench::press(
     
     bench::mark(
       sample(x),
-      insitu_shuffle(x),
       insitu_shuffle_fast(x),
       check    = FALSE,
       relative = FALSE
@@ -656,8 +659,8 @@ vector rather than creating a new one.
 
 ```{r}
 set.seed(1)
-x <- integer(10)
-insitu_fill_runif(x, 10, 15)
+x <- numeric(10)
+insitu_fill_runif_fast(x, 10, 15)
 x
 ```
 
@@ -677,7 +680,6 @@ res_rel <- bench::press(
 
     bench::mark(
       runif(x),
-      insitu_fill_runif(x, 0, 1),
       insitu_fill_runif_fast(x, 0, 1),
       check    = FALSE,
       relative = TRUE
@@ -696,7 +698,6 @@ res_abs <- bench::press(
     
     bench::mark(
       runif(x),
-      insitu_fill_runif(x, 0, 1),
       insitu_fill_runif_fast(x, 0, 1),
       check    = FALSE,
       relative = FALSE
