@@ -23,6 +23,18 @@ extern SEXP fmsub_(SEXP a_, SEXP b_, SEXP c_);
 extern SEXP fnmadd_(SEXP a_, SEXP b_, SEXP c_);
 extern SEXP fnmsub_(SEXP a_, SEXP b_, SEXP c_);
 
+extern SEXP ins_abs_  (SEXP x_);
+extern SEXP ins_sqrt_ (SEXP x_);
+extern SEXP ins_floor_(SEXP x_);
+extern SEXP ins_ceil_ (SEXP x_);
+extern SEXP ins_trunc_(SEXP x_);
+extern SEXP ins_round_(SEXP x_);
+extern SEXP ins_exp_  (SEXP x_);
+extern SEXP ins_log_  (SEXP x_);
+extern SEXP ins_cos_  (SEXP x_);
+extern SEXP ins_sin_  (SEXP x_);
+extern SEXP ins_tan_  (SEXP x_);
+
 extern SEXP ins_add_  (SEXP x_, SEXP y_);
 extern SEXP ins_sub_ (SEXP x_, SEXP y_);
 extern SEXP ins_mul_  (SEXP x_, SEXP y_);
@@ -52,6 +64,17 @@ static const R_CallMethodDef CEntries[] = {
   {"fnmadd_", (DL_FUNC) &fnmadd_, 3},
   {"fnmsub_", (DL_FUNC) &fnmsub_, 3},
   
+  {"ins_abs_"  , (DL_FUNC) &ins_abs_  , 1},
+  {"ins_sqrt_" , (DL_FUNC) &ins_sqrt_ , 1},
+  {"ins_floor_", (DL_FUNC) &ins_floor_, 1},
+  {"ins_ceil_" , (DL_FUNC) &ins_ceil_ , 1},
+  {"ins_trunc_", (DL_FUNC) &ins_trunc_, 1},
+  {"ins_round_", (DL_FUNC) &ins_round_, 1},
+  {"ins_exp_"  , (DL_FUNC) &ins_exp_  , 1},
+  {"ins_log_"  , (DL_FUNC) &ins_log_  , 1},
+  {"ins_cos_"  , (DL_FUNC) &ins_cos_  , 1},
+  {"ins_sin_"  , (DL_FUNC) &ins_sin_  , 1},
+  {"ins_tan_"  , (DL_FUNC) &ins_tan_  , 1},
   
   {"ins_add_"  , (DL_FUNC) &ins_add_  , 2},
   {"ins_sub_" , (DL_FUNC) &ins_sub_ , 2},

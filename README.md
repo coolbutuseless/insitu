@@ -6,18 +6,12 @@
 <!-- badges: start -->
 
 ![](https://img.shields.io/badge/cool-useless-green.svg)
+![](https://img.shields.io/badge/api-unstable-orange.svg)
 [![R-CMD-check](https://github.com/coolbutuseless/insitu/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/coolbutuseless/insitu/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-`insitu` provides some functions for modifying numeric vectors *in-situ*
-(in place a.k.a. by reference) without allocating a new vector.
-
-**Warning**: Unless you are very confident on who has references to your
-data, do not use this package for in-place modification.
-
-See the “References” vignette for an example of the differences in how
-references behave under copy-on-modify and in-situ modification:
-`vignette('references', package = 'insitu')`
+`insitu` provides some functions for modifying numeric vectors
+*in-place* i.e. without allocating a new vector.
 
 ## Modifying vectors in-place
 
@@ -27,20 +21,9 @@ references behave under copy-on-modify and in-situ modification:
   pressure on the garbage collector)
 - Often faster as there is no copying from the original vector into a
   new vector
-- By using C, we can override the *copy-on-modify* semantics usually
-  used in R (regardless of how many references exist to the given
-  object)
-
-**Cons** of modifying in-situ
-
-- Normal R *copy-on-modify* behaviour is not followed - this will be a
-  point of confusion as essentially everything in R uses
-  *copy-on-modify* and not modification in-place.
-- Copying and allocating vectors is already very fast. It only takes a
-  few *microseconds* to allocate memory for a vector of 1000 elements
-  and assign new values into it. The speed saved by switching to in-situ
-  modification will only possibly be useful if this operations is
-  performed many, many times.
+- By using C to write `{insitu}`, we can override the *copy-on-modify*
+  semantics usually used in R (regardless of how many references exist
+  to the given object)
 
 ## Ops
 
@@ -76,21 +59,19 @@ references behave under copy-on-modify and in-situ modification:
 | ins_reverse(x) | Reverse vector |
 | ins_shuffle(x) | Shuffle the elements of a vector |
 | ins_sort(x) | Sort the elements of a vector |
+| ins_copy(x, y) | copy contents of y into x |
+| ins_copy_from(x, y, xi, yi, n) | copy ‘n’ elements from ‘y’ into ‘x’ starting at ‘xi’ and ‘yi’ |
+| ins_abs() ins_sqrt(), etc | unary math ops |
 
-#### Fast Variants
+#### RNG
 
-A custom random-number generator rather than the one supplied in R.
+`insitu` uses a custom random-number generator rather than the one
+supplied in R.
 
-- On **windows** this RNG is [xoshiro256++](http://prng.di.unimi.it/).
-  This does not require a `uint128_t` and compiles cleanly on the GitHub
-  CI test server.
-- On **other platforms** this RNG is
-  [lehmer](https://lemire.me/blog/2019/03/19/the-fastest-conventional-random-number-generator-that-can-pass-big-crush/).
-  Use of `uint128_t` on these platforms allows for faster generation of
-  random integers on an interval.
+i.e. [lehmer](https://lemire.me/blog/2019/03/19/the-fastest-conventional-random-number-generator-that-can-pass-big-crush/).
 
-Both of these RNGs are very fast, but have different properties to R’s
-built in random number generator. Use with caution.
+This RNG is fast, but it has different properties to R’s built-in random
+number generator. Use with caution.
 
 #### ALTREP utils
 
@@ -141,7 +122,7 @@ vector rather than creating a new one.
 ``` r
 x <- as.numeric(sample(10))
 x
-#>  [1]  8  5  7  2  4  6  1 10  9  3
+#>  [1]  6  5  8 10  3  2  1  9  4  7
 ins_sort(x)
 x
 #>  [1]  1  2  3  4  5  6  7  8  9 10
