@@ -1,0 +1,182 @@
+---
+title: "Example: fast convolution"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Example: fast convolution}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(insitu)
+```
+
+
+Example from [presentation](https://www.r-project.org/dsc/2017/slides/tomas_bc.pdf) "Byte Code Compiler Recent Work on R Runtime" by
+Tomas Kalibera with Luke Tierney Jan Vitek
+
+```{r}
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Vectorised solution
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+convv <- function(x, y) {
+  nx <- length(x)
+  ny <- length(y)
+  xy <- rbind(outer(x,y),
+              matrix(0, nx, ny))
+  nxy <- nx + ny - 1
+  length(xy) <- nxy * ny
+  dim(xy) <- c(nxy, ny)
+  rowSums(xy)
+}
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Nested for loops - initial version
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+conv0 <- function(x,y) {
+  nx <- length(x)
+  ny <- length(y)
+  z <- numeric(nx + ny - 1)
+  for(i in seq(length = nx)) {
+    xi <- x[[i]]
+    for(j in seq(length = ny)) {
+      ij <- i + j - 1
+      z[[ij]] <- z[[ij]] + xi * y[[j]]
+    }
+  }
+  z
+}
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# in-situ 1
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+conv1 <- function(x,y) {
+  nx <- length(x)
+  ny <- length(y)
+  z <- numeric(nx + ny - 1)
+  for(i in seq(length = nx)) {
+    xi <- x[[i]]
+    for(j in seq(length = ny)) {
+      ij <- i + j - 1
+      ins_replace(z, ij, z[[ij]] + xi * y[[j]])
+    }
+  }
+  z
+}
+
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Base R: using 'replace()'
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+conv2 <- function(x,y) {
+  nx <- length(x)
+  ny <- length(y)
+  sy <- seq_along(y) - 1L
+  z <- numeric(nx + ny - 1)
+  for(i in seq(length = nx)) {
+    ij <- i + sy
+    z <- replace(z, ij, z[ij] + x[[i]] * y)
+  }
+  z
+}
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# in-situ 3 - using 'ins_replace()'
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+conv3 <- function(x,y) {
+  nx <- length(x)
+  ny <- length(y)
+  sy <- seq_along(y) - 1L
+  z <- numeric(nx + ny - 1)
+  for(i in seq(length = nx)) {
+    ij <- i + sy
+    z <- ins_replace(z, i, z[ij] + x[[i]] * y)
+  }
+  z
+}
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# in-situ 4
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+conv4 <- function(x,y) {
+  nx <- length(x)
+  ny <- length(y)
+  sy <- seq_along(y) - 1L
+  z <- numeric(nx + ny - 1)
+  for(i in seq(length = nx)) {
+    ij <- i + sy
+    t  <- duplicate(y)
+    fmadd(t, x[[i]], z[ij])
+    z <- ins_replace(z, i, t)
+  }
+  z
+}
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# in-situ 5
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+conv5 <- function(x,y) {
+  nx <- length(x)
+  ny <- length(y)
+  sy <- seq_along(y) - 1L
+  z <- numeric(nx + ny - 1)
+  t <- duplicate(y)
+  for(i in seq(length = nx)) {
+    ins_copy(t, y)
+    fmadd(t, x[[i]], z[i + sy])
+    z <- ins_replace(z, i, t)
+  }
+  z
+}
+
+
+
+
+set.seed(1)
+N <- 2000 
+x <- runif(N)
+y <- runif(N)
+
+if (FALSE) {
+  conv0(x, y)
+  conv1(x, y)
+  conv2(x, y)
+  conv3(x, y)
+  conv4(x, y)
+  convv(x, y)
+}
+
+conv0c <- compiler::cmpfun(conv0)
+conv1c <- compiler::cmpfun(conv1)
+conv2c <- compiler::cmpfun(conv2)
+conv3c <- compiler::cmpfun(conv3)
+conv4c <- compiler::cmpfun(conv4)
+conv5c <- compiler::cmpfun(conv5)
+convvc <- compiler::cmpfun(convv)
+
+bench::mark(
+  conv0c(x, y),
+  conv1c(x, y),
+  conv2c(x, y),
+  conv3c(x, y),
+  conv4c(x, y),
+  conv5c(x, y),
+  convvc(x, y)
+)[, 1:5] |>
+  knitr::kable()
+
+```
+

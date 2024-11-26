@@ -1,6 +1,7 @@
 
 # insitu 0.1.3.9002
 
+* [9003] add `ins_copy()`
 * [9002] Use prefix `ins_`
 * [9002] Remove benchmarks from readme
 * [9002] Remove xoshiro. Use lehmer64 on all platforms. Needs testing 

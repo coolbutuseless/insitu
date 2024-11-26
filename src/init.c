@@ -15,6 +15,7 @@ extern SEXP ins_reverse_(SEXP x_);
 extern SEXP ins_fill_(SEXP x_, SEXP value_);
 extern SEXP ins_runif_(SEXP x_, SEXP min_, SEXP max_);
 
+extern SEXP ins_copy_(SEXP x_, SEXP y_);
 
 extern SEXP fmadd_(SEXP a_, SEXP b_, SEXP c_);
 extern SEXP fmsub_(SEXP a_, SEXP b_, SEXP c_);
@@ -41,6 +42,8 @@ static const R_CallMethodDef CEntries[] = {
   {"ins_reverse_"        , (DL_FUNC) &ins_reverse_        , 1},
   {"ins_fill_"           , (DL_FUNC) &ins_fill_           , 2},
   {"ins_runif_", (DL_FUNC) &ins_runif_, 3},
+  
+  {"ins_copy_", (DL_FUNC) &ins_copy_, 2},
   
   {"fmadd_" , (DL_FUNC) &fmadd_ , 3},
   {"fmsub_" , (DL_FUNC) &fmsub_ , 3},
