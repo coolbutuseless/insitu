@@ -1,6 +1,7 @@
 
 # insitu 0.1.3.9004
 
+* [9004] Use math.h fma() instead of rolling my own
 * [9004] nearly full complement of unary and binary math ops
 * [9003] add `ins_copy()`
 * [9002] Use prefix `ins_`

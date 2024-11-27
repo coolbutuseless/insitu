@@ -232,14 +232,20 @@ ins_min <- function(x, y) {
 
 if (FALSE) {
   
-  N <- 1000000
-  x <- seq_len(N) / N
-  y <- seq_len(N) / N
+  set.seed(1)
+  N <- 100
+  x <- runif(N)
+  y <- runif(N)
 
+  # pmax.int(x, y)
+  # ins_max(x, y); x
+  
+    
   bench::mark(  
-    x + y,
-    ins_add(x, y),
-    check = FALSE
+    pmax(x, y),
+    pmax.int(x, y),
+    ins_max(x, y),
+    check = TRUE
   )
   
 }

@@ -21,13 +21,14 @@ SEXP fma_sa_(SEXP x_, SEXP a_, SEXP b_, double fa, double fb) {
 #define UNROLL 4
   int i = 0;
   for (; i < length(x_) - (UNROLL - 1); i += UNROLL) {
-    *x = *x * a + fb * *b++; x++;
-    *x = *x * a + fb * *b++; x++;
-    *x = *x * a + fb * *b++; x++;
-    *x = *x * a + fb * *b++; x++;
+    *x = fma(*x, a, fb * *b++); x++;
+    *x = fma(*x, a, fb * *b++); x++;
+    *x = fma(*x, a, fb * *b++); x++;
+    *x = fma(*x, a, fb * *b++); x++;
+    // *x = *x * a + fb * *b++; x++;
   }
   for (; i< length(x_); i++) {
-    *x = *x * a + fb * *b++; x++;
+    *x = fma(*x, a, fb * *b++); x++;
   }
   
   return x_;
@@ -45,13 +46,14 @@ SEXP fma_sb_(SEXP x_, SEXP a_, SEXP b_, double fa, double fb) {
 #define UNROLL 4
   int i = 0;
   for (; i < length(x_) - (UNROLL - 1); i += UNROLL) {
-    *x = fa * *x * *a++ + b; x++;
-    *x = fa * *x * *a++ + b; x++;
-    *x = fa * *x * *a++ + b; x++;
-    *x = fa * *x * *a++ + b; x++;
+    *x = fma(fa * *x, *a++, b); x++;
+    *x = fma(fa * *x, *a++, b); x++;
+    *x = fma(fa * *x, *a++, b); x++;
+    *x = fma(fa * *x, *a++, b); x++;
+    // *x = fa * *x * *a++ + b; x++;
   }
   for (; i< length(x_); i++) {
-    *x = fa * *x * *a++ + b; x++;
+    *x = fma(fa * *x, *a++, b); x++;
   }
   
   return x_;
@@ -69,13 +71,14 @@ SEXP fma_sab_(SEXP x_, SEXP a_, SEXP b_, double fa, double fb) {
 #define UNROLL 4
   int i = 0;
   for (; i < length(x_) - (UNROLL - 1); i += UNROLL) {
-    *x = *x * a + b; x++;
-    *x = *x * a + b; x++;
-    *x = *x * a + b; x++;
-    *x = *x * a + b; x++;
+    *x = fma(*x, a, b); x++;
+    *x = fma(*x, a, b); x++;
+    *x = fma(*x, a, b); x++;
+    *x = fma(*x, a, b); x++;
+    // *x = *x * a + b; x++;
   }
   for (; i< length(x_); i++) {
-    *x = *x * a + b; x++;
+    *x = fma(*x, a, b); x++;
   }
   
   return x_;
@@ -95,13 +98,14 @@ SEXP fma_vxab_(SEXP x_, SEXP a_, SEXP b_, double fa, double fb) {
 #define UNROLL 4
   int i = 0;
   for (; i < length(x_) - (UNROLL - 1); i += UNROLL) {
-    *x = fa * *x * *a++ + fb * *b++; x++;
-    *x = fa * *x * *a++ + fb * *b++; x++;
-    *x = fa * *x * *a++ + fb * *b++; x++;
-    *x = fa * *x * *a++ + fb * *b++; x++;
+    *x = fma(fa * *x, *a++, fb * *b++); x++;
+    *x = fma(fa * *x, *a++, fb * *b++); x++;
+    *x = fma(fa * *x, *a++, fb * *b++); x++;
+    *x = fma(fa * *x, *a++, fb * *b++); x++;
+    // *x = fa * *x * *a++ + fb * *b++; x++;
   }
   for (; i< length(x_); i++) {
-    *x = fa * *x * *a++ + fb * *b++; x++;
+    *x = fma(fa * *x, *a++, fb * *b++); x++;
   }
   
   return x_;

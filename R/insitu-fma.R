@@ -54,7 +54,7 @@ if (FALSE) {
   
   bench::mark(
     x * a + b,
-    fma(x, a, b),
+    fmadd(x, a, b),
     check = TRUE
   ) -> zz
   zz
