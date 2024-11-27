@@ -30,23 +30,21 @@ library(insitu)
 [![R-CMD-check](https://github.com/coolbutuseless/insitu/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/coolbutuseless/insitu/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-`insitu` provides some functions for modifying numeric vectors *in-place* i.e. without allocating a new vector.
+`insitu` provides some functions for operating on numeric vectors *in-place* i.e. 
+without allocating a new vector.
 
-
-
-## Modifying vectors in-place
-
-
-**Pros** of modifying in-situ
-
-* Often faster as there is reduced memory allocation (and also reduced pressure
-  on the garbage collector)
-* Often faster as there is no copying from the original vector into a new vector
-* By using C to write `{insitu}`, we can override the *copy-on-modify* semantics usually used in R
-  (regardless of how many references exist to the given object)
+Modifying vectors in-place is often faster than R's regular *copy-on-modify* operation because
+of reduced memory allocation. A reduction in memory allocation has a corresponding benefit in 
+that the number of garbage collection operations is also reduced.
 
     
 ## What's in the box
+
+* `insitu` includes most of the standard math operations seen in R.
+* Functions have a `ins_` prefix.
+* The first argument to a function will be overwritten with the result.
+* Each R function returns the modified vector invisibly - the result does not
+  need to be assigned into a variable.
 
 | insitu                                  | description                                                            |
 |-----------------------------------------|------------------------------------------------------------------------|
@@ -60,8 +58,7 @@ library(insitu)
 | ins_copy(x, y) | copy contents of y into x |
 | ins_copy_from(x, y, xi, yi, n) | copy 'n' elements from 'y' into 'x' starting at 'xi' and 'yi' |
 | `ins_abs()`, `ins_sqrt()`,`ins_floor()`,`ins_ceil()`, `ins_trunc()`, `ins_round()`, `ins_exp()`, `ins_log()`, `ins_cos()`, `ins_sin()`, `ins_tan()`, `ins_not()`, `ins_expm1()`, `ins_log1p()`, `ins_acos()`,`ins_asin()`, `ins_atan()`,`ins_acosh()`,`ins_asinh()`,`ins_atanh()`,`ins_cosh()`, `ins_sinh()`,`ins_tanh()`, `ins_sign()`, `ins_cospi()`, `ins_sinpi()`, `ins_tanpi()`, `ins_cumsum()`, `ins_cumprod()`, `ins_cummax()`, `ins_cummin()`, `ins_log2()`, `ins_log10()` | Standard single argument math operations |
-| `ins_add()`, `ins_sub()`, `ins_mul()`, `ins_div()`, `ins_eq()`, `ins_ne()`, `ins_lt()`, `ins_le()`, `ins_gt()`, `ins_ge()`, `ins_and()`, `ins_or()`, `ins_rem()`, `ins_idiv()`, `ins_max()`, `ins_min()`, 
-`ins_hypot()` | Standard two-argument math operations | 
+| `ins_add()`, `ins_sub()`, `ins_mul()`, `ins_div()`, `ins_eq()`, `ins_ne()`, `ins_lt()`, `ins_le()`, `ins_gt()`, `ins_ge()`, `ins_and()`, `ins_or()`, `ins_rem()`, `ins_idiv()`, `ins_max()`, `ins_min()`, `ins_hypot()` | Standard two-argument math operations | 
 
 
 
