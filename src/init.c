@@ -50,6 +50,8 @@ extern SEXP ins_cospi_(SEXP x_);
 extern SEXP ins_sinpi_(SEXP x_);
 extern SEXP ins_tanpi_(SEXP x_);
 extern SEXP ins_sign_ (SEXP x_);
+extern SEXP ins_log2_ (SEXP x_);
+extern SEXP ins_log10_(SEXP x_);
 
 extern SEXP ins_cumsum_ (SEXP x_);
 extern SEXP ins_cumprod_(SEXP x_);
@@ -57,23 +59,24 @@ extern SEXP ins_cummax_ (SEXP x_);
 extern SEXP ins_cummin_ (SEXP x_);
 
 
-extern SEXP ins_add_ (SEXP x_, SEXP y_);
-extern SEXP ins_sub_ (SEXP x_, SEXP y_);
-extern SEXP ins_mul_ (SEXP x_, SEXP y_);
-extern SEXP ins_div_ (SEXP x_, SEXP y_);
-extern SEXP ins_pow_ (SEXP x_, SEXP y_);
-extern SEXP ins_eq_  (SEXP x_, SEXP y_);
-extern SEXP ins_ne_  (SEXP x_, SEXP y_);
-extern SEXP ins_lt_  (SEXP x_, SEXP y_);
-extern SEXP ins_le_  (SEXP x_, SEXP y_);
-extern SEXP ins_gt_  (SEXP x_, SEXP y_);
-extern SEXP ins_ge_  (SEXP x_, SEXP y_);
-extern SEXP ins_and_ (SEXP x_, SEXP y_);
-extern SEXP ins_or_  (SEXP x_, SEXP y_);
-extern SEXP ins_rem_ (SEXP x_, SEXP y_);
-extern SEXP ins_idiv_(SEXP x_, SEXP y_);
-extern SEXP ins_max_ (SEXP x_, SEXP y_);
-extern SEXP ins_min_ (SEXP x_, SEXP y_);
+extern SEXP ins_add_  (SEXP x_, SEXP y_);
+extern SEXP ins_sub_  (SEXP x_, SEXP y_);
+extern SEXP ins_mul_  (SEXP x_, SEXP y_);
+extern SEXP ins_div_  (SEXP x_, SEXP y_);
+extern SEXP ins_pow_  (SEXP x_, SEXP y_);
+extern SEXP ins_eq_   (SEXP x_, SEXP y_);
+extern SEXP ins_ne_   (SEXP x_, SEXP y_);
+extern SEXP ins_lt_   (SEXP x_, SEXP y_);
+extern SEXP ins_le_   (SEXP x_, SEXP y_);
+extern SEXP ins_gt_   (SEXP x_, SEXP y_);
+extern SEXP ins_ge_   (SEXP x_, SEXP y_);
+extern SEXP ins_and_  (SEXP x_, SEXP y_);
+extern SEXP ins_or_   (SEXP x_, SEXP y_);
+extern SEXP ins_rem_  (SEXP x_, SEXP y_);
+extern SEXP ins_idiv_ (SEXP x_, SEXP y_);
+extern SEXP ins_max_  (SEXP x_, SEXP y_);
+extern SEXP ins_min_  (SEXP x_, SEXP y_);
+extern SEXP ins_hypot_(SEXP x_, SEXP y_);
 
 extern SEXP set_seed_random64_(void);
 
@@ -126,6 +129,8 @@ static const R_CallMethodDef CEntries[] = {
   {"ins_sinpi_", (DL_FUNC) &ins_sinpi_, 1},
   {"ins_tanpi_", (DL_FUNC) &ins_tanpi_, 1},
   {"ins_sign_" , (DL_FUNC) &ins_sign_ , 1},
+  {"ins_log2_" , (DL_FUNC) &ins_log2_ , 1},
+  {"ins_log10_", (DL_FUNC) &ins_log10_, 1},
   
   {"ins_cumsum_"  , (DL_FUNC) &ins_cumsum_  , 1},
   {"ins_cumprod_" , (DL_FUNC) &ins_cumprod_ , 1},
@@ -133,23 +138,24 @@ static const R_CallMethodDef CEntries[] = {
   {"ins_cummin_"  , (DL_FUNC) &ins_cummin_  , 1},
   
   
-  {"ins_add_" , (DL_FUNC) &ins_add_ , 2},
-  {"ins_sub_" , (DL_FUNC) &ins_sub_ , 2},
-  {"ins_mul_" , (DL_FUNC) &ins_mul_ , 2},
-  {"ins_div_" , (DL_FUNC) &ins_div_ , 2},
-  {"ins_pow_" , (DL_FUNC) &ins_pow_ , 2},
-  {"ins_eq_"  , (DL_FUNC) &ins_eq_  , 2},
-  {"ins_ne_"  , (DL_FUNC) &ins_ne_  , 2},
-  {"ins_lt_"  , (DL_FUNC) &ins_lt_  , 2},
-  {"ins_le_"  , (DL_FUNC) &ins_le_  , 2},
-  {"ins_gt_"  , (DL_FUNC) &ins_gt_  , 2},
-  {"ins_ge_"  , (DL_FUNC) &ins_ge_  , 2},
-  {"ins_and_" , (DL_FUNC) &ins_and_ , 2},
-  {"ins_or_"  , (DL_FUNC) &ins_or_  , 2},
-  {"ins_rem_" , (DL_FUNC) &ins_rem_ , 2},
-  {"ins_idiv_", (DL_FUNC) &ins_idiv_, 2},
-  {"ins_max_" , (DL_FUNC) &ins_max_ , 2},
-  {"ins_min_" , (DL_FUNC) &ins_min_ , 2},
+  {"ins_add_"  , (DL_FUNC) &ins_add_  , 2},
+  {"ins_sub_"  , (DL_FUNC) &ins_sub_  , 2},
+  {"ins_mul_"  , (DL_FUNC) &ins_mul_  , 2},
+  {"ins_div_"  , (DL_FUNC) &ins_div_  , 2},
+  {"ins_pow_"  , (DL_FUNC) &ins_pow_  , 2},
+  {"ins_eq_"   , (DL_FUNC) &ins_eq_   , 2},
+  {"ins_ne_"   , (DL_FUNC) &ins_ne_   , 2},
+  {"ins_lt_"   , (DL_FUNC) &ins_lt_   , 2},
+  {"ins_le_"   , (DL_FUNC) &ins_le_   , 2},
+  {"ins_gt_"   , (DL_FUNC) &ins_gt_   , 2},
+  {"ins_ge_"   , (DL_FUNC) &ins_ge_   , 2},
+  {"ins_and_"  , (DL_FUNC) &ins_and_  , 2},
+  {"ins_or_"   , (DL_FUNC) &ins_or_   , 2},
+  {"ins_rem_"  , (DL_FUNC) &ins_rem_  , 2},
+  {"ins_idiv_" , (DL_FUNC) &ins_idiv_ , 2},
+  {"ins_max_"  , (DL_FUNC) &ins_max_  , 2},
+  {"ins_min_"  , (DL_FUNC) &ins_min_  , 2},
+  {"ins_hypot_", (DL_FUNC) &ins_hypot_, 2},
 
   {"set_seed_random64_"     , (DL_FUNC) &set_seed_random64_     , 0},
   {NULL , NULL, 0}

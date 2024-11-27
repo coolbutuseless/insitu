@@ -32,6 +32,8 @@
 \alias{ins_cumprod}
 \alias{ins_cummax}
 \alias{ins_cummin}
+\alias{ins_log2}
+\alias{ins_log10}
 \title{Math ops}
 \usage{
 ins_abs(x)
@@ -95,6 +97,10 @@ ins_cumprod(x)
 ins_cummax(x)
 
 ins_cummin(x)
+
+ins_log2(x)
+
+ins_log10(x)
 }
 \arguments{
 \item{x}{vector}

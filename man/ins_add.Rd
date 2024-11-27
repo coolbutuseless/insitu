@@ -31,6 +31,7 @@
 \alias{ins_idiv}
 \alias{ins_max}
 \alias{ins_min}
+\alias{ins_hypot}
 \title{In-situ ops}
 \usage{
 ins_add(x, y)
@@ -92,6 +93,8 @@ ins_idiv(x, y)
 ins_max(x, y)
 
 ins_min(x, y)
+
+ins_hypot(x, y)
 }
 \arguments{
 \item{x, y}{params}

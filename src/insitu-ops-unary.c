@@ -87,7 +87,9 @@ INSUNARYOP(cumsum ,  *x + *(x - 1), 1)
 INSUNARYOP(cumprod,  *x * *(x - 1), 1)
 INSUNARYOP(cummax ,  *x > *(x - 1) ? *x : *(x - 1), 1)
 INSUNARYOP(cummin ,  *x < *(x - 1) ? *x : *(x - 1), 1)
-
+  
+INSUNARYOP(log2 ,   log2(*x), 0)
+INSUNARYOP(log10,   log10(*x), 0)
 
 
 
