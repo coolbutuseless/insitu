@@ -145,6 +145,7 @@ INSBINOP(add, *x += *y++, *x += y)
 INSBINOP(sub, *x -= *y++, *x -= y)
 INSBINOP(mul, *x *= *y++, *x *= y)
 INSBINOP(div, *x /= *y++, *x /= y)
+INSBINOP(pow, *x = pow(*x, *y++), *x = pow(*x,  y))
 INSBINOP(eq , *x = (double)(*x == *y++), *x = (double)(*x == y))
 INSBINOP(ne , *x = (double)(*x != *y++), *x = (double)(*x != y))
 INSBINOP(lt , *x = (double)(*x <  *y++), *x = (double)(*x <  y))
@@ -157,5 +158,8 @@ INSBINOP(or , *x = (double)(*x || *y++), *x = (double)(*x || y))
   
 INSBINOP(rem , *x = remainder(*x, *y++), *x = remainder(*x, y))
 INSBINOP(idiv, *x = floor(*x / *y++)   , *x = floor(*x / y))
+  
+INSBINOP(max, *x = *x > *y++ ? *x : *(y - 1), *x = *x > y ? *x : y)
+INSBINOP(min, *x = *x < *y++ ? *x : *(y - 1), *x = *x < y ? *x : y)
   
 

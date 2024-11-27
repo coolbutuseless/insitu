@@ -61,6 +61,7 @@ extern SEXP ins_add_ (SEXP x_, SEXP y_);
 extern SEXP ins_sub_ (SEXP x_, SEXP y_);
 extern SEXP ins_mul_ (SEXP x_, SEXP y_);
 extern SEXP ins_div_ (SEXP x_, SEXP y_);
+extern SEXP ins_pow_ (SEXP x_, SEXP y_);
 extern SEXP ins_eq_  (SEXP x_, SEXP y_);
 extern SEXP ins_ne_  (SEXP x_, SEXP y_);
 extern SEXP ins_lt_  (SEXP x_, SEXP y_);
@@ -71,6 +72,8 @@ extern SEXP ins_and_ (SEXP x_, SEXP y_);
 extern SEXP ins_or_  (SEXP x_, SEXP y_);
 extern SEXP ins_rem_ (SEXP x_, SEXP y_);
 extern SEXP ins_idiv_(SEXP x_, SEXP y_);
+extern SEXP ins_max_ (SEXP x_, SEXP y_);
+extern SEXP ins_min_ (SEXP x_, SEXP y_);
 
 extern SEXP set_seed_random64_(void);
 
@@ -134,6 +137,7 @@ static const R_CallMethodDef CEntries[] = {
   {"ins_sub_" , (DL_FUNC) &ins_sub_ , 2},
   {"ins_mul_" , (DL_FUNC) &ins_mul_ , 2},
   {"ins_div_" , (DL_FUNC) &ins_div_ , 2},
+  {"ins_pow_" , (DL_FUNC) &ins_pow_ , 2},
   {"ins_eq_"  , (DL_FUNC) &ins_eq_  , 2},
   {"ins_ne_"  , (DL_FUNC) &ins_ne_  , 2},
   {"ins_lt_"  , (DL_FUNC) &ins_lt_  , 2},
@@ -144,6 +148,8 @@ static const R_CallMethodDef CEntries[] = {
   {"ins_or_"  , (DL_FUNC) &ins_or_  , 2},
   {"ins_rem_" , (DL_FUNC) &ins_rem_ , 2},
   {"ins_idiv_", (DL_FUNC) &ins_idiv_, 2},
+  {"ins_max_" , (DL_FUNC) &ins_max_ , 2},
+  {"ins_min_" , (DL_FUNC) &ins_min_ , 2},
 
   {"set_seed_random64_"     , (DL_FUNC) &set_seed_random64_     , 0},
   {NULL , NULL, 0}

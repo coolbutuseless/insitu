@@ -52,7 +52,6 @@ library(insitu)
 * Group: Math
     * round, signif
     * lgamma, gamma, digamma, trigamma
-* pmax, pmin
     
 ## What's in the box
 

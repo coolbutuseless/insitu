@@ -9,6 +9,8 @@
 \alias{\%*=\%}
 \alias{ins_div}
 \alias{\%/=\%}
+\alias{ins_pow}
+\alias{\%^\%}
 \alias{ins_eq}
 \alias{\%==\%}
 \alias{ins_ne}
@@ -27,6 +29,8 @@
 \alias{\%||\%}
 \alias{ins_rem}
 \alias{ins_idiv}
+\alias{ins_max}
+\alias{ins_min}
 \title{In-situ ops}
 \usage{
 ins_add(x, y)
@@ -44,6 +48,10 @@ x \%*=\% y
 ins_div(x, y)
 
 x \%/=\% y
+
+ins_pow(x, y)
+
+x \%^\% y
 
 ins_eq(x, y)
 
@@ -80,6 +88,10 @@ x \%||\% y
 ins_rem(x, y)
 
 ins_idiv(x, y)
+
+ins_max(x, y)
+
+ins_min(x, y)
 }
 \arguments{
 \item{x, y}{params}
