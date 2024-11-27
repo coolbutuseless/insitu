@@ -9,6 +9,18 @@
 \alias{\%*=\%}
 \alias{ins_div}
 \alias{\%/=\%}
+\alias{ins_eq}
+\alias{\%==\%}
+\alias{ins_ne}
+\alias{\%!=\%}
+\alias{ins_lt}
+\alias{\%<\%}
+\alias{ins_le}
+\alias{\%<=\%}
+\alias{ins_gt}
+\alias{\%>\%}
+\alias{ins_ge}
+\alias{\%>=\%}
 \title{In-situ ops}
 \usage{
 ins_add(x, y)
@@ -26,6 +38,30 @@ x \%*=\% y
 ins_div(x, y)
 
 x \%/=\% y
+
+ins_eq(x, y)
+
+x \%==\% y
+
+ins_ne(x, y)
+
+x \%!=\% y
+
+ins_lt(x, y)
+
+x \%<\% y
+
+ins_le(x, y)
+
+x \%<=\% y
+
+ins_gt(x, y)
+
+x \%>\% y
+
+ins_ge(x, y)
+
+x \%>=\% y
 }
 \arguments{
 \item{x, y}{params}

@@ -35,10 +35,16 @@ extern SEXP ins_cos_  (SEXP x_);
 extern SEXP ins_sin_  (SEXP x_);
 extern SEXP ins_tan_  (SEXP x_);
 
-extern SEXP ins_add_  (SEXP x_, SEXP y_);
-extern SEXP ins_sub_ (SEXP x_, SEXP y_);
-extern SEXP ins_mul_  (SEXP x_, SEXP y_);
+extern SEXP ins_add_(SEXP x_, SEXP y_);
+extern SEXP ins_sub_(SEXP x_, SEXP y_);
+extern SEXP ins_mul_(SEXP x_, SEXP y_);
 extern SEXP ins_div_(SEXP x_, SEXP y_);
+extern SEXP ins_eq_ (SEXP x_, SEXP y_);
+extern SEXP ins_ne_ (SEXP x_, SEXP y_);
+extern SEXP ins_lt_ (SEXP x_, SEXP y_);
+extern SEXP ins_le_ (SEXP x_, SEXP y_);
+extern SEXP ins_gt_ (SEXP x_, SEXP y_);
+extern SEXP ins_ge_ (SEXP x_, SEXP y_);
 
 extern SEXP set_seed_random64_(void);
 
@@ -76,10 +82,16 @@ static const R_CallMethodDef CEntries[] = {
   {"ins_sin_"  , (DL_FUNC) &ins_sin_  , 1},
   {"ins_tan_"  , (DL_FUNC) &ins_tan_  , 1},
   
-  {"ins_add_"  , (DL_FUNC) &ins_add_  , 2},
-  {"ins_sub_" , (DL_FUNC) &ins_sub_ , 2},
-  {"ins_mul_"  , (DL_FUNC) &ins_mul_  , 2},
+  {"ins_add_", (DL_FUNC) &ins_add_, 2},
+  {"ins_sub_", (DL_FUNC) &ins_sub_, 2},
+  {"ins_mul_", (DL_FUNC) &ins_mul_, 2},
   {"ins_div_", (DL_FUNC) &ins_div_, 2},
+  {"ins_eq_" , (DL_FUNC) &ins_eq_ , 2},
+  {"ins_ne_" , (DL_FUNC) &ins_ne_ , 2},
+  {"ins_lt_" , (DL_FUNC) &ins_lt_ , 2},
+  {"ins_le_" , (DL_FUNC) &ins_le_ , 2},
+  {"ins_gt_" , (DL_FUNC) &ins_gt_ , 2},
+  {"ins_ge_" , (DL_FUNC) &ins_ge_ , 2},
 
   {"set_seed_random64_"     , (DL_FUNC) &set_seed_random64_     , 0},
   {NULL , NULL, 0}
