@@ -78,60 +78,60 @@
 
 // INSBINOP(add, *x++ += *y++, *x++ += y)
 
-#define INSBINOP(nm, vectorop, scalarop)                                                                       \
-SEXP ins_##nm##_vxy_(SEXP x_, SEXP y_) {                                                                       \
-                                                                                                               \
-  double *x = REAL(x_);                                                                                        \
-  double *y = REAL(y_);                                                                                        \
-                                                                                                               \
-  int i = 0;                                                                                                   \
-  for (; i < length(x_) - (UNROLL - 1); i += UNROLL) {                                                         \
-    vectorop; ++x;                                                                                             \
-    vectorop; ++x;                                                                                             \
-    vectorop; ++x;                                                                                             \
-    vectorop; ++x;                                                                                             \
-  }                                                                                                            \
-  for (; i< length(x_); i++) {                                                                                 \
-    vectorop; ++x;                                                                                             \
-  }                                                                                                            \
-                                                                                                               \
-  return x_;                                                                                                   \
-}                                                                                                              \
-                                                                                                               \
-                                                                                                               \
-SEXP ins_##nm##_sy_(SEXP x_, SEXP y_) {                                                                        \
-                                                                                                               \
-  double *x = REAL(x_);                                                                                        \
-  double  y = REAL(y_)[0];                                                                                     \
-                                                                                                               \
-                                                                                                               \
-  int i = 0;                                                                                                   \
-  for (; i < length(x_) - (UNROLL - 1); i += UNROLL) {                                                         \
-    scalarop; ++x;                                                                                             \
-    scalarop; ++x;                                                                                             \
-    scalarop; ++x;                                                                                             \
-    scalarop; ++x;                                                                                             \
-  }                                                                                                            \
-  for (; i< length(x_); i++) {                                                                                 \
-    scalarop; ++x;                                                                                             \
-  }                                                                                                            \
-                                                                                                               \
-  return x_;                                                                                                   \
-}                                                                                                              \
-                                                                                                               \
-                                                                                                               \
-SEXP ins_##nm##_(SEXP x_, SEXP y_) {                                                                           \
-                                                                                                               \
-  R_xlen_t lx = length(x_);                                                                                    \
-  R_xlen_t ly = length(y_);                                                                                    \
-                                                                                                               \
-  if (lx == ly) {                                                                                              \
-    return ins_##nm##_vxy_(x_, y_);                                                                            \
-  } else if (ly == 1) {                                                                                        \
-    return ins_##nm##_sy_(x_, y_);                                                                             \
-  }                                                                                                            \
-                                                                                                               \
-  error("Lengths not compatible: x = %.0f, y = %.0f", (double)lx, (double)ly);                                 \
+#define INSBINOP(nm, vectorop, scalarop)                                         \
+SEXP ins_##nm##_vxy_(SEXP x_, SEXP y_) {                                         \
+                                                                                 \
+  double *x = REAL(x_);                                                          \
+  double *y = REAL(y_);                                                          \
+                                                                                 \
+  int i = 0;                                                                     \
+  for (; i < length(x_) - (UNROLL - 1); i += UNROLL) {                           \
+    vectorop; ++x;                                                               \
+    vectorop; ++x;                                                               \
+    vectorop; ++x;                                                               \
+    vectorop; ++x;                                                               \
+  }                                                                              \
+  for (; i< length(x_); i++) {                                                   \
+    vectorop; ++x;                                                               \
+  }                                                                              \
+                                                                                 \
+  return x_;                                                                     \
+}                                                                                \
+                                                                                 \
+                                                                                 \
+SEXP ins_##nm##_sy_(SEXP x_, SEXP y_) {                                          \
+                                                                                 \
+  double *x = REAL(x_);                                                          \
+  double  y = REAL(y_)[0];                                                       \
+                                                                                 \
+                                                                                 \
+  int i = 0;                                                                     \
+  for (; i < length(x_) - (UNROLL - 1); i += UNROLL) {                           \
+    scalarop; ++x;                                                               \
+    scalarop; ++x;                                                               \
+    scalarop; ++x;                                                               \
+    scalarop; ++x;                                                               \
+  }                                                                              \
+  for (; i< length(x_); i++) {                                                   \
+    scalarop; ++x;                                                               \
+  }                                                                              \
+                                                                                 \
+  return x_;                                                                     \
+}                                                                                \
+                                                                                 \
+                                                                                 \
+SEXP ins_##nm##_(SEXP x_, SEXP y_) {                                             \
+                                                                                 \
+  R_xlen_t lx = length(x_);                                                      \
+  R_xlen_t ly = length(y_);                                                      \
+                                                                                 \
+  if (lx == ly) {                                                                \
+    return ins_##nm##_vxy_(x_, y_);                                              \
+  } else if (ly == 1) {                                                          \
+    return ins_##nm##_sy_(x_, y_);                                               \
+  }                                                                              \
+                                                                                 \
+  error("Lengths not compatible: x = %.0f, y = %.0f", (double)lx, (double)ly);   \
 }
 
 
@@ -152,4 +152,10 @@ INSBINOP(le , *x = (double)(*x <= *y++), *x = (double)(*x <= y))
 INSBINOP(gt , *x = (double)(*x >  *y++), *x = (double)(*x >  y))
 INSBINOP(ge , *x = (double)(*x >= *y++), *x = (double)(*x >= y))
   
+INSBINOP(and, *x = (double)(*x && *y++), *x = (double)(*x && y))
+INSBINOP(or , *x = (double)(*x || *y++), *x = (double)(*x || y))
   
+INSBINOP(rem , *x = remainder(*x, *y++), *x = remainder(*x, y))
+INSBINOP(idiv, *x = floor(*x / *y++)   , *x = floor(*x / y))
+  
+

@@ -25,34 +25,18 @@
   semantics usually used in R (regardless of how many references exist
   to the given object)
 
-## Ops
+## Ops TODO
 
 - Group: Math
-  - abs, sign, sqrt, floor, ceiling, trunc, round, signif
-  - exp, log, expm1, log1p, cos, sin, tan, cospi, sinpi, tanpi, acos,
-    asin, atan
-  - cosh, sinh, tanh, acosh, asinh, atanh
+  - round, signif
   - lgamma, gamma, digamma, trigamma
-  - cumsum, cumprod, cummax, cummin
-- Group: Ops
-  - “+”, “-”, “\*“,”/“,”^“,”%%“,”%/%”
-  - “&”, “\|”, “!”
-  - “==”, “!=”, “\<”, “\<=”, “\>=”, “\>”
-- Other
-  - Sort
-  - fill with uniform random
-  - Fused multiply add:
-    - fmadd `x * a + b`
-    - fnmadd `-x * a + b`
-    - fmsub `x * a - b`
-    - fnmsub `-x * a - b`
+- pmax, pmin
 
 ## What’s in the box
 
 | insitu | description |
 |----|----|
 | fmadd, fmsub, fnmadd, fnmsub | Fused multiply add |
-| ins_add, ins_sub, ins_mul, ins_div | inplace `+=`, `-=`, `*=`, `/=` |
 | ins_fill(x, value) | Fill vector with the given value |
 | ins_runif(x, lower, upper) | Fill vector with uniform random numbers |
 | ins_replace(x, pos, values) | Replace values in x with given values starting from the given position |
@@ -61,17 +45,16 @@
 | ins_sort(x) | Sort the elements of a vector |
 | ins_copy(x, y) | copy contents of y into x |
 | ins_copy_from(x, y, xi, yi, n) | copy ‘n’ elements from ‘y’ into ‘x’ starting at ‘xi’ and ‘yi’ |
-| ins_abs() ins_sqrt(), etc | unary math ops |
+| `ins_abs()`, `ins_sqrt()`,`ins_floor()`,`ins_ceil()`, `ins_trunc()`, `ins_round()`, `ins_exp()`, `ins_log()`, `ins_cos()`, `ins_sin()`, `ins_tan()`, `ins_not()`, `ins_expm1()`, `ins_log1p()`, `ins_acos()`,`ins_asin()`, `ins_atan()`,`ins_acosh()`,`ins_asinh()`,`ins_atanh()`,`ins_cosh()`, `ins_sinh()`,`ins_tanh()`, `ins_sign()`, `ins_cospi()`, `ins_sinpi()`, `ins_tanpi()`, `ins_cumsum()`, `ins_cumprod()`, `ins_cummax()`, `ins_cummin()` | Standard single argument math operations |
+| `ins_add()`, `ins_sub()`, `ins_mul()`, `ins_div()`, `ins_eq()`, `ins_ne()`, `ins_lt()`, `ins_le()`, `ins_gt()`, `ins_ge()`, `ins_and()`, `ins_or()`, `ins_rem()`, `ins_idiv()` | Standard two-argument math operations |
 
 #### RNG
 
-`insitu` uses a custom random-number generator rather than the one
-supplied in R.
+`insitu` uses a custom random-number generator called
+[lehmer](https://lemire.me/blog/2019/03/19/the-fastest-conventional-random-number-generator-that-can-pass-big-crush/).
 
-i.e. [lehmer](https://lemire.me/blog/2019/03/19/the-fastest-conventional-random-number-generator-that-can-pass-big-crush/).
-
-This RNG is fast, but it has different properties to R’s built-in random
-number generator. Use with caution.
+This RNG is fast, but it may have slightly different properties compared
+to R’s built-in random number generator.
 
 #### ALTREP utils
 
@@ -99,8 +82,9 @@ current vector rather than creating a new one.
 x <- numeric(10)
 ins_replace(x, 6, c(1, 2, 3, 4, 5))
 x
-#>  [1] 0 0 0 0 0 1 2 3 4 5
 ```
+
+    #>  [1] 0 0 0 0 0 1 2 3 4 5
 
 ## Fill
 
@@ -111,8 +95,9 @@ current vector rather than creating a new one.
 x <- numeric(10)
 ins_fill(x, 3)
 x
-#>  [1] 3 3 3 3 3 3 3 3 3 3
 ```
+
+    #>  [1] 3 3 3 3 3 3 3 3 3 3
 
 ## Sort
 
@@ -122,11 +107,16 @@ vector rather than creating a new one.
 ``` r
 x <- as.numeric(sample(10))
 x
-#>  [1]  6  5  8 10  3  2  1  9  4  7
+```
+
+    #>  [1] 10  4  3  7  8  9  5  2  6  1
+
+``` r
 ins_sort(x)
 x
-#>  [1]  1  2  3  4  5  6  7  8  9 10
 ```
+
+    #>  [1]  1  2  3  4  5  6  7  8  9 10
 
 ## Shuffle
 
@@ -138,8 +128,9 @@ set.seed(1)
 x <- c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
 ins_shuffle(x)
 x
-#>  [1] 7 3 1 2 8 5 4 6 9 0
 ```
+
+    #>  [1] 7 3 1 2 8 5 4 6 9 0
 
 ## Reverse
 
@@ -150,8 +141,9 @@ current vector rather than creating a new one.
 x <- c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
 ins_reverse(x)
 x
-#>  [1] 9 8 7 6 5 4 3 2 1 0
 ```
+
+    #>  [1] 9 8 7 6 5 4 3 2 1 0
 
 ## Fill with random
 
@@ -163,9 +155,10 @@ set.seed(1)
 x <- numeric(10)
 ins_runif(x, 10, 15)
 x
-#>  [1] 12.71450 14.52799 14.93769 13.86312 10.52249 11.69022 12.32248 10.53172
-#>  [9] 12.79174 12.46911
 ```
+
+    #>  [1] 12.71450 14.52799 14.93769 13.86312 10.52249 11.69022 12.32248 10.53172
+    #>  [9] 12.79174 12.46911
 
 ## Fused multiply add (FMA)
 
@@ -180,8 +173,9 @@ a <- 2
 b <- as.numeric(1:10)
 fmadd(x, a, b)
 x
-#>  [1]  3  6  9 12 15 18 21 24 27 30
 ```
+
+    #>  [1]  3  6  9 12 15 18 21 24 27 30
 
 ## Related Software
 
