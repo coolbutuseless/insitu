@@ -1,16 +1,5 @@
 
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' Copy
-#' 
-#' @param x,y numeric vectors of the same length
-#' @return modified x invisibly
-#' @export
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_copy <- function(x, y) {
-  invisible(.Call(ins_copy_, x, y))
-}
-
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' Copy segment
@@ -21,9 +10,11 @@ ins_copy <- function(x, y) {
 #' 
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_copy_from <- function(x, y, xi, yi, n) {
-  invisible(.Call(ins_copy_from_, x, y, xi, yi, n))
+ins_copy <- function(x, y, n = NULL, xi = 1L, yi = 1L) {
+  invisible(.Call(ins_copy_, x, y, n, xi, yi))
 }
+
+
 
 
 
@@ -41,7 +32,7 @@ if (FALSE) {
   y <- as.numeric(11:20)
   x
   y
-  ins_copy_from(x, y, 1, 1, 11)
+  ins_copy(x, y, n = 11, xi = 1, yi = 1)
   x
   
   

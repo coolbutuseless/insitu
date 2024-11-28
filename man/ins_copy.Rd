@@ -2,16 +2,17 @@
 % Please edit documentation in R/insitu-copy.R
 \name{ins_copy}
 \alias{ins_copy}
-\title{Copy}
+\title{Copy segment}
 \usage{
-ins_copy(x, y)
+ins_copy(x, y, n = NULL, xi = 1L, yi = 1L)
 }
 \arguments{
-\item{x, y}{numeric vectors of the same length}
-}
-\value{
-modified x invisibly
+\item{x, y}{numeric vectors}
+
+\item{n}{number of elements to copy}
+
+\item{xi, yi}{starting indices}
 }
 \description{
-Copy
+Copy segment
 }

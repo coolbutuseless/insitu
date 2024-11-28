@@ -9,29 +9,6 @@
 
 #include "random64.h"
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Assignment to a vector in-place
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SEXP ins_fill_(SEXP x_, SEXP value_) {
-  
-  double value = asReal(value_);
-  double *x = REAL(x_);
-  
-#define UNROLL 4
-  int i = 0;
-  for (; i < length(x_) - (UNROLL - 1); i += UNROLL) {
-    *x++ = value;
-    *x++ = value;
-    *x++ = value;
-    *x++ = value;
-  }
-  for (; i< length(x_); i++) {
-    *x++ = value;
-  }
-  
-  return x_;
-}
-
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Fill a vector in-place with runif values using R's runif

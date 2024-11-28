@@ -1,6 +1,8 @@
 
-# insitu 0.1.3.9005
+# insitu 0.1.3.9006
 
+* [9006] `ins_copy()` replaces old `ins_copy()`, `ins_copy_from()`, 
+         `ins_replace()` and `ins_fill()`
 * [9005] Including `insitu` helper for use with `with()`
 * [9004] Use math.h fma() instead of rolling my own
 * [9004] nearly full complement of unary and binary math ops

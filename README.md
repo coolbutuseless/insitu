@@ -29,14 +29,11 @@ number of garbage collection operations is also reduced.
 | insitu | description |
 |----|----|
 | fmadd, fmsub, fnmadd, fnmsub | Fused multiply add |
-| ins_fill(x, value) | Fill vector with the given value |
 | ins_runif(x, lower, upper) | Fill vector with uniform random numbers |
-| ins_replace(x, pos, values) | Replace values in x with given values starting from the given position |
 | ins_reverse(x) | Reverse vector |
 | ins_shuffle(x) | Shuffle the elements of a vector |
 | ins_sort(x) | Sort the elements of a vector |
-| ins_copy(x, y) | copy contents of y into x |
-| ins_copy_from(x, y, xi, yi, n) | copy ‘n’ elements from ‘y’ into ‘x’ starting at ‘xi’ and ‘yi’ |
+| ins_copy(x, y, xi, yi, n) | copy ‘n’ elements from ‘y’ into ‘x’ starting at ‘xi’ and ‘yi’ |
 | `ins_abs()`, `ins_sqrt()`,`ins_floor()`,`ins_ceil()`, `ins_trunc()`, `ins_round()`, `ins_exp()`, `ins_log()`, `ins_cos()`, `ins_sin()`, `ins_tan()`, `ins_not()`, `ins_expm1()`, `ins_log1p()`, `ins_acos()`,`ins_asin()`, `ins_atan()`,`ins_acosh()`,`ins_asinh()`,`ins_atanh()`,`ins_cosh()`, `ins_sinh()`,`ins_tanh()`, `ins_sign()`, `ins_cospi()`, `ins_sinpi()`, `ins_tanpi()`, `ins_cumsum()`, `ins_cumprod()`, `ins_cummax()`, `ins_cummin()`, `ins_log2()`, `ins_log10()` | Standard single argument math operations |
 | `ins_add()`, `ins_sub()`, `ins_mul()`, `ins_div()`, `ins_eq()`, `ins_ne()`, `ins_lt()`, `ins_le()`, `ins_gt()`, `ins_ge()`, `ins_and()`, `ins_or()`, `ins_rem()`, `ins_idiv()`, `ins_max()`, `ins_min()`, `ins_hypot()` | Standard two-argument math operations |
 
@@ -172,9 +169,9 @@ conv_vec_insitu <- function(x,y) {
   tz <- duplicate(y)
   for(i in seq(length = nx)) {
     ins_copy(ty, y)
-    ins_copy_from(tz, z, 1, i, ny)
+    ins_copy(tz, z, n = ny, xi = 1, yi = i)
     fmadd(ty, x[[i]], tz)
-    ins_replace(z, i, ty)
+    ins_copy(z, ty, n = ny, xi = i)
   }
   z
 }
@@ -197,35 +194,9 @@ knitr::kable(bm)
 
 | expression            |     min |  median |   itr/sec | mem_alloc |
 |:----------------------|--------:|--------:|----------:|----------:|
-| conv_nested(x, y)     | 60.64ms | 60.99ms |  16.32880 |    88.5KB |
-| conv_vec(x, y)        | 10.44ms | 10.82ms |  90.41028 |    34.6MB |
-| conv_vec_insitu(x, y) |  2.42ms |  2.53ms | 388.10497 |   129.3KB |
-
-## Replace
-
-`ins_replace()` is analogous to `replace()` but replaces values in the
-current vector rather than creating a new one.
-
-``` r
-x <- numeric(10)
-ins_replace(x, 6, c(1, 2, 3, 4, 5))
-x
-```
-
-    #>  [1] 0 0 0 0 0 1 2 3 4 5
-
-## Fill
-
-`ins_fill()` is analogous to `replace()` but assigns the value into the
-current vector rather than creating a new one.
-
-``` r
-x <- numeric(10)
-ins_fill(x, 3)
-x
-```
-
-    #>  [1] 3 3 3 3 3 3 3 3 3 3
+| conv_nested(x, y)     | 62.61ms | 63.84ms |  15.70538 |    88.5KB |
+| conv_vec(x, y)        | 10.26ms | 11.31ms |  88.19231 |    34.6MB |
+| conv_vec_insitu(x, y) |  2.89ms |  3.09ms | 317.59888 |   118.3KB |
 
 ## Sort
 

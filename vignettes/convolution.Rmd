@@ -22,7 +22,7 @@ library(insitu)
 Example from [presentation](https://www.r-project.org/dsc/2017/slides/tomas_bc.pdf) "Byte Code Compiler Recent Work on R Runtime" by
 Tomas Kalibera with Luke Tierney Jan Vitek
 
-```{r}
+```{r eval=FALSE}
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Vectorised solution
@@ -56,24 +56,6 @@ conv0 <- function(x,y) {
 }
 
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# in-situ 1
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-conv1 <- function(x,y) {
-  nx <- length(x)
-  ny <- length(y)
-  z <- numeric(nx + ny - 1)
-  for(i in seq(length = nx)) {
-    xi <- x[[i]]
-    for(j in seq(length = ny)) {
-      ij <- i + j - 1
-      ins_replace(z, ij, z[[ij]] + xi * y[[j]])
-    }
-  }
-  z
-}
-
-
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Base R: using 'replace()'
@@ -92,7 +74,7 @@ conv2 <- function(x,y) {
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# in-situ 3 - using 'ins_replace()'
+# in-situ 3 - using 'ins_copy()'
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 conv3 <- function(x,y) {
   nx <- length(x)
@@ -101,7 +83,7 @@ conv3 <- function(x,y) {
   z <- numeric(nx + ny - 1)
   for(i in seq(length = nx)) {
     ij <- i + sy
-    ins_replace(z, i, z[ij] + x[[i]] * y)
+    ins_copy(z, z[ij] + x[[i]] * y, n = ny, xi = i)
   }
   z
 }
@@ -119,7 +101,7 @@ conv4 <- function(x,y) {
     ij <- i + sy
     t  <- duplicate(y)
     fmadd(t, x[[i]], z[ij])
-    ins_replace(z, i, t)
+    ins_copy(z, t, xi = i)
   }
   z
 }
@@ -137,7 +119,7 @@ conv5 <- function(x,y) {
   for(i in seq(length = nx)) {
     ins_copy(t, y)
     fmadd(t, x[[i]], z[i + sy])
-    ins_replace(z, i, t)
+    ins_copy(z, t, xi = i)
   }
   z
 }
@@ -155,9 +137,9 @@ conv6 <- function(x,y) {
   tz <- duplicate(y)
   for(i in seq(length = nx)) {
     ins_copy(ty, y)
-    ins_copy_from(tz, z, 1, i, ny)
+    ins_copy(tz, z, n = ny, xi = 1, yi = i)
     fmadd(ty, x[[i]], tz)
-    ins_replace(z, i, ty)
+    ins_copy(z, ty, xi = i)
   }
   z
 }
@@ -181,7 +163,7 @@ if (FALSE) {
 }
 
 conv0c <- compiler::cmpfun(conv0)
-conv1c <- compiler::cmpfun(conv1)
+# conv1c <- compiler::cmpfun(conv1)
 conv2c <- compiler::cmpfun(conv2)
 conv3c <- compiler::cmpfun(conv3)
 conv4c <- compiler::cmpfun(conv4)
@@ -191,7 +173,7 @@ convvc <- compiler::cmpfun(convv)
 
 bench::mark(
   conv0c(x, y),
-  conv1c(x, y),
+  # conv1c(x, y),
   conv2c(x, y),
   conv3c(x, y),
   conv4c(x, y),

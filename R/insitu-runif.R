@@ -1,19 +1,6 @@
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' Write value into a vector in-situ
-#'
-#' @param x vector of real, integer or character values
-#' @param value value to fill with vector. must be same type as \code{x}
-#'
-#' @export
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_fill <- function(x, value) {
-  invisible(.Call(ins_fill_, x, value))
-}
-
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' Write random values into a vector in-situ. Uses xoshiro256++ for RNG
 #'
 #' @param x vector of real, integer values
