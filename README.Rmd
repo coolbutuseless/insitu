@@ -129,6 +129,39 @@ x
 ```
 
 
+```{r echo=FALSE, eval=FALSE}
+Niter <- 1e2
+Nelem <- 1e3
+x <- as.numeric(seq(Nelem))
+y <- as.numeric(seq(Nelem))
+z <- as.numeric(seq(Nelem))
+
+bm <- bench::mark(
+  copy_on_modify = {
+    for (i in seq(Niter)) {
+      x <- x * y + z
+      x <- sqrt(x)
+      x <- log(x)
+    }
+    x
+  },
+  
+  insitu = with(insitu, {
+    for (i in seq(Niter)) {
+      x <- x * y + z
+      x <- sqrt(x)
+      x <- log(x) 
+    }
+    x
+  })
+)
+
+knitr::kable(bm[, 1:5])
+```
+
+
+
+
 ## Example
 
 This example calculates the convolution of two numeric vectors.  It is an 

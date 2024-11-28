@@ -197,9 +197,9 @@ knitr::kable(bm)
 
 | expression            |     min |  median |   itr/sec | mem_alloc |
 |:----------------------|--------:|--------:|----------:|----------:|
-| conv_nested(x, y)     | 60.81ms | 61.42ms |  16.29481 |    88.5KB |
-| conv_vec(x, y)        | 10.35ms | 10.86ms |  89.99996 |    34.6MB |
-| conv_vec_insitu(x, y) |  2.43ms |  2.54ms | 387.08465 |   129.3KB |
+| conv_nested(x, y)     | 60.64ms | 60.99ms |  16.32880 |    88.5KB |
+| conv_vec(x, y)        | 10.44ms | 10.82ms |  90.41028 |    34.6MB |
+| conv_vec_insitu(x, y) |  2.42ms |  2.53ms | 388.10497 |   129.3KB |
 
 ## Replace
 
