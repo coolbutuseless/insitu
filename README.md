@@ -65,6 +65,142 @@ with:
 remotes::install_github('coolbutuseless/insitu')
 ```
 
+## In-situ arithmetic
+
+In-situ operations on vectors can be performed using the `ins_*()`
+functions in this package.
+
+``` r
+x <- as.numeric(1:10)
+y <- as.numeric(1:10)
+ins_add(x, y) # overwrite 'x' with 'x + y'
+x
+```
+
+    #>  [1]  2  4  6  8 10 12 14 16 18 20
+
+Using the `insitu` helper, it is also possible to write operations in
+more idiomatic R
+
+``` r
+x <- as.numeric(1:10)
+y <- as.numeric(1:10)
+with(insitu, {
+  x + y
+  sqrt(x)
+})
+x
+```
+
+    #>  [1] 1.414214 2.000000 2.449490 2.828427 3.162278 3.464102 3.741657 4.000000
+    #>  [9] 4.242641 4.472136
+
+It is possible to include the extra assigment operator, but this is
+redundant.
+
+``` r
+x <- as.numeric(1:10)
+y <- as.numeric(1:10)
+with(insitu, {
+  x <- x + y
+  x <- sqrt(x)
+})
+x
+```
+
+    #>  [1] 1.414214 2.000000 2.449490 2.828427 3.162278 3.464102 3.741657 4.000000
+    #>  [9] 4.242641 4.472136
+
+## Example
+
+This example calculates the convolution of two numeric vectors. It is an
+example taken from a presentation [“Byte Code Compiler Recent Work on R
+Runtime”](https://www.r-project.org/dsc/2017/slides/tomas_bc.pdf) by
+Tomas Kalibera with Luke Tierney Jan Vitek.
+
+The initial `conv_nested()` function is an example of how badly R
+behaves with a for-loop and element-by-element access.
+
+When a basic vectorisation is applied (`conv_vec()`) performance is
+expected to increase.
+
+Using in-place operations (`conv_vec_insitu()`) replaces the code with
+functions from `{insitu}`.
+
+``` r
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Convolution with nested for loops
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+conv_nested <- function(x,y) {
+  nx <- length(x)
+  ny <- length(y)
+  z <- numeric(nx + ny - 1)
+  for(i in seq(length = nx)) {
+    xi <- x[[i]]
+    for(j in seq(length = ny)) {
+      ij <- i + j - 1
+      z[[ij]] <- z[[ij]] + xi * y[[j]]
+    }
+  }
+  z
+}
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Vectorised base R solution
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+conv_vec <- function(x,y) {
+  nx <- length(x)
+  ny <- length(y)
+  sy <- seq_along(y) - 1L
+  z <- numeric(nx + ny - 1)
+  for(i in seq(length = nx)) {
+    ij <- i + sy
+    z <- replace(z, ij, z[ij] + x[[i]] * y)
+  }
+  z
+}
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Vectorised solution with in-situ operations
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+conv_vec_insitu <- function(x,y) {
+  nx <- length(x)
+  ny <- length(y)
+  sy <- seq_along(y) - 1L
+  z <- numeric(nx + ny - 1)
+  ty <- duplicate(y)
+  tz <- duplicate(y)
+  for(i in seq(length = nx)) {
+    ins_copy(ty, y)
+    ins_copy_from(tz, z, 1, i, ny)
+    fmadd(ty, x[[i]], tz)
+    ins_replace(z, i, ty)
+  }
+  z
+}
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Benchmark
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+set.seed(1)
+N <- 1000
+x <- runif(N)
+y <- runif(N)
+bm <- bench::mark(
+  conv_nested(x, y),
+  conv_vec(x, y),
+  conv_vec_insitu(x, y)
+)[, 1:5] 
+
+knitr::kable(bm)
+```
+
+| expression            |     min |  median |   itr/sec | mem_alloc |
+|:----------------------|--------:|--------:|----------:|----------:|
+| conv_nested(x, y)     | 60.81ms | 61.42ms |  16.29481 |    88.5KB |
+| conv_vec(x, y)        | 10.35ms | 10.86ms |  89.99996 |    34.6MB |
+| conv_vec_insitu(x, y) |  2.43ms |  2.54ms | 387.08465 |   129.3KB |
+
 ## Replace
 
 `ins_replace()` is analogous to `replace()` but replaces values in the
@@ -101,7 +237,7 @@ x <- as.numeric(sample(10))
 x
 ```
 
-    #>  [1]  9  3  7 10  8  2  6  4  5  1
+    #>  [1]  3  2  6  4  5  7  1  9  8 10
 
 ``` r
 ins_sort(x)
