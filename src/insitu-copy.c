@@ -46,3 +46,73 @@ SEXP ins_copy_(SEXP x_, SEXP y_, SEXP n_, SEXP xi_, SEXP yi_) {
   
   return x_;
 }
+
+
+#define UNROLL 4
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// "copy_if()" with vector x,y
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SEXP ins_copy_if_vxy_(SEXP x_, SEXP y_, SEXP lgl_) {
+
+  double *x   = REAL(x_);
+  double *y   = REAL(y_);
+  double *lgl = REAL(lgl_);
+
+  int i = 0;
+  for (; i < length(x_) - (UNROLL - 1); i += UNROLL) {
+    *x = *lgl++ != 0 ? *y : *x; ++x; ++y;
+    *x = *lgl++ != 0 ? *y : *x; ++x; ++y;
+    *x = *lgl++ != 0 ? *y : *x; ++x; ++y;
+    *x = *lgl++ != 0 ? *y : *x; ++x; ++y;
+  }
+  for (; i< length(x_); i++) {
+    *x = *lgl++ != 0 ? *y : *x; ++x; ++y;
+  }
+
+  return x_;
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// "copy_if()" with scalar y
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SEXP ins_copy_if_sy_(SEXP x_, SEXP y_, SEXP lgl_) {
+
+  double *x   = REAL(x_);
+  double  y   = asReal(y_);
+  double *lgl = REAL(lgl_);
+
+  int i = 0;
+  for (; i < length(x_) - (UNROLL - 1); i += UNROLL) {
+    *x = *lgl++ != 0 ? y : *x; ++x;
+    *x = *lgl++ != 0 ? y : *x; ++x;
+    *x = *lgl++ != 0 ? y : *x; ++x;
+    *x = *lgl++ != 0 ? y : *x; ++x;
+  }
+  for (; i< length(x_); i++) {
+    *x = *lgl++ != 0 ? y : *x; ++x;
+  }
+
+  return x_;
+}
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SEXP ins_copy_if_(SEXP x_, SEXP y_, SEXP lgl_) {
+
+  R_xlen_t lx   = length(x_);
+  R_xlen_t ly   = length(y_);
+  R_xlen_t llgl = length(lgl_);
+
+  if (lx == ly && lx == llgl) {
+    return ins_copy_if_vxy_(x_, y_, lgl_);
+  } else if (ly == 1 && lx == llgl) {
+    return ins_copy_if_sy_(x_, y_, lgl_);
+  }
+
+  error("ins_add(): Lengths not compatible: x = %.0f, y = %.0f", (double)lx, (double)ly);
+}
+
+

@@ -1,6 +1,8 @@
 
 # insitu 0.1.3.9006
 
+* [9006] `ins_copy_if()`
+* [9006] `ins_is_na()`
 * [9006] `ins_copy()` replaces old `ins_copy()`, `ins_copy_from()`, 
          `ins_replace()` and `ins_fill()`
 * [9005] Including `insitu` helper for use with `with()`

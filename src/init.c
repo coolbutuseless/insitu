@@ -18,6 +18,7 @@ extern SEXP ins_reverse_(SEXP x_);
 extern SEXP ins_runif_(SEXP x_, SEXP min_, SEXP max_);
 
 extern SEXP ins_copy_(SEXP x_, SEXP y_, SEXP n_, SEXP xi_, SEXP yi_);
+extern SEXP ins_copy_if_(SEXP x_, SEXP y_, SEXP lgl_);
 
 extern SEXP fmadd_(SEXP a_, SEXP b_, SEXP c_);
 extern SEXP fmsub_(SEXP a_, SEXP b_, SEXP c_);
@@ -59,6 +60,8 @@ extern SEXP ins_cumprod_(SEXP x_);
 extern SEXP ins_cummax_ (SEXP x_);
 extern SEXP ins_cummin_ (SEXP x_);
 
+extern SEXP ins_is_na_  (SEXP x_);
+
 
 extern SEXP ins_add_  (SEXP x_, SEXP y_);
 extern SEXP ins_sub_  (SEXP x_, SEXP y_);
@@ -98,6 +101,7 @@ static const R_CallMethodDef CEntries[] = {
   {"ins_runif_"  , (DL_FUNC) &ins_runif_   , 3},
   
   {"ins_copy_"    , (DL_FUNC) &ins_copy_    , 5},
+  {"ins_copy_if_" , (DL_FUNC) &ins_copy_if_ , 3},
   
   {"fmadd_" , (DL_FUNC) &fmadd_ , 3},
   {"fmsub_" , (DL_FUNC) &fmsub_ , 3},
@@ -138,6 +142,8 @@ static const R_CallMethodDef CEntries[] = {
   {"ins_cumprod_" , (DL_FUNC) &ins_cumprod_ , 1},
   {"ins_cummax_"  , (DL_FUNC) &ins_cummax_  , 1},
   {"ins_cummin_"  , (DL_FUNC) &ins_cummin_  , 1},
+  
+  {"ins_is_na_"  , (DL_FUNC) &ins_is_na_  , 1},
   
   
   {"ins_add_"  , (DL_FUNC) &ins_add_  , 2},

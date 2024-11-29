@@ -91,6 +91,5 @@ INSUNARYOP(cummin ,  *x < *(x - 1) ? *x : *(x - 1), 1)
 INSUNARYOP(log2 ,   log2(*x), 0)
 INSUNARYOP(log10,   log10(*x), 0)
 
-
-
+INSUNARYOP(is_na, (double)isnan(*x), 0)
 

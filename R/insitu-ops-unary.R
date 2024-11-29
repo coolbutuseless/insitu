@@ -199,25 +199,20 @@ ins_log2  <- function(x) { invisible(.Call(ins_log2_ , x)) }
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ins_log10 <- function(x) { invisible(.Call(ins_log10_, x)) }
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#' @rdname ins_abs
+#' @export
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ins_is_na <- function(x) { invisible(.Call(ins_is_na_, x)) }
+
 
 
 
 if (FALSE) {
   
-  set.seed(1)
-  N <- 10000
-  x <- runif(N)
-  
-  bench::mark(
-    sqrt(x),
-    ins_sqrt(x),
-    check = FALSE
-  )
-  
-  
-  x <- seq(-10, 10, 1)
-  x
-  ins_abs(x) |> ins_sqrt()
+  x <- c(NA, 1)
+  ins_is_na(x)
+  ins_eq(x, 1)
   x
   
 }

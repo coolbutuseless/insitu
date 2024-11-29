@@ -38,6 +38,21 @@ ins_copy <- function(x, y, n = NULL, xi = 1L, yi = 1L) {
 
 
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#' Copy all or part of one vector into another
+#' 
+#' @param x destination vector.  Will be modified in-place
+#' @param y source. Can be scalar of vector of values
+#' @param lgl numeric vector where 0 represents false, and all non-zero values
+#'        represent true
+#' @return x modified in-place
+#' @export
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ins_copy_if <- function(x, y, lgl) {
+  invisible(.Call(ins_copy_if_, x, y, lgl))
+}
+
+
 
 
 if (FALSE) {

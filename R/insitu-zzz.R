@@ -42,6 +42,7 @@ insitu <- list(
   `cumprod` = ins_cumprod ,
   `cummax`  = ins_cummax  ,
   `cummin`  = ins_cummin  ,
+  `is.na`   = ins_is_na   ,
   
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Binary ops

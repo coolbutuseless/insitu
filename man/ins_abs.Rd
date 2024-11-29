@@ -34,6 +34,7 @@
 \alias{ins_cummin}
 \alias{ins_log2}
 \alias{ins_log10}
+\alias{ins_is_na}
 \title{Math ops}
 \usage{
 ins_abs(x)
@@ -101,6 +102,8 @@ ins_cummin(x)
 ins_log2(x)
 
 ins_log10(x)
+
+ins_is_na(x)
 }
 \arguments{
 \item{x}{vector}

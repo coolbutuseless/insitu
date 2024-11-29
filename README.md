@@ -28,13 +28,16 @@ number of garbage collection operations is also reduced.
 
 | insitu | description |
 |----|----|
+| `alloc_n()`, `alloc_for()` | Create new vectors **without** zero-ing contents. Faster than `numeric()` |
+| `ins_zero()` | fill vector with zeros |
 | fmadd, fmsub, fnmadd, fnmsub | Fused multiply add |
 | ins_runif(x, lower, upper) | Fill vector with uniform random numbers |
 | ins_reverse(x) | Reverse vector |
 | ins_shuffle(x) | Shuffle the elements of a vector |
 | ins_sort(x) | Sort the elements of a vector |
-| ins_copy(x, y, xi, yi, n) | copy ‘n’ elements from ‘y’ into ‘x’ starting at ‘xi’ and ‘yi’ |
-| `ins_abs()`, `ins_sqrt()`,`ins_floor()`,`ins_ceil()`, `ins_trunc()`, `ins_round()`, `ins_exp()`, `ins_log()`, `ins_cos()`, `ins_sin()`, `ins_tan()`, `ins_not()`, `ins_expm1()`, `ins_log1p()`, `ins_acos()`,`ins_asin()`, `ins_atan()`,`ins_acosh()`,`ins_asinh()`,`ins_atanh()`,`ins_cosh()`, `ins_sinh()`,`ins_tanh()`, `ins_sign()`, `ins_cospi()`, `ins_sinpi()`, `ins_tanpi()`, `ins_cumsum()`, `ins_cumprod()`, `ins_cummax()`, `ins_cummin()`, `ins_log2()`, `ins_log10()` | Standard single argument math operations |
+| ins_copy(x, y, n, xi, yi, n) | copy ‘n’ elements from ‘y’ into ‘x’ starting at ‘xi’ and ‘yi’ |
+| ins_copy_if(x, y, lgl) | copy ‘y’ into ‘x’ where `lgl != 0` |
+| `ins_abs()`, `ins_sqrt()`,`ins_floor()`,`ins_ceil()`, `ins_trunc()`, `ins_round()`, `ins_exp()`, `ins_log()`, `ins_cos()`, `ins_sin()`, `ins_tan()`, `ins_not()`, `ins_expm1()`, `ins_log1p()`, `ins_acos()`,`ins_asin()`, `ins_atan()`,`ins_acosh()`,`ins_asinh()`,`ins_atanh()`,`ins_cosh()`, `ins_sinh()`,`ins_tanh()`, `ins_sign()`, `ins_cospi()`, `ins_sinpi()`, `ins_tanpi()`, `ins_cumsum()`, `ins_cumprod()`, `ins_cummax()`, `ins_cummin()`, `ins_log2()`, `ins_log10()`, `ins_is_na()` | Standard single argument math operations |
 | `ins_add()`, `ins_sub()`, `ins_mul()`, `ins_div()`, `ins_eq()`, `ins_ne()`, `ins_lt()`, `ins_le()`, `ins_gt()`, `ins_ge()`, `ins_and()`, `ins_or()`, `ins_rem()`, `ins_idiv()`, `ins_max()`, `ins_min()`, `ins_hypot()` | Standard two-argument math operations |
 
 #### RNG
@@ -192,11 +195,11 @@ bm <- bench::mark(
 knitr::kable(bm)
 ```
 
-| expression            |     min |  median |   itr/sec | mem_alloc |
-|:----------------------|--------:|--------:|----------:|----------:|
-| conv_nested(x, y)     | 62.61ms | 63.84ms |  15.70538 |    88.5KB |
-| conv_vec(x, y)        | 10.26ms | 11.31ms |  88.19231 |    34.6MB |
-| conv_vec_insitu(x, y) |  2.89ms |  3.09ms | 317.59888 |   118.3KB |
+| expression            |      min |   median |    itr/sec | mem_alloc |
+|:----------------------|---------:|---------:|-----------:|----------:|
+| conv_nested(x, y)     | 103.59ms | 103.74ms |   9.636456 |    88.6KB |
+| conv_vec(x, y)        |  10.55ms |  10.93ms |  84.786892 |    34.6MB |
+| conv_vec_insitu(x, y) |   7.42ms |   7.52ms | 122.263238 |   118.2KB |
 
 ## Sort
 
