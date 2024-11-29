@@ -8,6 +8,10 @@ extern SEXP is_mutable_(SEXP x_);
 extern SEXP get_refcnt_(SEXP x_);
 extern SEXP duplicate_(SEXP x_);
 
+extern SEXP alloc_n_  (SEXP n_);
+extern SEXP alloc_for_(SEXP x_);
+extern SEXP ins_zero_ (SEXP x_);
+
 extern SEXP ins_sort_(SEXP x_, SEXP decreasing_);
 extern SEXP ins_shuffle_(SEXP x_);
 extern SEXP ins_reverse_(SEXP x_);
@@ -83,6 +87,10 @@ static const R_CallMethodDef CEntries[] = {
   {"is_mutable_" , (DL_FUNC) &is_mutable_  , 1},
   {"get_refcnt_" , (DL_FUNC) &get_refcnt_  , 1},
   {"duplicate_"  , (DL_FUNC) &duplicate_   , 1},
+  
+  {"alloc_n_"    , (DL_FUNC) &alloc_n_     , 1},
+  {"alloc_for_"  , (DL_FUNC) &alloc_for_   , 1},
+  {"ins_zero_"   , (DL_FUNC) &ins_zero_    , 1},
 
   {"ins_sort_"   , (DL_FUNC) &ins_sort_    , 2},
   {"ins_shuffle_", (DL_FUNC) &ins_shuffle_ , 1},

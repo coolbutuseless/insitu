@@ -2,17 +2,43 @@
 % Please edit documentation in R/insitu-copy.R
 \name{ins_copy}
 \alias{ins_copy}
-\title{Copy segment}
+\title{Copy all or part of one vector into another}
 \usage{
 ins_copy(x, y, n = NULL, xi = 1L, yi = 1L)
 }
 \arguments{
-\item{x, y}{numeric vectors}
+\item{x}{destination vector.  Will be modified in-place}
 
-\item{n}{number of elements to copy}
+\item{y}{source. Can be scalar of vector of values}
 
-\item{xi, yi}{starting indices}
+\item{n}{number of elements to copy. Default: NULL. This default requires
+\code{x} and \code{y} to be the same length, and simply copies the full vector
+\code{y} into \code{y}.}
+
+\item{xi, yi}{starting indices within the two vectors. Default: 1 i.e. the first element}
+}
+\value{
+x modified in-place
 }
 \description{
-Copy segment
+Copy all or part of one vector into another
+}
+\examples{
+# x, y are the same length. copy all of 'y' into 'x'
+x <- as.numeric(1:10)
+y <- as.numeric(10:1)
+ins_copy(x, y)
+x
+
+# copy the last 3 elements of 'y' into the first 3 elements of x
+x <- as.numeric(1:10)
+y <- as.numeric(10:1)
+ins_copy(x, y, n = 3, xi = 1, yi = 8)
+x
+
+# copy a scalar value into the last 5 elements of x
+x <- as.numeric(1:10)
+ins_copy(x, y = 99, n = 5, xi = 6)
+x
+
 }
