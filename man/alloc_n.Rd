@@ -29,5 +29,7 @@ are not initialized.
 }
 }
 \examples{
-alloc_n(10)
+x <- alloc_n(10)
+br_fill_seq(x)
+x
 }

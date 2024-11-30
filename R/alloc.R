@@ -15,7 +15,9 @@
 #' @return new numeric vector of the required length. Note: This vector 
 #'         is \emph{not} initialized to zero.
 #' @examples
-#' alloc_n(10)
+#' x <- alloc_n(10)
+#' br_fill_seq(x)
+#' x
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 alloc_n <- function(n) {

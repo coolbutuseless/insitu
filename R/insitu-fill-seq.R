@@ -33,12 +33,3 @@ br_fill_seq <- function(x, from = 1, to = NULL, step = NULL) {
   invisible(.Call(br_fill_seq_, x, from, to, step))
 }
 
-
-if (FALSE) {
-
-  x <- alloc_n(10)
-  br_fill_seq(x, from = 1, to = 5)
-  x == 5
-  
-}
-
