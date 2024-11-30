@@ -11,9 +11,10 @@
 <!-- badges: end -->
 
 `insitu` provides some functions for operating on numeric vectors
-*in-place* i.e.  without allocating a new vector.
+*by-reference* i.e.  without allocating a new vector. (*in situ* is
+Latin for “in place”).
 
-Modifying vectors in-place is often faster than R’s regular
+Modifying vectors by-reference is often faster than R’s regular
 *copy-on-modify* operation because of reduced memory allocation. A
 reduction in memory allocation has a corresponding benefit in that the
 number of garbage collection operations is also reduced.
@@ -21,10 +22,11 @@ number of garbage collection operations is also reduced.
 ## What’s in the box
 
 - `insitu` includes most of the standard math operations seen in R.
-- Functions have a `br_` prefix.
+- Functions have a `br_` prefix - standing for “**b**y **r**eference”.
 - The first argument to a function will be overwritten with the result.
-- Each R function returns the modified vector invisibly - the result
-  does not need to be assigned into a variable.
+- Each R function returns the modified vector invisibly
+  - the result does not to be assigned back into this variable.
+  - the result should not be assigned into a different variable.
 
 | insitu | description |
 |----|----|
@@ -43,7 +45,7 @@ number of garbage collection operations is also reduced.
 
 #### RNG
 
-`insitu` uses a custom random-number generator called
+`{insitu}` uses a custom random-number generator called
 [lehmer](https://lemire.me/blog/2019/03/19/the-fastest-conventional-random-number-generator-that-can-pass-big-crush/).
 
 This RNG is fast, but it may have slightly different properties compared
@@ -68,15 +70,15 @@ functions in this package.
 x <- as.numeric(1:10)
 y <- as.numeric(1:10)
 br_add(x, y) # overwrite 'x' with 'x + y'
-br_sqrt(x)
+br_sqrt(x)   # overwrite 'x' with 'sqrt(x)'
 x
 ```
 
     #>  [1] 1.414214 2.000000 2.449490 2.828427 3.162278 3.464102 3.741657 4.000000
     #>  [9] 4.242641 4.472136
 
-Using the `insitu` helper, it is also possible to write operations in
-more idiomatic R
+Using `with()` and the `by_reference` helper, it is also possible to
+write operations in more idiomatic R
 
 ``` r
 x <- as.numeric(1:10)
@@ -91,7 +93,7 @@ x
     #>  [1] 1.414214 2.000000 2.449490 2.828427 3.162278 3.464102 3.741657 4.000000
     #>  [9] 4.242641 4.472136
 
-It is possible to include the extra assigment operator, but this is
+It is possible to include the extra assignment operator, but this is
 redundant.
 
 ``` r
@@ -107,7 +109,7 @@ x
     #>  [1] 1.414214 2.000000 2.449490 2.828427 3.162278 3.464102 3.741657 4.000000
     #>  [9] 4.242641 4.472136
 
-## Example
+## Example: Convolution
 
 This example calculates the convolution of two numeric vectors. It is an
 example taken from a presentation [“Byte Code Compiler Recent Work on R
@@ -175,6 +177,14 @@ conv_vec_insitu <- function(x,y) {
   z
 }
 
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Convolve using base R 'convolve()' which uses FFT
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+conv_fft <- function(x, y) {
+  convolve(x, rev(y), type = "o")
+}
+
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Benchmark
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -185,6 +195,7 @@ y <- runif(N)
 bm <- bench::mark(
   conv_nested(x, y),
   conv_vec(x, y),
+  conv_fft(x, y),
   conv_vec_insitu(x, y)
 )[, 1:5] 
 
@@ -193,11 +204,7 @@ knitr::kable(bm)
 
 | expression            |     min |  median |   itr/sec | mem_alloc |
 |:----------------------|--------:|--------:|----------:|----------:|
-| conv_nested(x, y)     | 60.66ms | 61.05ms |  16.34168 |    88.5KB |
-| conv_vec(x, y)        | 10.05ms | 10.95ms |  91.94382 |    34.6MB |
-| conv_vec_insitu(x, y) |  2.88ms |  3.01ms | 325.34637 |   115.9KB |
-
-## Related Software
-
-- [data.table](https://cran.r-project.org/package=data.table) performs a
-  lot of operations in-situ (i.e. “by reference”)
+| conv_nested(x, y)     | 60.44ms | 60.81ms |  16.39931 |    88.5KB |
+| conv_vec(x, y)        | 10.25ms | 11.38ms |  89.86798 |    34.6MB |
+| conv_fft(x, y)        |   3.6ms |  3.67ms | 271.80542 |     380KB |
+| conv_vec_insitu(x, y) |  2.85ms |  2.97ms | 328.67759 |   115.9KB |
