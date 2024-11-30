@@ -40,6 +40,9 @@ number of garbage collection operations is also reduced.
 | `br_copy(x, y, n, xi, yi)` | copy ‘n’ elements from ‘y’ into ‘x’ starting at ‘xi’ and ‘yi’ |
 | `br_fill_seq(x, from, to, step)` | Fill vector with a sequence |
 | `br_copy_if(x, y, lgl)` | copy ‘y’ into ‘x’ where `lgl != 0` |
+| `br_dist2(x1, y1, x2, y2)`, `br_dist3(x1, y1, z1, x2, y2, z2)` | distance between points |
+| `br_hypot2(x, y)` `br_hypot3(x, y ,z)` | distance from point to origin |
+| `br_normalise2(x, y)`, `br_normalise3(x, y, z)` | normalise coordinates |
 | `br_abs()`, `br_sqrt()`,`br_floor()`,`br_ceil()`, `br_trunc()`, `br_round()`, `br_exp()`, `br_log()`, `br_cos()`, `br_sin()`, `br_tan()`, `br_not()`, `br_expm1()`, `br_log1p()`, `br_acos()`,`br_asin()`, `br_atan()`,`br_acosh()`,`br_asinh()`,`br_atanh()`,`br_cosh()`, `br_sinh()`,`br_tanh()`, `br_sign()`, `br_cospi()`, `br_sinpi()`, `br_tanpi()`, `br_cumsum()`, `br_cumprod()`, `br_cummax()`, `br_cummin()`, `br_log2()`, `br_log10()`, `br_is_na()` | Standard single argument math operations |
 | `br_add()`, `br_sub()`, `br_mul()`, `br_div()`, `br_eq()`, `br_ne()`, `br_lt()`, `br_le()`, `br_gt()`, `br_ge()`, `br_and()`, `br_or()`, `br_rem()`, `br_idiv()`, `br_max()`, `br_min()`, `br_hypot()` | Standard two-argument math operations |
 
@@ -204,7 +207,7 @@ knitr::kable(bm)
 
 | expression            |     min |  median |   itr/sec | mem_alloc |
 |:----------------------|--------:|--------:|----------:|----------:|
-| conv_nested(x, y)     | 60.44ms | 60.81ms |  16.39931 |    88.5KB |
-| conv_vec(x, y)        | 10.25ms | 11.38ms |  89.86798 |    34.6MB |
-| conv_fft(x, y)        |   3.6ms |  3.67ms | 271.80542 |     380KB |
-| conv_vec_insitu(x, y) |  2.85ms |  2.97ms | 328.67759 |   115.9KB |
+| conv_nested(x, y)     | 60.87ms | 61.42ms |  16.26875 |    88.5KB |
+| conv_vec(x, y)        | 10.16ms | 10.75ms |  89.40702 |    34.6MB |
+| conv_fft(x, y)        |   3.6ms |  3.67ms | 271.98625 |     380KB |
+| conv_vec_insitu(x, y) |  2.87ms |     3ms | 325.44200 |   115.9KB |
