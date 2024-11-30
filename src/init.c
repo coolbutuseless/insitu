@@ -90,6 +90,9 @@ extern SEXP set_seed_random64_(void);
 extern SEXP br_dist2_(SEXP x1_, SEXP y1_, SEXP x2_, SEXP y2_);
 extern SEXP br_dist3_(SEXP x1_, SEXP y1_, SEXP z1_, SEXP x2_, SEXP y2_, SEXP z2_);
 
+extern SEXP br_normalise2_(SEXP x_, SEXP y_);
+extern SEXP br_normalise3_(SEXP x_, SEXP y_, SEXP z_);
+
 static const R_CallMethodDef CEntries[] = {
 
   {"is_altrep_"  , (DL_FUNC) &is_altrep_   , 1},
@@ -178,6 +181,9 @@ static const R_CallMethodDef CEntries[] = {
   
   {"br_dist2_", (DL_FUNC) &br_dist2_, 4},
   {"br_dist3_", (DL_FUNC) &br_dist3_, 6},
+  
+  {"br_normalise2_", (DL_FUNC) &br_normalise2_, 2},
+  {"br_normalise3_", (DL_FUNC) &br_normalise3_, 3},
   
   {NULL , NULL, 0}
 };

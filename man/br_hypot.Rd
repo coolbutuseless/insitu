@@ -4,7 +4,7 @@
 \alias{br_hypot}
 \alias{br_hypot2}
 \alias{br_hypot3}
-\title{Hypostenuse length calculation (distance from origin)}
+\title{Hypotenuse length calculation (distance from origin)}
 \usage{
 br_hypot(x, y)
 
@@ -19,7 +19,7 @@ br_hypot3(x, y, z)
 \code{x1} modified in-place and returned invisibly
 }
 \description{
-Hypostenuse length calculation (distance from origin)
+Hypotenuse length calculation (distance from origin)
 }
 \examples{
 # Distance from origin in 3D

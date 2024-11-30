@@ -34,7 +34,7 @@ br_dist3 <- function(x1, y1, z1, x2, y2, z2) {
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' Hypostenuse length calculation (distance from origin)
+#' Hypotenuse length calculation (distance from origin)
 #' 
 #' @param x,y,z numeric vectors all the same length
 #' @return \code{x1} modified in-place and returned invisibly
@@ -70,5 +70,40 @@ br_hypot2 <- br_hypot
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_hypot3 <- function(x, y, z) {
   invisible(.Call(br_hypot3_, x, y, z))
+}
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#' Normalise vectors to length 1
+#' 
+#' These functions will normalise the (x, y) or (x, y, z) coordinates so that
+#' the represented vector quantity has a length of 1.   All arguments will 
+#' be modified in place.
+#' 
+#' @param x,y,z numeric vectors all the same length
+#' @return None. \code{x, y and z} modified in-place.
+#' @examples
+#' N <- 10
+#' x <- runif(N)
+#' y <- runif(N)
+#' br_normalise2(x, y)
+#' x
+#' y
+#' sqrt(x^2 + y^2)
+#' @export
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+br_normalise2 <- function(x, y) {
+  .Call(br_normalise2_, x, y)
+  invisible()
+}
+
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#' @rdname br_normalise2
+#' @export
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+br_normalise3 <- function(x, y, z) {
+  .Call(br_normalise3_, x, y, z)
+  invisible()
 }
 

@@ -101,3 +101,73 @@ SEXP br_hypot3_(SEXP x_, SEXP y_, SEXP z_) {
   
   return x_;
 }
+
+
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Normalise
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SEXP br_normalise2_(SEXP x_, SEXP y_) {
+  
+  int n = (int)length(x_);
+  if (length(y_) != n) {
+    error("br_normalise2_(): All inputs must be the same length");
+  }
+  
+  double *x = REAL(x_);
+  double *y = REAL(y_);
+  
+  for (int i = 0; i < length(x_); i++) {
+    double len = hypot(*x, *y); 
+    *x /= len;
+    *y /= len;
+    ++x; ++y; 
+  }
+  
+  return x_;
+}
+
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Normalise
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SEXP br_normalise3_(SEXP x_, SEXP y_, SEXP z_) {
+  
+  int n = (int)length(x_);
+  if (length(y_) != n || length(z_) != n) {
+    error("br_normalise3_(): All inputs must be the same length");
+  }
+  
+  double *x = REAL(x_);
+  double *y = REAL(y_);
+  double *z = REAL(z_);
+  
+  for (int i = 0; i < length(x_); i++) {
+    double len = sqrt(*x * *x + *y * *y + *z * *z); 
+    *x /= len;
+    *y /= len;
+    *z /= len;
+    ++x; ++y; ++z; 
+  }
+  
+  return x_;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
