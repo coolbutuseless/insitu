@@ -1,10 +1,10 @@
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' In-situ ops
+#' Math operations taking two arguments
 #' 
 #' @inheritParams br_fmadd
-#' @param y Either scalar numeric values or numeric vectors of the same 
+#' @param y Either scalar numeric value or numeric vector of the same 
 #'       length as \code{x}.
 #' @return \code{x} argument is modified by-reference and returned invisibly
 #' @examples

@@ -1,7 +1,8 @@
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' Math ops
+#' Math operations taking only a single input vector
+#' 
 #' @inheritParams br_fmadd
 #' @param digits number of decimal places
 #' @return \code{x} argument is modified by-reference and returned invisibly

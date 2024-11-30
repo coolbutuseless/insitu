@@ -1,7 +1,7 @@
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' Sort a vector of real values in-situ
+#' Sort a numeric vector by-reference
 #'
 #' @inheritParams br_fmadd
 #' @param decreasing Logical. Sort values in decreasing order? default FALSE

@@ -21,14 +21,14 @@ number of garbage collection operations is also reduced.
 
 ## What’s in the box
 
-- `insitu` includes most of the standard math operations seen in R.
+- `{insitu}` includes most of the standard math operations seen in R.
 - Functions have a `br_` prefix - standing for “**b**y **r**eference”.
 - The first argument to a function will be overwritten with the result.
 - Each R function returns the modified vector invisibly
   - the result does not to be assigned back into this variable.
   - the result should not be assigned into a different variable.
 
-| insitu | description |
+| Function | Description |
 |----|----|
 | `alloc_n()`, `alloc_along()` | Create new vectors **without** zero-ing contents. Faster than `numeric()` |
 | `br_zero()` | fill vector with zeros |
@@ -64,9 +64,9 @@ with:
 remotes::install_github('coolbutuseless/insitu')
 ```
 
-## In-situ arithmetic
+## Operations *by-reference*
 
-In-situ operations on vectors can be performed using the `br_*()`
+*By-reference* operations on vectors can be performed using the `br_*()`
 functions in this package.
 
 ``` r
@@ -125,7 +125,7 @@ behave with a for-loop and element-by-element access.
 When a basic vectorisation is applied (`conv_vec()`) performance is
 expected to increase.
 
-A third version of the function (`conv_vec_insitu()`) replaces the code
+A third version of the function (`conv_vec_byref()`) replaces the code
 with functions from `{insitu}`.
 
 ``` r
@@ -162,9 +162,9 @@ conv_vec <- function(x,y) {
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Vectorised solution with in-situ operations
+# Vectorised solution with by-reference routines
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-conv_vec_insitu <- function(x,y) {
+conv_vec_byref <- function(x,y) {
   nx <- length(x)
   ny <- length(y)
   sy <- seq_along(y) - 1L
@@ -199,15 +199,15 @@ bm <- bench::mark(
   conv_nested(x, y),
   conv_vec(x, y),
   conv_fft(x, y),
-  conv_vec_insitu(x, y)
+  conv_vec_byref(x, y)
 )[, 1:5] 
 
 knitr::kable(bm)
 ```
 
-| expression            |     min |  median |   itr/sec | mem_alloc |
-|:----------------------|--------:|--------:|----------:|----------:|
-| conv_nested(x, y)     | 60.87ms | 61.42ms |  16.26875 |    88.5KB |
-| conv_vec(x, y)        | 10.16ms | 10.75ms |  89.40702 |    34.6MB |
-| conv_fft(x, y)        |   3.6ms |  3.67ms | 271.98625 |     380KB |
-| conv_vec_insitu(x, y) |  2.87ms |     3ms | 325.44200 |   115.9KB |
+| expression           |     min |  median |   itr/sec | mem_alloc |
+|:---------------------|--------:|--------:|----------:|----------:|
+| conv_nested(x, y)    | 60.75ms | 60.93ms |  16.39014 |    88.5KB |
+| conv_vec(x, y)       | 10.07ms | 11.03ms |  91.68888 |    34.6MB |
+| conv_fft(x, y)       |   3.6ms |  3.67ms | 271.37467 |     380KB |
+| conv_vec_byref(x, y) |  2.84ms |  2.96ms | 330.88211 |   115.9KB |

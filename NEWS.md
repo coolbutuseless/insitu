@@ -36,7 +36,7 @@
 * Bug fix: using xoshiro256++ as the RNG as it does not rely on uint128_t and 
   pakcage now builds on windows.
 * Vignette: References vignette to illustrate behaviour difference between copy-on-modify
-  and modification in-situ
+  and modification *by-reference*
 
 # insitu 0.1.0
 

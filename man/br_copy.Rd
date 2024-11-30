@@ -10,7 +10,7 @@ br_copy(x, y, n = NULL, xi = 1L, yi = 1L)
 \item{x}{numeric vector. This vector will be modified by-reference to 
 contain the result of the calculation}
 
-\item{y}{Either scalar numeric values or numeric vectors of the same 
+\item{y}{Either scalar numeric value or numeric vector of the same 
 length as \code{x}.}
 
 \item{n}{number of elements to copy. Default: NULL. This default requires

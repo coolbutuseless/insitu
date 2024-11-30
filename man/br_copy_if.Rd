@@ -10,7 +10,7 @@ br_copy_if(x, y, where)
 \item{x}{numeric vector. This vector will be modified by-reference to 
 contain the result of the calculation}
 
-\item{y}{Either scalar numeric values or numeric vectors of the same 
+\item{y}{Either scalar numeric value or numeric vector of the same 
 length as \code{x}.}
 
 \item{where}{numeric vector the same length as \code{x} containing logical

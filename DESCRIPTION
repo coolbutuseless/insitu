@@ -1,6 +1,6 @@
 Package: insitu
 Type: Package
-Title: In-Situ Operations on Numeric Vectors
+Title: By-Reference Routiners for Numeric Vectors
 Version: 0.1.3.9006
 Authors@R: c(
     person("Mike", "Cheng", role = c("aut", "cre", 'cph'), email = "mikefc@coolbutuseless.com")
@@ -8,7 +8,7 @@ Authors@R: c(
 Maintainer: Mike Cheng <mikefc@coolbutuseless.com>
 URL: https://github.com/coolbutuseless/insitu
 BugReports: https://github.com/coolbutuseless/insitu/issues
-Description: Functions for in-situ calculation with numeric vectors.
+Description: Functions for by-reference calculation with numeric vectors.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

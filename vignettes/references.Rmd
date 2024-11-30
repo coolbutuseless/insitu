@@ -22,13 +22,13 @@ library(insitu)
 
 # Introduction
 
-A major issue with in-situ modification is that it pays no mind to other 
+A major issue with *by-reference* modification is that it pays no mind to other 
 objects which may point to the object to be changed.
 
 Usually when you modify an object in R, it is copied.  This copy means that
 other variables will still point to the original and remain unchanged.
 
-When modifying in-situ, R is not informed that the contents are changed, no copy
+When modifying *by-reference*, R is not informed that the contents are changed, no copy
 is made so all variables which pointed to the original object remain as-is, 
 but the memory that they pointed to has changed.
 
@@ -81,13 +81,13 @@ rlang::obj_address(y)
 
 
 
-# `insitu` - modification in-place
+# Modification in-place
 
-In the following `insitu` 
+In the following code 
 
 * an object `x` is created 
 * when first assigned to a new object `y`, both objects point to the exact same object in memory.
-* when `y` is *modified in-situ*, it still points to the same memory as before.
+* when `y` is modified *by-reference*, it still points to the same memory as before.
 * `x` and `y` still point to the same memory, which has changed
 
 ```{r}
@@ -107,7 +107,7 @@ rlang::obj_address(y)
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Mutate 'y' - which means R will copy it and then change it
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-insitu::br_copy(y, 1, n = 1, xi = 2)
+br_copy(y, 1, n = 1, xi = 2)
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # x has changed because the underlying memory has changed!

@@ -35,7 +35,7 @@
 \alias{br_log2}
 \alias{br_log10}
 \alias{br_is_na}
-\title{Math ops}
+\title{Math operations taking only a single input vector}
 \usage{
 br_abs(x)
 
@@ -115,7 +115,7 @@ contain the result of the calculation}
 \code{x} argument is modified by-reference and returned invisibly
 }
 \description{
-Math ops
+Math operations taking only a single input vector
 }
 \examples{
 x <- c(-1, 0, 1)

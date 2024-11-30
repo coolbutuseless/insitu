@@ -40,14 +40,14 @@ that the number of garbage collection operations is also reduced.
     
 ## What's in the box
 
-* `insitu` includes most of the standard math operations seen in R.
+* `{insitu}` includes most of the standard math operations seen in R.
 * Functions have a `br_` prefix - standing for "**b**y **r**eference".
 * The first argument to a function will be overwritten with the result.
 * Each R function returns the modified vector invisibly
     * the result does not to be assigned back into this variable.
     * the result should not be assigned into a different variable.
 
-| insitu                                  | description                                                            |
+| Function                                  | Description                                                            |
 |-----------------------------------------|------------------------------------------------------------------------|
 | `alloc_n()`, `alloc_along()`   | Create new vectors **without** zero-ing contents. Faster than `numeric()` |
 | `br_zero()`                   | fill vector with zeros                                                 |
@@ -86,9 +86,9 @@ remotes::install_github('coolbutuseless/insitu')
 ```
 
 
-## In-situ arithmetic
+## Operations *by-reference*
 
-In-situ operations on vectors can be performed using the `br_*()` functions 
+*By-reference* operations on vectors can be performed using the `br_*()` functions 
 in this package.
 
 ```{r}
@@ -144,7 +144,7 @@ bm <- bench::mark(
     x
   },
   
-  insitu = with(by_reference, {
+  by_reference = with(by_reference, {
     for (i in seq(Niter)) {
       x <- x * y + z
       x <- sqrt(x)
@@ -172,7 +172,7 @@ a for-loop and element-by-element access.
 When a basic vectorisation is applied (`conv_vec()`) performance is expected to
 increase.
 
-A third version of the function (`conv_vec_insitu()`) replaces the code with functions
+A third version of the function (`conv_vec_byref()`) replaces the code with functions
 from `{insitu}`.
 
 ```{r}
@@ -209,9 +209,9 @@ conv_vec <- function(x,y) {
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Vectorised solution with in-situ operations
+# Vectorised solution with by-reference routines
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-conv_vec_insitu <- function(x,y) {
+conv_vec_byref <- function(x,y) {
   nx <- length(x)
   ny <- length(y)
   sy <- seq_along(y) - 1L
@@ -246,7 +246,7 @@ bm <- bench::mark(
   conv_nested(x, y),
   conv_vec(x, y),
   conv_fft(x, y),
-  conv_vec_insitu(x, y)
+  conv_vec_byref(x, y)
 )[, 1:5] 
 
 knitr::kable(bm)

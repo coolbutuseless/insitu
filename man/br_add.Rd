@@ -18,7 +18,7 @@
 \alias{br_idiv}
 \alias{br_max}
 \alias{br_min}
-\title{In-situ ops}
+\title{Math operations taking two arguments}
 \usage{
 br_add(x, y)
 
@@ -58,14 +58,14 @@ br_min(x, y)
 \item{x}{numeric vector. This vector will be modified by-reference to 
 contain the result of the calculation}
 
-\item{y}{Either scalar numeric values or numeric vectors of the same 
+\item{y}{Either scalar numeric value or numeric vector of the same 
 length as \code{x}.}
 }
 \value{
 \code{x} argument is modified by-reference and returned invisibly
 }
 \description{
-In-situ ops
+Math operations taking two arguments
 }
 \examples{
 # x <- x + y

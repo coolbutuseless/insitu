@@ -2,7 +2,7 @@
 % Please edit documentation in R/insitu-sort.R
 \name{br_sort}
 \alias{br_sort}
-\title{Sort a vector of real values in-situ}
+\title{Sort a numeric vector by-reference}
 \usage{
 br_sort(x, decreasing = FALSE)
 }
@@ -16,7 +16,7 @@ contain the result of the calculation}
 \code{x} argument is modified by-reference and returned invisibly
 }
 \description{
-Sort a vector of real values in-situ
+Sort a numeric vector by-reference
 }
 \examples{
 set.seed(1)

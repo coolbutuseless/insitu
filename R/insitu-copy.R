@@ -4,7 +4,7 @@
 #' Copy all or part of one vector into another
 #' 
 #' @inheritParams br_fmadd
-#' @param y Either scalar numeric values or numeric vectors of the same 
+#' @param y Either scalar numeric value or numeric vector of the same 
 #'       length as \code{x}.
 #' @param n number of elements to copy. Default: NULL. This default requires
 #'        \code{x} and \code{y} to be the same length, and simply copies the full vector
