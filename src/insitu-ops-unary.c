@@ -16,7 +16,7 @@
 
 #define UNROLL 4
 
-// SEXP ins_sqrt_(SEXP x_) {
+// SEXP br_sqrt_(SEXP x_) {
 //   double *x = REAL(x_);
 //     
 //     int i = 0;
@@ -35,7 +35,7 @@
 
 
 #define INSUNARYOP(nm, unaryop, startidx)                      \
-SEXP ins_##nm##_(SEXP x_) {                                    \
+SEXP br_##nm##_(SEXP x_) {                                    \
   double *x = REAL(x_);                                        \
                                                                \
   int i = startidx;                                            \
@@ -59,13 +59,13 @@ INSUNARYOP(sqrt ,  sqrt(*x), 0)
 INSUNARYOP(floor, floor(*x), 0)
 INSUNARYOP(ceil ,  ceil(*x), 0)
 INSUNARYOP(trunc, trunc(*x), 0)
-INSUNARYOP(round, round(*x), 0)
+// INSUNARYOP(round, round(*x), 0)
 INSUNARYOP(exp  ,   exp(*x), 0)
 INSUNARYOP(log  ,   log(*x), 0)
 INSUNARYOP(cos  ,   cos(*x), 0)
 INSUNARYOP(sin  ,   sin(*x), 0)
 INSUNARYOP(tan  ,   tan(*x), 0)
-INSUNARYOP(not  ,     !(*x), 0)
+INSUNARYOP(not  , (double)(*x == 0), 0)
 INSUNARYOP(expm1, expm1(*x), 0)
 INSUNARYOP(log1p, log1p(*x), 0)
 INSUNARYOP(acos ,  acos(*x), 0)

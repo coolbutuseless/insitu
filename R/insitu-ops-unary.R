@@ -2,208 +2,215 @@
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' Math ops
-#' @param x vector
+#' @inheritParams br_fmadd
+#' @param digits number of decimal places
+#' @return \code{x} argument is modified by-reference and returned invisibly
+#' @examples
+#' x <- c(-1, 0, 1)
+#' br_abs(x)
+#' x
+#' 
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_abs   <- function(x) { invisible(.Call(ins_abs_  , x)) }
+br_abs   <- function(x) { invisible(.Call(br_abs_  , x)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_abs
+#' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_sqrt  <- function(x) { invisible(.Call(ins_sqrt_ , x)) }
+br_sqrt  <- function(x) { invisible(.Call(br_sqrt_ , x)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_abs
+#' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_floor <- function(x) { invisible(.Call(ins_floor_, x)) }
+br_floor <- function(x) { invisible(.Call(br_floor_, x)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_abs
+#' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_ceil  <- function(x) { invisible(.Call(ins_ceil_ , x)) }
+br_ceil  <- function(x) { invisible(.Call(br_ceil_ , x)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_abs
+#' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_trunc <- function(x) { invisible(.Call(ins_trunc_, x)) }
+br_trunc <- function(x) { invisible(.Call(br_trunc_, x)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_abs
+#' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_round <- function(x) { invisible(.Call(ins_round_, x)) }
+br_round <- function(x, digits) { invisible(.Call(br_round_, x, digits)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_abs
+#' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_exp   <- function(x) { invisible(.Call(ins_exp_  , x)) }
+br_exp   <- function(x) { invisible(.Call(br_exp_  , x)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_abs
+#' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_log   <- function(x) { invisible(.Call(ins_log_  , x)) }
+br_log   <- function(x) { invisible(.Call(br_log_  , x)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_abs
+#' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_cos   <- function(x) { invisible(.Call(ins_cos_  , x)) }
+br_cos   <- function(x) { invisible(.Call(br_cos_  , x)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_abs
+#' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_sin   <- function(x) { invisible(.Call(ins_sin_  , x)) }
+br_sin   <- function(x) { invisible(.Call(br_sin_  , x)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_abs
+#' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_tan   <- function(x) { invisible(.Call(ins_tan_  , x)) }
+br_tan   <- function(x) { invisible(.Call(br_tan_  , x)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_abs
+#' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_not   <- function(x) { invisible(.Call(ins_not_  , x)) }
+br_not   <- function(x) { invisible(.Call(br_not_  , x)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_abs
+#' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_expm1 <- function(x) { invisible(.Call(ins_expm1_, x)) }
+br_expm1 <- function(x) { invisible(.Call(br_expm1_, x)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_abs
+#' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_log1p <- function(x) { invisible(.Call(ins_log1p_, x)) }
+br_log1p <- function(x) { invisible(.Call(br_log1p_, x)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_abs
+#' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_acos  <- function(x) { invisible(.Call(ins_acos_ , x)) }
+br_acos  <- function(x) { invisible(.Call(br_acos_ , x)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_abs
+#' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_asin  <- function(x) { invisible(.Call(ins_asin_ , x)) }
+br_asin  <- function(x) { invisible(.Call(br_asin_ , x)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_abs
+#' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_atan  <- function(x) { invisible(.Call(ins_atan_ , x)) }
+br_atan  <- function(x) { invisible(.Call(br_atan_ , x)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_abs
+#' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_acosh <- function(x) { invisible(.Call(ins_acosh_, x)) }
+br_acosh <- function(x) { invisible(.Call(br_acosh_, x)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_abs
+#' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_asinh <- function(x) { invisible(.Call(ins_asinh_, x)) }
+br_asinh <- function(x) { invisible(.Call(br_asinh_, x)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_abs
+#' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_atanh <- function(x) { invisible(.Call(ins_atanh_, x)) }
+br_atanh <- function(x) { invisible(.Call(br_atanh_, x)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_abs
+#' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_cosh  <- function(x) { invisible(.Call(ins_cosh_ , x)) }
+br_cosh  <- function(x) { invisible(.Call(br_cosh_ , x)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_abs
+#' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_sinh  <- function(x) { invisible(.Call(ins_sinh_ , x)) }
+br_sinh  <- function(x) { invisible(.Call(br_sinh_ , x)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_abs
+#' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_tanh  <- function(x) { invisible(.Call(ins_tanh_ , x)) }
+br_tanh  <- function(x) { invisible(.Call(br_tanh_ , x)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_abs
+#' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_cospi  <- function(x) { invisible(.Call(ins_cospi_ , x)) }
+br_cospi  <- function(x) { invisible(.Call(br_cospi_ , x)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_abs
+#' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_sinpi  <- function(x) { invisible(.Call(ins_sinpi_ , x)) }
+br_sinpi  <- function(x) { invisible(.Call(br_sinpi_ , x)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_abs
+#' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_tanpi  <- function(x) { invisible(.Call(ins_tanpi_ , x)) }
+br_tanpi  <- function(x) { invisible(.Call(br_tanpi_ , x)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_abs
+#' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_sign   <- function(x) { invisible(.Call(ins_sign_  , x)) }
+br_sign   <- function(x) { invisible(.Call(br_sign_  , x)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_abs
+#' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_cumsum  <- function(x) { invisible(.Call(ins_cumsum_ , x)) }
+br_cumsum  <- function(x) { invisible(.Call(br_cumsum_ , x)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_abs
+#' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_cumprod <- function(x) { invisible(.Call(ins_cumprod_, x)) }
+br_cumprod <- function(x) { invisible(.Call(br_cumprod_, x)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_abs
+#' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_cummax  <- function(x) { invisible(.Call(ins_cummax_ , x)) }
+br_cummax  <- function(x) { invisible(.Call(br_cummax_ , x)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_abs
+#' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_cummin  <- function(x) { invisible(.Call(ins_cummin_ , x)) }
+br_cummin  <- function(x) { invisible(.Call(br_cummin_ , x)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_abs
+#' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_log2  <- function(x) { invisible(.Call(ins_log2_ , x)) }
+br_log2  <- function(x) { invisible(.Call(br_log2_ , x)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_abs
+#' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_log10 <- function(x) { invisible(.Call(ins_log10_, x)) }
+br_log10 <- function(x) { invisible(.Call(br_log10_, x)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname ins_abs
+#' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_is_na <- function(x) { invisible(.Call(ins_is_na_, x)) }
+br_is_na <- function(x) { invisible(.Call(br_is_na_, x)) }
 
 
 
@@ -211,8 +218,8 @@ ins_is_na <- function(x) { invisible(.Call(ins_is_na_, x)) }
 if (FALSE) {
   
   x <- c(NA, 1)
-  ins_is_na(x)
-  ins_eq(x, 1)
+  br_is_na(x)
+  br_eq(x, 1)
   x
   
 }

@@ -5,6 +5,7 @@
 #include <Rdefines.h>
 
 #include <stdio.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <time.h>
 
@@ -15,7 +16,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 __uint128_t g_lehmer64_state;
 
-int random64_has_been_initialised = 0;
+bool random64_has_been_initialised = false;
 
 uint64_t lehmer64(void) {
   g_lehmer64_state *= 0xda942042e4dd58b5;
@@ -39,7 +40,7 @@ void random64_set_seed(void) {
     ((__uint128_t)(unif_rand() * INT_MAX) << 96);
 
   PutRNGstate();
-
+  random64_has_been_initialised = true;
 }
 
 

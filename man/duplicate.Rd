@@ -2,16 +2,21 @@
 % Please edit documentation in R/altrep.R
 \name{duplicate}
 \alias{duplicate}
-\title{Duplicate an object.  This has an added effect of turning an ALTREP object into a regular object}
+\title{Duplicate an R object}
 \usage{
 duplicate(x)
 }
 \arguments{
-\item{x}{object}
+\item{x}{Any R object}
 }
 \value{
 duplicate of the given object
 }
 \description{
-Duplicate an object.  This has an added effect of turning an ALTREP object into a regular object
+Duplicate an R object
+}
+\examples{
+x <- c(1, 2, 3)
+y <- duplicate(x)
+y
 }

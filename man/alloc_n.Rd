@@ -2,24 +2,31 @@
 % Please edit documentation in R/alloc.R
 \name{alloc_n}
 \alias{alloc_n}
-\alias{alloc_for}
+\alias{alloc_along}
 \title{Allocate a new numeric vector}
 \usage{
 alloc_n(n)
 
-alloc_for(x)
+alloc_along(x)
 }
 \arguments{
-\item{n}{length of new vector}
+\item{n}{length of new numeric vector}
 
-\item{x}{new vector will be the same length as this vector}
+\item{x}{vector used as template. New vector will be the same length as this vector}
 }
 \value{
-new vector of the required length
+new numeric vector of the required length. Note: This vector 
+        is \emph{not} initialized to zero.
 }
 \description{
 These functions are like \code{numeric()} except the contents of the vector
-are not initialized
+are not initialized.
+}
+\details{
+\describe{
+  \item{\code{alloc_n}}{Allocates a numeric vector which can hold 'n' values}
+  \item{\code{alloc_along}}{Allocates a numeric vector which can hold the same number of values as the given vector}
+}
 }
 \examples{
 alloc_n(10)

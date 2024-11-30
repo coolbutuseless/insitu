@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#define UNROLL 4
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // FMA with scalar 'a'
@@ -15,17 +16,15 @@
 SEXP fma_sa_(SEXP x_, SEXP a_, SEXP b_, double fa, double fb) {
   
   double *x = REAL(x_);
-  double  a = REAL(a_)[0] * fa;
+  double  a = asReal(a_) * fa;
   double *b = REAL(b_);
   
-#define UNROLL 4
   int i = 0;
   for (; i < length(x_) - (UNROLL - 1); i += UNROLL) {
     *x = fma(*x, a, fb * *b++); x++;
     *x = fma(*x, a, fb * *b++); x++;
     *x = fma(*x, a, fb * *b++); x++;
     *x = fma(*x, a, fb * *b++); x++;
-    // *x = *x * a + fb * *b++; x++;
   }
   for (; i< length(x_); i++) {
     *x = fma(*x, a, fb * *b++); x++;
@@ -41,16 +40,14 @@ SEXP fma_sb_(SEXP x_, SEXP a_, SEXP b_, double fa, double fb) {
   
   double *x = REAL(x_);
   double *a = REAL(a_);
-  double  b = REAL(b_)[0] * fb;
+  double  b = asReal(b_) * fb;
   
-#define UNROLL 4
   int i = 0;
   for (; i < length(x_) - (UNROLL - 1); i += UNROLL) {
     *x = fma(fa * *x, *a++, b); x++;
     *x = fma(fa * *x, *a++, b); x++;
     *x = fma(fa * *x, *a++, b); x++;
     *x = fma(fa * *x, *a++, b); x++;
-    // *x = fa * *x * *a++ + b; x++;
   }
   for (; i< length(x_); i++) {
     *x = fma(fa * *x, *a++, b); x++;
@@ -65,17 +62,15 @@ SEXP fma_sb_(SEXP x_, SEXP a_, SEXP b_, double fa, double fb) {
 SEXP fma_sab_(SEXP x_, SEXP a_, SEXP b_, double fa, double fb) {
   
   double *x = REAL(x_);
-  double  a = REAL(a_)[0] * fa;
-  double  b = REAL(b_)[0] * fb;
+  double  a = asReal(a_) * fa;
+  double  b = asReal(b_) * fb;
   
-#define UNROLL 4
   int i = 0;
   for (; i < length(x_) - (UNROLL - 1); i += UNROLL) {
     *x = fma(*x, a, b); x++;
     *x = fma(*x, a, b); x++;
     *x = fma(*x, a, b); x++;
     *x = fma(*x, a, b); x++;
-    // *x = *x * a + b; x++;
   }
   for (; i< length(x_); i++) {
     *x = fma(*x, a, b); x++;
@@ -95,14 +90,12 @@ SEXP fma_vxab_(SEXP x_, SEXP a_, SEXP b_, double fa, double fb) {
   double *a = REAL(a_);
   double *b = REAL(b_);
   
-#define UNROLL 4
   int i = 0;
   for (; i < length(x_) - (UNROLL - 1); i += UNROLL) {
     *x = fma(fa * *x, *a++, fb * *b++); x++;
     *x = fma(fa * *x, *a++, fb * *b++); x++;
     *x = fma(fa * *x, *a++, fb * *b++); x++;
     *x = fma(fa * *x, *a++, fb * *b++); x++;
-    // *x = fa * *x * *a++ + fb * *b++; x++;
   }
   for (; i< length(x_); i++) {
     *x = fma(fa * *x, *a++, fb * *b++); x++;
@@ -133,7 +126,7 @@ SEXP fmadd_(SEXP x_, SEXP a_, SEXP b_) {
     return fma_sab_(x_, a_, b_, 1, 1);
   }
   
-  error("fmadd(): Lengths not compatible: x = %.0f, a = %.0f, b = %.0f", (double)lx, (double)la, (double)lb);
+  error("br_fmadd(): Lengths not compatible: x = %.0f, a = %.0f, b = %.0f", (double)lx, (double)la, (double)lb);
 }
 
 
@@ -158,7 +151,7 @@ SEXP fmsub_(SEXP x_, SEXP a_, SEXP b_) {
     return fma_sab_(x_, a_, b_, 1, -1);
   }
   
-  error("fmsub(): Lengths not compatible: x = %.0f, a = %.0f, b = %.0f", (double)lx, (double)la, (double)lb);
+  error("br_fmsub(): Lengths not compatible: x = %.0f, a = %.0f, b = %.0f", (double)lx, (double)la, (double)lb);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -180,7 +173,7 @@ SEXP fnmadd_(SEXP x_, SEXP a_, SEXP b_) {
     return fma_sab_(x_, a_, b_, -1, 1);
   }
   
-  error("fnmadd(): Lengths not compatible: x = %.0f, a = %.0f, b = %.0f", (double)lx, (double)la, (double)lb);
+  error("br_fnmadd(): Lengths not compatible: x = %.0f, a = %.0f, b = %.0f", (double)lx, (double)la, (double)lb);
 }
 
 
@@ -205,5 +198,5 @@ SEXP fnmsub_(SEXP x_, SEXP a_, SEXP b_) {
     return fma_sab_(x_, a_, b_, -1, -1);
   }
   
-  error("fnmsub(): Lengths not compatible: x = %.0f, a = %.0f, b = %.0f", (double)lx, (double)la, (double)lb);
+  error("br_fnmsub(): Lengths not compatible: x = %.0f, a = %.0f, b = %.0f", (double)lx, (double)la, (double)lb);
 }

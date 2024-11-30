@@ -1,7 +1,7 @@
 
 
 
-test_that("ins_copy works", {
+test_that("br_copy works", {
 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Copy full vectors of the same length
@@ -10,7 +10,7 @@ test_that("ins_copy works", {
   x <- rep(1, N)
   y <- as.numeric(seq(N))
   
-  ins_copy(x, y)
+  br_copy(x, y)
   expect_equal(x, y)
 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -21,7 +21,7 @@ test_that("ins_copy works", {
   y <- as.numeric(seq(N - 1))
   
   expect_error(
-    ins_copy(x, y),
+    br_copy(x, y),
     "copy exceeds size"
   )
   
@@ -32,7 +32,7 @@ test_that("ins_copy works", {
   x <- rep(1, N)
   y <- as.numeric(seq(N - 5))
   
-  ins_copy(x, y, n = length(y))
+  br_copy(x, y, n = length(y))
   expect_equal(
     x, 
     c(1, 2, 3, 4, 5,  1, 1, 1, 1, 1)
@@ -47,7 +47,7 @@ test_that("ins_copy works", {
   x <- rep(1, N)
   y <- as.numeric(seq(N - 5))
   
-  ins_copy(x, y, n = length(y), xi = 6)
+  br_copy(x, y, n = length(y), xi = 6)
   expect_equal(
     x, 
     c(1, 1, 1, 1, 1,  1, 2, 3, 4, 5)
@@ -61,7 +61,7 @@ test_that("ins_copy works", {
   x <- rep(1, N)
   y <- as.numeric(seq(N - 5))
   
-  ins_copy(x, y, n = length(y) - 1, xi = 6, yi = 2)
+  br_copy(x, y, n = length(y) - 1, xi = 6, yi = 2)
   expect_equal(
     x, 
     c(1, 1, 1, 1, 1,  2, 3, 4, 5,   1)
@@ -74,7 +74,7 @@ test_that("ins_copy works", {
   x <- rep(1, N)
   y <- 2
   
-  ins_copy(x, y, n = 3)
+  br_copy(x, y, n = 3)
   expect_equal(
     x, 
     c(2, 2, 2, 1, 1,  1, 1, 1, 1, 1)
@@ -87,7 +87,7 @@ test_that("ins_copy works", {
   x <- rep(1, N)
   y <- 2
   
-  ins_copy(x, y, n = 3, xi = 3)
+  br_copy(x, y, n = 3, xi = 3)
   expect_equal(
     x, 
     c(1, 1, 2, 2, 2,  1, 1, 1, 1, 1)
@@ -100,10 +100,22 @@ test_that("ins_copy works", {
   x <- rep(1, N)
   y <- 2
   
-  ins_copy(x, y)
+  br_copy(x, y)
   expect_equal(
     x, 
     c(2, 2, 2, 2, 2,  2, 2, 2, 2, 2)
+  )
+  
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Negative indices
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  x <- as.numeric(seq(N))
+  y <- as.numeric(seq(N))
+  
+  br_copy(x, y, n = 2, xi = -2, yi = -5)
+  expect_equal(
+    x, 
+    c(1, 2, 3, 4, 5,   6, 7, 8, 6, 7)
   )
   
   

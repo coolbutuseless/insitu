@@ -107,7 +107,7 @@ rlang::obj_address(y)
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Mutate 'y' - which means R will copy it and then change it
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-insitu::ins_copy(y, 1, n = 1, xi = 2)
+insitu::br_copy(y, 1, n = 1, xi = 2)
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # x has changed because the underlying memory has changed!

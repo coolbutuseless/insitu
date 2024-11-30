@@ -3,11 +3,17 @@
 #' Allocate a new numeric vector 
 #'
 #' These functions are like \code{numeric()} except the contents of the vector
-#' are not initialized
+#' are not initialized.
 #' 
-#' @param n length of new vector
-#' @param x new vector will be the same length as this vector
-#' @return new vector of the required length
+#' \describe{
+#'   \item{\code{alloc_n}}{Allocates a numeric vector which can hold 'n' values}
+#'   \item{\code{alloc_along}}{Allocates a numeric vector which can hold the same number of values as the given vector}
+#' }
+#' 
+#' @param n length of new numeric vector
+#' @param x vector used as template. New vector will be the same length as this vector
+#' @return new numeric vector of the required length. Note: This vector 
+#'         is \emph{not} initialized to zero.
 #' @examples
 #' alloc_n(10)
 #' @export
@@ -21,32 +27,24 @@ alloc_n <- function(n) {
 #' @rdname alloc_n
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-alloc_for <- function(x) {
-  .Call(alloc_for_, x)
+alloc_along <- function(x) {
+  .Call(alloc_along_, x)
 }
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' Fill with zeros
-#' @param x vector
-#' @return modified vector. invisibly
+#' 
+#' @inheritParams br_fmadd
+#' 
+#' @return \code{x} argument is modified by-reference and returned invisibly
+#' @examples
+#' x <- as.numeric(1:10)
+#' br_zero(x)
+#' x
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ins_zero <- function(x) {
-  invisible(.Call(ins_zero_, x))
+br_zero <- function(x) {
+  invisible(.Call(br_zero_, x))
 }
-
-
-if (FALSE) {
-  
-  N <- 100000
-  bench::mark(
-    alloc_n(N),
-    numeric(N),
-    check = TRUE
-  )
-  
-}
-
-
 

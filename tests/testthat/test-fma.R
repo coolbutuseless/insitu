@@ -1,5 +1,5 @@
 
-test_that("fmadd works", {
+test_that("br_fmadd works", {
   
   # setup
   set.seed(1)
@@ -10,28 +10,28 @@ test_that("fmadd works", {
   x <- duplicate(xorig)
   a <- runif(N)
   b <- runif(N)
-  fmadd(x, a, b)  
+  br_fmadd(x, a, b)  
   expect_equal(x, xorig * a + b)
   
   # Scalar a
   x <- duplicate(xorig)
-  fmadd(x, 2, b)  
+  br_fmadd(x, 2, b)  
   expect_equal(x, xorig * 2 + b)
   
   # Scalar b
   x <- duplicate(xorig)
-  fmadd(x, a, 3)  
+  br_fmadd(x, a, 3)  
   expect_equal(x, xorig * a + 3)
   
   # Scalar a, b
   x <- duplicate(xorig)
-  fmadd(x, 2, 3)  
+  br_fmadd(x, 2, 3)  
   expect_equal(x, xorig * 2 + 3)
 })
 
 
 
-test_that("fmsub works", {
+test_that("br_fmsub works", {
   
   # setup
   set.seed(1)
@@ -42,28 +42,28 @@ test_that("fmsub works", {
   x <- duplicate(xorig)
   a <- runif(N)
   b <- runif(N)
-  fmsub(x, a, b)  
+  br_fmsub(x, a, b)  
   expect_equal(x, xorig * a - b)
   
   # Scalar a
   x <- duplicate(xorig)
-  fmsub(x, 2, b)  
+  br_fmsub(x, 2, b)  
   expect_equal(x, xorig * 2 - b)
   
   # Scalar b
   x <- duplicate(xorig)
-  fmsub(x, a, 3)  
+  br_fmsub(x, a, 3)  
   expect_equal(x, xorig * a - 3)
   
   # Scalar a, b
   x <- duplicate(xorig)
-  fmsub(x, 2, 3)  
+  br_fmsub(x, 2, 3)  
   expect_equal(x, xorig * 2 - 3)
 })
 
 
 
-test_that("fnmadd works", {
+test_that("br_fnmadd works", {
   
   # setup
   set.seed(1)
@@ -74,28 +74,28 @@ test_that("fnmadd works", {
   x <- duplicate(xorig)
   a <- runif(N)
   b <- runif(N)
-  fnmadd(x, a, b)  
+  br_fnmadd(x, a, b)  
   expect_equal(x, -xorig * a + b)
   
   # Scalar a
   x <- duplicate(xorig)
-  fnmadd(x, 2, b)  
+  br_fnmadd(x, 2, b)  
   expect_equal(x, -xorig * 2 + b)
   
   # Scalar b
   x <- duplicate(xorig)
-  fnmadd(x, a, 3)  
+  br_fnmadd(x, a, 3)  
   expect_equal(x, -xorig * a + 3)
   
   # Scalar a, b
   x <- duplicate(xorig)
-  fnmadd(x, 2, 3)  
+  br_fnmadd(x, 2, 3)  
   expect_equal(x, -xorig * 2 + 3)
 })
 
 
 
-test_that("fnmsub works", {
+test_that("br_fnmsub works", {
   
   # setup
   set.seed(1)
@@ -106,22 +106,22 @@ test_that("fnmsub works", {
   x <- duplicate(xorig)
   a <- runif(N)
   b <- runif(N)
-  fnmsub(x, a, b)  
+  br_fnmsub(x, a, b)  
   expect_equal(x, -xorig * a - b)
   
   # Scalar a
   x <- duplicate(xorig)
-  fnmsub(x, 2, b)  
+  br_fnmsub(x, 2, b)  
   expect_equal(x, -xorig * 2 - b)
   
   # Scalar b
   x <- duplicate(xorig)
-  fnmsub(x, a, 3)  
+  br_fnmsub(x, a, 3)  
   expect_equal(x, -xorig * a - 3)
   
   # Scalar a, b
   x <- duplicate(xorig)
-  fnmsub(x, 2, 3)  
+  br_fnmsub(x, 2, 3)  
   expect_equal(x, -xorig * 2 - 3)
 })
 

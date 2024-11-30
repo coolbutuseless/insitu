@@ -21,24 +21,25 @@ number of garbage collection operations is also reduced.
 ## What’s in the box
 
 - `insitu` includes most of the standard math operations seen in R.
-- Functions have a `ins_` prefix.
+- Functions have a `br_` prefix.
 - The first argument to a function will be overwritten with the result.
 - Each R function returns the modified vector invisibly - the result
   does not need to be assigned into a variable.
 
 | insitu | description |
 |----|----|
-| `alloc_n()`, `alloc_for()` | Create new vectors **without** zero-ing contents. Faster than `numeric()` |
-| `ins_zero()` | fill vector with zeros |
-| fmadd, fmsub, fnmadd, fnmsub | Fused multiply add |
-| ins_runif(x, lower, upper) | Fill vector with uniform random numbers |
-| ins_reverse(x) | Reverse vector |
-| ins_shuffle(x) | Shuffle the elements of a vector |
-| ins_sort(x) | Sort the elements of a vector |
-| ins_copy(x, y, n, xi, yi, n) | copy ‘n’ elements from ‘y’ into ‘x’ starting at ‘xi’ and ‘yi’ |
-| ins_copy_if(x, y, lgl) | copy ‘y’ into ‘x’ where `lgl != 0` |
-| `ins_abs()`, `ins_sqrt()`,`ins_floor()`,`ins_ceil()`, `ins_trunc()`, `ins_round()`, `ins_exp()`, `ins_log()`, `ins_cos()`, `ins_sin()`, `ins_tan()`, `ins_not()`, `ins_expm1()`, `ins_log1p()`, `ins_acos()`,`ins_asin()`, `ins_atan()`,`ins_acosh()`,`ins_asinh()`,`ins_atanh()`,`ins_cosh()`, `ins_sinh()`,`ins_tanh()`, `ins_sign()`, `ins_cospi()`, `ins_sinpi()`, `ins_tanpi()`, `ins_cumsum()`, `ins_cumprod()`, `ins_cummax()`, `ins_cummin()`, `ins_log2()`, `ins_log10()`, `ins_is_na()` | Standard single argument math operations |
-| `ins_add()`, `ins_sub()`, `ins_mul()`, `ins_div()`, `ins_eq()`, `ins_ne()`, `ins_lt()`, `ins_le()`, `ins_gt()`, `ins_ge()`, `ins_and()`, `ins_or()`, `ins_rem()`, `ins_idiv()`, `ins_max()`, `ins_min()`, `ins_hypot()` | Standard two-argument math operations |
+| `alloc_n()`, `alloc_along()` | Create new vectors **without** zero-ing contents. Faster than `numeric()` |
+| `br_zero()` | fill vector with zeros |
+| `br_fmadd()`, `br_fmsub()`, `br_fnmadd()`, `br_fnmsub()` | Fused multiply add (and variants) |
+| `br_runif(x, lower = 0, upper = 1)` | Fill vector with uniform random numbers |
+| `br_rev(x)` | Reverse vector |
+| `br_shuffle(x)` | Shuffle the elements of a vector |
+| `br_sort(x)` | Sort the elements of a vector |
+| `br_copy(x, y, n, xi, yi)` | copy ‘n’ elements from ‘y’ into ‘x’ starting at ‘xi’ and ‘yi’ |
+| `br_fill_seq(x, from, to, step)` | Fill vector with a sequence |
+| `br_copy_if(x, y, lgl)` | copy ‘y’ into ‘x’ where `lgl != 0` |
+| `br_abs()`, `br_sqrt()`,`br_floor()`,`br_ceil()`, `br_trunc()`, `br_round()`, `br_exp()`, `br_log()`, `br_cos()`, `br_sin()`, `br_tan()`, `br_not()`, `br_expm1()`, `br_log1p()`, `br_acos()`,`br_asin()`, `br_atan()`,`br_acosh()`,`br_asinh()`,`br_atanh()`,`br_cosh()`, `br_sinh()`,`br_tanh()`, `br_sign()`, `br_cospi()`, `br_sinpi()`, `br_tanpi()`, `br_cumsum()`, `br_cumprod()`, `br_cummax()`, `br_cummin()`, `br_log2()`, `br_log10()`, `br_is_na()` | Standard single argument math operations |
+| `br_add()`, `br_sub()`, `br_mul()`, `br_div()`, `br_eq()`, `br_ne()`, `br_lt()`, `br_le()`, `br_gt()`, `br_ge()`, `br_and()`, `br_or()`, `br_rem()`, `br_idiv()`, `br_max()`, `br_min()`, `br_hypot()` | Standard two-argument math operations |
 
 #### RNG
 
@@ -47,13 +48,6 @@ number of garbage collection operations is also reduced.
 
 This RNG is fast, but it may have slightly different properties compared
 to R’s built-in random number generator.
-
-#### ALTREP utils
-
-- `is_altrep(x)` tests whether an object is an ALTREP
-- `is_mutable(x)` tests whether an object is mutable by checking its
-  reference count
-- `get_refcnt(x)` returns the reference count for the object
 
 ## Installation
 
@@ -67,17 +61,19 @@ remotes::install_github('coolbutuseless/insitu')
 
 ## In-situ arithmetic
 
-In-situ operations on vectors can be performed using the `ins_*()`
+In-situ operations on vectors can be performed using the `br_*()`
 functions in this package.
 
 ``` r
 x <- as.numeric(1:10)
 y <- as.numeric(1:10)
-ins_add(x, y) # overwrite 'x' with 'x + y'
+br_add(x, y) # overwrite 'x' with 'x + y'
+br_sqrt(x)
 x
 ```
 
-    #>  [1]  2  4  6  8 10 12 14 16 18 20
+    #>  [1] 1.414214 2.000000 2.449490 2.828427 3.162278 3.464102 3.741657 4.000000
+    #>  [9] 4.242641 4.472136
 
 Using the `insitu` helper, it is also possible to write operations in
 more idiomatic R
@@ -85,7 +81,7 @@ more idiomatic R
 ``` r
 x <- as.numeric(1:10)
 y <- as.numeric(1:10)
-with(insitu, {
+with(by_reference, {
   x + y
   sqrt(x)
 })
@@ -101,7 +97,7 @@ redundant.
 ``` r
 x <- as.numeric(1:10)
 y <- as.numeric(1:10)
-with(insitu, {
+with(by_reference, {
   x <- x + y
   x <- sqrt(x)
 })
@@ -118,14 +114,14 @@ example taken from a presentation [“Byte Code Compiler Recent Work on R
 Runtime”](https://www.r-project.org/dsc/2017/slides/tomas_bc.pdf) by
 Tomas Kalibera with Luke Tierney Jan Vitek.
 
-The initial `conv_nested()` function is an example of how badly R
-behaves with a for-loop and element-by-element access.
+The initial `conv_nested()` function is an example of how badly R can
+behave with a for-loop and element-by-element access.
 
 When a basic vectorisation is applied (`conv_vec()`) performance is
 expected to increase.
 
-Using in-place operations (`conv_vec_insitu()`) replaces the code with
-functions from `{insitu}`.
+A third version of the function (`conv_vec_insitu()`) replaces the code
+with functions from `{insitu}`.
 
 ``` r
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -171,10 +167,10 @@ conv_vec_insitu <- function(x,y) {
   ty <- duplicate(y)
   tz <- duplicate(y)
   for(i in seq(length = nx)) {
-    ins_copy(ty, y)
-    ins_copy(tz, z, n = ny, xi = 1, yi = i)
-    fmadd(ty, x[[i]], tz)
-    ins_copy(z, ty, n = ny, xi = i)
+    br_copy(ty, y)
+    br_copy(tz, z, n = ny, xi = 1, yi = i)
+    br_fmadd(ty, x[[i]], tz)
+    br_copy(z, ty, n = ny, xi = i)
   }
   z
 }
@@ -195,89 +191,11 @@ bm <- bench::mark(
 knitr::kable(bm)
 ```
 
-| expression            |      min |   median |    itr/sec | mem_alloc |
-|:----------------------|---------:|---------:|-----------:|----------:|
-| conv_nested(x, y)     | 103.59ms | 103.74ms |   9.636456 |    88.6KB |
-| conv_vec(x, y)        |  10.55ms |  10.93ms |  84.786892 |    34.6MB |
-| conv_vec_insitu(x, y) |   7.42ms |   7.52ms | 122.263238 |   118.2KB |
-
-## Sort
-
-`ins_sort()` is analogous to `sort()` but sorts values in the current
-vector rather than creating a new one.
-
-``` r
-x <- as.numeric(sample(10))
-x
-```
-
-    #>  [1]  3  2  6  4  5  7  1  9  8 10
-
-``` r
-ins_sort(x)
-x
-```
-
-    #>  [1]  1  2  3  4  5  6  7  8  9 10
-
-## Shuffle
-
-`ins_shuffle()` is analogous to `sample()` but shuffles values in the
-current vector rather than creating a new one.
-
-``` r
-set.seed(1)
-x <- c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
-ins_shuffle(x)
-x
-```
-
-    #>  [1] 7 3 1 2 8 5 4 6 9 0
-
-## Reverse
-
-`ins_reverse()` is analogous to `rev()` but reverses values in the
-current vector rather than creating a new one.
-
-``` r
-x <- c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
-ins_reverse(x)
-x
-```
-
-    #>  [1] 9 8 7 6 5 4 3 2 1 0
-
-## Fill with random
-
-`ins_runif()` is analogous to `runif()` but generates values in the
-current vector rather than creating a new one.
-
-``` r
-set.seed(1)
-x <- numeric(10)
-ins_runif(x, 10, 15)
-x
-```
-
-    #>  [1] 12.71450 14.52799 14.93769 13.86312 10.52249 11.69022 12.32248 10.53172
-    #>  [9] 12.79174 12.46911
-
-## Fused multiply add (FMA)
-
-- `fmadd(x, a, b)` in-situ `x * a + b`
-- `fmsub(x, a, b)` in-situ `x * a - b`
-- `fnmadd(x, a, b)` in-situ `-x * a + b`
-- `fnmsub(x, a, b)` in-situ `-x * a - b`
-
-``` r
-x <- as.numeric(1:10)
-a <- 2
-b <- as.numeric(1:10)
-fmadd(x, a, b)
-x
-```
-
-    #>  [1]  3  6  9 12 15 18 21 24 27 30
+| expression            |     min |  median |   itr/sec | mem_alloc |
+|:----------------------|--------:|--------:|----------:|----------:|
+| conv_nested(x, y)     | 60.66ms | 61.05ms |  16.34168 |    88.5KB |
+| conv_vec(x, y)        | 10.05ms | 10.95ms |  91.94382 |    34.6MB |
+| conv_vec_insitu(x, y) |  2.88ms |  3.01ms | 325.34637 |   115.9KB |
 
 ## Related Software
 

@@ -13,7 +13,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Fill a vector in-place with runif values using R's runif
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SEXP ins_runif_(SEXP x_, SEXP min_, SEXP max_) {
+SEXP br_runif_(SEXP x_, SEXP min_, SEXP max_) {
   
   if (!random64_has_been_initialised) {
     random64_has_been_initialised = 1;

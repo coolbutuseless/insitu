@@ -74,7 +74,7 @@ conv2 <- function(x,y) {
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# in-situ 3 - using 'ins_copy()'
+# in-situ 3 - using 'br_copy()'
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 conv3 <- function(x,y) {
   nx <- length(x)
@@ -83,7 +83,7 @@ conv3 <- function(x,y) {
   z <- numeric(nx + ny - 1)
   for(i in seq(length = nx)) {
     ij <- i + sy
-    ins_copy(z, z[ij] + x[[i]] * y, n = ny, xi = i)
+    br_copy(z, z[ij] + x[[i]] * y, n = ny, xi = i)
   }
   z
 }
@@ -100,8 +100,8 @@ conv4 <- function(x,y) {
   for(i in seq(length = nx)) {
     ij <- i + sy
     t  <- duplicate(y)
-    fmadd(t, x[[i]], z[ij])
-    ins_copy(z, t, xi = i)
+    br_fmadd(t, x[[i]], z[ij])
+    br_copy(z, t, xi = i)
   }
   z
 }
@@ -117,9 +117,9 @@ conv5 <- function(x,y) {
   z <- numeric(nx + ny - 1)
   t <- duplicate(y)
   for(i in seq(length = nx)) {
-    ins_copy(t, y)
-    fmadd(t, x[[i]], z[i + sy])
-    ins_copy(z, t, xi = i)
+    br_copy(t, y)
+    br_fmadd(t, x[[i]], z[i + sy])
+    br_copy(z, t, xi = i)
   }
   z
 }
@@ -136,10 +136,10 @@ conv6 <- function(x,y) {
   ty <- duplicate(y)
   tz <- duplicate(y)
   for(i in seq(length = nx)) {
-    ins_copy(ty, y)
-    ins_copy(tz, z, n = ny, xi = 1, yi = i)
-    fmadd(ty, x[[i]], tz)
-    ins_copy(z, ty, xi = i)
+    br_copy(ty, y)
+    br_copy(tz, z, n = ny, xi = 1, yi = i)
+    br_fmadd(ty, x[[i]], tz)
+    br_copy(z, ty, xi = i)
   }
   z
 }

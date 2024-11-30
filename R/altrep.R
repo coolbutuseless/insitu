@@ -7,7 +7,7 @@
 #'
 #' @return logical
 #'
-#' @export
+#' @noRd
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 is_altrep <- function(x) {
   .Call(is_altrep_, x)
@@ -21,7 +21,7 @@ is_altrep <- function(x) {
 #'
 #' @return logical
 #'
-#' @export
+#' @noRd
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 is_mutable <- function(x) {
   .Call(is_mutable_, x)
@@ -35,7 +35,7 @@ is_mutable <- function(x) {
 #'
 #' @return integer
 #'
-#' @export
+#' @noRd
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 get_refcnt <- function(x) {
   .Call(get_refcnt_, x)
@@ -43,12 +43,15 @@ get_refcnt <- function(x) {
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' Duplicate an object.  This has an added effect of turning an ALTREP object into a regular object
+#' Duplicate an R object
 #'
-#' @param x object
+#' @param x Any R object
 #'
 #' @return duplicate of the given object
-#'
+#' @examples
+#' x <- c(1, 2, 3)
+#' y <- duplicate(x)
+#' y
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 duplicate <- function(x) {
