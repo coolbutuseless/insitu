@@ -215,14 +215,14 @@ conv_vec_byref <- function(x,y) {
   nx <- length(x)
   ny <- length(y)
   sy <- seq_along(y) - 1L
-  z <- numeric(nx + ny - 1)
-  ty <- duplicate(y)
-  tz <- duplicate(y)
+  z  <- numeric(nx + ny - 1)
+  ty <- alloc_along(y) # allocate temporary working space
+  tz <- alloc_along(y) # allocate temp working space
   for(i in seq(length = nx)) {
-    br_copy(ty, y)
-    br_copy(tz, z, n = ny, xi = 1, yi = i)
-    br_fmadd(ty, x[[i]], tz)
-    br_copy(z, ty, n = ny, xi = i)
+    br_copy(ty, y)                         # ty <- y
+    br_copy(tz, z, n = ny, xi = 1, yi = i) # tz <- z[i + seq(ny) - 1L]
+    br_fmadd(ty, x[[i]], tz)               # ty <- ty * x[[i]] + tz
+    br_copy(z, ty, n = ny, xi = i)         # z[i + seq(ny) - 1L] <- tv
   }
   z
 }

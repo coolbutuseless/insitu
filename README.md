@@ -168,14 +168,14 @@ conv_vec_byref <- function(x,y) {
   nx <- length(x)
   ny <- length(y)
   sy <- seq_along(y) - 1L
-  z <- numeric(nx + ny - 1)
-  ty <- duplicate(y)
-  tz <- duplicate(y)
+  z  <- numeric(nx + ny - 1)
+  ty <- alloc_along(y) # allocate temporary working space
+  tz <- alloc_along(y) # allocate temp working space
   for(i in seq(length = nx)) {
-    br_copy(ty, y)
-    br_copy(tz, z, n = ny, xi = 1, yi = i)
-    br_fmadd(ty, x[[i]], tz)
-    br_copy(z, ty, n = ny, xi = i)
+    br_copy(ty, y)                         # ty <- y
+    br_copy(tz, z, n = ny, xi = 1, yi = i) # tz <- z[i + seq(ny) - 1L]
+    br_fmadd(ty, x[[i]], tz)               # ty <- ty * x[[i]] + tz
+    br_copy(z, ty, n = ny, xi = i)         # z[i + seq(ny) - 1L] <- tv
   }
   z
 }
@@ -207,7 +207,7 @@ knitr::kable(bm)
 
 | expression           |     min |  median |   itr/sec | mem_alloc |
 |:---------------------|--------:|--------:|----------:|----------:|
-| conv_nested(x, y)    | 60.75ms | 60.93ms |  16.39014 |    88.5KB |
-| conv_vec(x, y)       | 10.07ms | 11.03ms |  91.68888 |    34.6MB |
-| conv_fft(x, y)       |   3.6ms |  3.67ms | 271.37467 |     380KB |
-| conv_vec_byref(x, y) |  2.84ms |  2.96ms | 330.88211 |   115.9KB |
+| conv_nested(x, y)    | 60.48ms | 60.72ms |  16.43482 |    88.5KB |
+| conv_vec(x, y)       | 10.35ms | 11.28ms |  88.44780 |    34.6MB |
+| conv_fft(x, y)       |   3.6ms |  3.68ms | 270.98145 |     380KB |
+| conv_vec_byref(x, y) |  2.85ms |  2.98ms | 326.93033 |   115.9KB |
