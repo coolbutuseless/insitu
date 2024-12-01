@@ -46,6 +46,13 @@ number of garbage collection operations is also reduced.
 | `br_abs()`, `br_sqrt()`,`br_floor()`,`br_ceil()`, `br_trunc()`, `br_round()`, `br_exp()`, `br_log()`, `br_cos()`, `br_sin()`, `br_tan()`, `br_not()`, `br_expm1()`, `br_log1p()`, `br_acos()`,`br_asin()`, `br_atan()`,`br_acosh()`,`br_asinh()`,`br_atanh()`,`br_cosh()`, `br_sinh()`,`br_tanh()`, `br_sign()`, `br_cospi()`, `br_sinpi()`, `br_tanpi()`, `br_cumsum()`, `br_cumprod()`, `br_cummax()`, `br_cummin()`, `br_log2()`, `br_log10()`, `br_is_na()` | Standard single argument math operations |
 | `br_add()`, `br_sub()`, `br_mul()`, `br_div()`, `br_eq()`, `br_ne()`, `br_lt()`, `br_le()`, `br_gt()`, `br_ge()`, `br_and()`, `br_or()`, `br_rem()`, `br_idiv()`, `br_max()`, `br_min()`, `br_hypot()` | Standard two-argument math operations |
 
+| Matrix functions | Description |
+|----|----|
+| `alloc_matrix(nrow, ncol)` | Allocate a matrix of the given size, but do not initialise |
+| `alloc_matrix_mul(A, B)` | Alloate a matrix to hold the result of `A * B`, but do not initialise matrix, or perform the calculation |
+| `br_mul_mat_mat()` | Multiply two matrices (using a pre-allocated output matrix) |
+| `br_mul_mat_vec()` | Matrix-Vector multiplication (using a pre-allocated output matrix) |
+
 #### RNG
 
 `{insitu}` uses a custom random-number generator called
@@ -207,7 +214,43 @@ knitr::kable(bm)
 
 | expression           |     min |  median |   itr/sec | mem_alloc |
 |:---------------------|--------:|--------:|----------:|----------:|
-| conv_nested(x, y)    | 60.48ms | 60.72ms |  16.43482 |    88.5KB |
-| conv_vec(x, y)       | 10.35ms | 11.28ms |  88.44780 |    34.6MB |
-| conv_fft(x, y)       |   3.6ms |  3.68ms | 270.98145 |     380KB |
-| conv_vec_byref(x, y) |  2.85ms |  2.98ms | 326.93033 |   115.9KB |
+| conv_nested(x, y)    | 60.62ms | 60.86ms |  16.39230 |    88.5KB |
+| conv_vec(x, y)       |  9.84ms | 10.74ms |  92.75044 |    34.6MB |
+| conv_fft(x, y)       |   3.6ms |  3.67ms | 271.21365 |     380KB |
+| conv_vec_byref(x, y) |  2.87ms |  2.97ms | 328.29683 |   115.9KB |
+
+## Matrix multiplication
+
+By-reference matrix multiplication still uses R’s linked BLAS functions,
+and requires pre-allocation of the output matrix (or vector).
+
+Use the helper function `alloc_matrix_mul()` to allocate a matrix to fit
+the result of the given multiplication (but this matrix can be created
+however you want).
+
+Note that `br_mul_mat_mat()` exposes the full interface to the BLAS
+function
+[dgemm()](https://www.math.utah.edu/software/lapack/lapack-blas/dgemm.html).
+`dgemm()` allows any matrix of the form `C = alpha * A * B + beta * C`
+to be calculated.
+
+``` r
+# Two matrices to multiply
+k <- 100
+A <- matrix(1, 2*k, k)
+B <- matrix(2,   k, 4)  
+
+# Pre-allocate the output location
+C <- alloc_matrix_mul(A, B)
+
+bench::mark(
+  br_mul_mat_mat(C, A, B), # Overwriting 'C' with result.
+  A %*% B                  # Compare to base R
+)
+```
+
+    #> # A tibble: 2 × 6
+    #>   expression                   min   median `itr/sec` mem_alloc `gc/sec`
+    #>   <bch:expr>              <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
+    #> 1 br_mul_mat_mat(C, A, B)   26.4µs   26.9µs    36157.    5.42KB     0   
+    #> 2 A %*% B                   31.7µs   32.3µs    30067.     6.3KB     3.01
