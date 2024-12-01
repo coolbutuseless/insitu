@@ -214,10 +214,10 @@ knitr::kable(bm)
 
 | expression           |     min |  median |   itr/sec | mem_alloc |
 |:---------------------|--------:|--------:|----------:|----------:|
-| conv_nested(x, y)    | 60.62ms | 60.86ms |  16.39230 |    88.5KB |
-| conv_vec(x, y)       |  9.84ms | 10.74ms |  92.75044 |    34.6MB |
-| conv_fft(x, y)       |   3.6ms |  3.67ms | 271.21365 |     380KB |
-| conv_vec_byref(x, y) |  2.87ms |  2.97ms | 328.29683 |   115.9KB |
+| conv_nested(x, y)    | 60.79ms | 60.97ms |  16.36638 |    88.5KB |
+| conv_vec(x, y)       | 10.26ms | 11.14ms |  89.75964 |    34.6MB |
+| conv_fft(x, y)       |  3.59ms |  3.67ms | 271.63773 |     380KB |
+| conv_vec_byref(x, y) |  2.85ms |  2.98ms | 327.43101 |   115.9KB |
 
 ## Matrix multiplication
 
@@ -236,7 +236,7 @@ to be calculated.
 
 ``` r
 # Two matrices to multiply
-k <- 100
+k <- 1000
 A <- matrix(1, 2*k, k)
 B <- matrix(2,   k, 4)  
 
@@ -252,5 +252,5 @@ bench::mark(
     #> # A tibble: 2 × 6
     #>   expression                   min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>              <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 br_mul_mat_mat(C, A, B)   26.4µs   26.9µs    36157.    5.42KB     0   
-    #> 2 A %*% B                   31.7µs   32.3µs    30067.     6.3KB     3.01
+    #> 1 br_mul_mat_mat(C, A, B)   2.33ms   2.46ms      403.    5.43KB        0
+    #> 2 A %*% B                   2.92ms   3.09ms      322.   62.55KB        0
