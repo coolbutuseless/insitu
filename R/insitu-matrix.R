@@ -58,14 +58,42 @@ alloc_matrix_mul <- function(A, B) {
 #' C
 #' 
 #' A %*% B  # Compare to base R
-#' @export
+#' @noRd
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_mul_mat_mat <- function(C, A, B, alpha = 1, beta = 0, A_transpose = FALSE, B_transpose = FALSE) {
+br_mul_mat_mat_full <- function(C, A, B, alpha = 1, beta = 0, A_transpose = FALSE, B_transpose = FALSE) {
   invisible(
-    .Call(br_mul_mat_mat_, C, A, B, alpha, beta, A_transpose, B_transpose)
+    .Call(br_mul_mat_mat_full_, C, A, B, alpha, beta, A_transpose, B_transpose)
   )
 }
 
+
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#' Matrix-matrix multiply
+#' 
+#' This function exposes the general matrix multiplication operation from R's
+#' included BLAS.  \code{A <- A * B}
+#' 
+#' @param A,B Matrices
+#' @param alpha Scaling factor for \code{A * B}. Default: 1.0
+#' @param A_transpose,B_transpose Should matrix be transposed? Default: FALSE
+#' @return A is modified by-reference and returned invisibly
+#' @examples
+#' A <- matrix(1, 8, 4)
+#' B <- matrix(2, 4, 4)  
+#' 
+#' A %*% B  # Base R result.
+#' 
+#' br_mul_mat_mat(A, B) # By reference. Overwriting 'A'
+#' A
+#' @export
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+br_mul_mat_mat <- function(A, B, alpha = 1, A_transpose = FALSE, B_transpose = FALSE) {
+  invisible(
+    .Call(br_mul_mat_mat_slim_, A, B, alpha, A_transpose, B_transpose)
+  )
+}
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -100,6 +128,27 @@ br_mul_mat_vec <- function(y, A, x, alpha = 1, beta = 0, A_transpose = FALSE) {
     .Call(br_mul_mat_vec_, y, A, x, alpha, beta, A_transpose)
   )
 }
+
+
+
+if (FALSE) {
+  
+  k <- 100
+  A <- matrix(runif(k * k), k, k)
+  B <- matrix(runif(k * k), k, k)
+  C <- alloc_matrix_mul(A, B)
+  
+  
+  bench::mark(
+    A %*% B,
+    br_mul_mat_mat_slim(A, B),
+    br_mul_mat_mat(C, A, B),
+    check = FALSE
+  )
+  
+  
+}
+
 
 
 

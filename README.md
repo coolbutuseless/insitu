@@ -50,7 +50,8 @@ number of garbage collection operations is also reduced.
 |----|----|
 | `alloc_matrix(nrow, ncol)` | Allocate a matrix of the given size, but do not initialise |
 | `alloc_matrix_mul(A, B)` | Alloate a matrix to hold the result of `A * B`, but do not initialise matrix, or perform the calculation |
-| `br_mul_mat_mat()` | Multiply two matrices (using a pre-allocated output matrix) |
+| `br_mul_mat_mat()` | Multiply two matrices `A <- A %*% B` |
+| `br_mul_mat_mat_full()` | Multiply two matrices `C <- A %*% B + C` (C must be pre-allocated) |
 | `br_mul_mat_vec()` | Matrix-Vector multiplication (using a pre-allocated output matrix) |
 
 #### RNG
@@ -212,12 +213,12 @@ bm <- bench::mark(
 knitr::kable(bm)
 ```
 
-| expression           |     min |  median |   itr/sec | mem_alloc |
-|:---------------------|--------:|--------:|----------:|----------:|
-| conv_nested(x, y)    | 60.79ms | 60.97ms |  16.36638 |    88.5KB |
-| conv_vec(x, y)       | 10.26ms | 11.14ms |  89.75964 |    34.6MB |
-| conv_fft(x, y)       |  3.59ms |  3.67ms | 271.63773 |     380KB |
-| conv_vec_byref(x, y) |  2.85ms |  2.98ms | 327.43101 |   115.9KB |
+| expression           |      min |   median |    itr/sec | mem_alloc |
+|:---------------------|---------:|---------:|-----------:|----------:|
+| conv_nested(x, y)    | 104.74ms | 105.35ms |   9.485452 |    88.6KB |
+| conv_vec(x, y)       |  11.08ms |  11.61ms |  66.061914 |    34.6MB |
+| conv_fft(x, y)       |   3.89ms |   3.93ms | 252.591607 |     380KB |
+| conv_vec_byref(x, y) |   7.52ms |   7.68ms | 111.709716 |   115.8KB |
 
 ## Matrix multiplication
 
@@ -236,21 +237,26 @@ to be calculated.
 
 ``` r
 # Two matrices to multiply
-k <- 1000
-A <- matrix(1, 2*k, k)
-B <- matrix(2,   k, 4)  
+k <- 2000
+set.seed(1)
+A <- matrix(runif(2 * k * k), 2*k, k)
+B <- matrix(runif(1 * k * k), 1*k, k)  
 
 # Pre-allocate the output location
 C <- alloc_matrix_mul(A, B)
 
 bench::mark(
-  br_mul_mat_mat(C, A, B), # Overwriting 'C' with result.
-  A %*% B                  # Compare to base R
+  br_mul_mat_mat(A, B), # Overwriting 'A' with result.
+  A %*% B,              # Compare to base R
+  check = FALSE
 )
 ```
 
+    #> Warning: Some expressions had a GC in every iteration; so filtering is
+    #> disabled.
+
     #> # A tibble: 2 × 6
-    #>   expression                   min   median `itr/sec` mem_alloc `gc/sec`
-    #>   <bch:expr>              <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 br_mul_mat_mat(C, A, B)   2.33ms   2.46ms      403.    5.43KB        0
-    #> 2 A %*% B                   2.92ms   3.09ms      322.   62.55KB        0
+    #>   expression                min   median `itr/sec` mem_alloc `gc/sec`
+    #>   <bch:expr>           <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
+    #> 1 br_mul_mat_mat(A, B)    724ms    724ms      1.38    5.09KB     0   
+    #> 2 A %*% B                 738ms    738ms      1.35   61.03MB     1.35

@@ -96,12 +96,16 @@ extern SEXP br_normalise3_(SEXP x_, SEXP y_, SEXP z_);
 
 extern SEXP alloc_matrix_(SEXP nrow_, SEXP ncol_);
 extern SEXP alloc_matrix_mul_(SEXP A_, SEXP B_);
-extern SEXP br_mul_mat_mat_(SEXP C_, SEXP A_, SEXP B_, 
-                            SEXP alpha_, SEXP beta_, 
-                            SEXP A_transpose_, SEXP B_transpose_);
 extern SEXP br_mul_mat_vec_(SEXP y_, SEXP A_, SEXP x_, 
                             SEXP alpha_, SEXP beta_, 
                             SEXP A_transpose_);
+
+extern SEXP br_mul_mat_mat_full_(SEXP C_, SEXP A_, SEXP B_, 
+                                 SEXP alpha_, SEXP beta_, 
+                                 SEXP A_transpose_, SEXP B_transpose_);
+extern SEXP br_mul_mat_mat_slim_(SEXP A_, SEXP B_, 
+                                 SEXP alpha_, 
+                                 SEXP A_transpose_, SEXP B_transpose_);
 
 static const R_CallMethodDef CEntries[] = {
 
@@ -200,9 +204,10 @@ static const R_CallMethodDef CEntries[] = {
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   {"alloc_matrix_"     , (DL_FUNC) &alloc_matrix_     , 2},
   {"alloc_matrix_mul_", (DL_FUNC) &alloc_matrix_mul_, 2},
-  {"br_mul_mat_mat_"   , (DL_FUNC) &br_mul_mat_mat_   , 7},
   {"br_mul_mat_vec_"   , (DL_FUNC) &br_mul_mat_vec_   , 6},
   
+  {"br_mul_mat_mat_full_", (DL_FUNC) &br_mul_mat_mat_full_, 7},
+  {"br_mul_mat_mat_slim_", (DL_FUNC) &br_mul_mat_mat_slim_, 5},
   
   {NULL , NULL, 0}
 };

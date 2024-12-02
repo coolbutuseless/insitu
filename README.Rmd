@@ -69,7 +69,8 @@ that the number of garbage collection operations is also reduced.
 |------------------|-------------|
 | `alloc_matrix(nrow, ncol)` | Allocate a matrix of the given size, but do not initialise |
 | `alloc_matrix_mul(A, B)` | Alloate a matrix to hold the result of `A * B`, but do not initialise matrix, or perform the calculation |
-| `br_mul_mat_mat()` | Multiply two matrices (using a pre-allocated output matrix) |
+| `br_mul_mat_mat()` | Multiply two matrices `A <- A %*% B` |
+| `br_mul_mat_mat_full()` | Multiply two matrices `C <- A %*% B + C` (C must be pre-allocated) |
 | `br_mul_mat_vec()` | Matrix-Vector multiplication (using a pre-allocated output matrix) |
 
 
@@ -274,16 +275,18 @@ calculated.
 
 ```{r}
 # Two matrices to multiply
-k <- 1000
-A <- matrix(1, 2*k, k)
-B <- matrix(2,   k, 4)  
+k <- 2000
+set.seed(1)
+A <- matrix(runif(2 * k * k), 2*k, k)
+B <- matrix(runif(1 * k * k), 1*k, k)  
 
 # Pre-allocate the output location
 C <- alloc_matrix_mul(A, B)
 
 bench::mark(
-  br_mul_mat_mat(C, A, B), # Overwriting 'C' with result.
-  A %*% B                  # Compare to base R
+  br_mul_mat_mat(A, B), # Overwriting 'A' with result.
+  A %*% B,              # Compare to base R
+  check = FALSE
 )
 ```
 
