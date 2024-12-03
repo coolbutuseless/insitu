@@ -4,28 +4,41 @@
 \alias{br_mul_mat_mat}
 \title{Matrix-matrix multiply}
 \usage{
-br_mul_mat_mat(A, B, alpha = 1, A_transpose = FALSE, B_transpose = FALSE)
+br_mul_mat_mat(
+  C,
+  A,
+  B,
+  alpha = 1,
+  beta = 0,
+  A_transpose = FALSE,
+  B_transpose = FALSE
+)
 }
 \arguments{
-\item{A, B}{Matrices}
+\item{C}{Matrix which will be modified by-reference}
+
+\item{A, B}{Primary multiplication matrices}
 
 \item{alpha}{Scaling factor for \code{A * B}. Default: 1.0}
+
+\item{beta}{Scaling factor for \code{C}. Default: 0.0}
 
 \item{A_transpose, B_transpose}{Should matrix be transposed? Default: FALSE}
 }
 \value{
-A is modified by-reference and returned invisibly
+C is modified by-reference and returned invisibly
 }
 \description{
 This function exposes the general matrix multiplication operation from R's
-included BLAS.  \code{A <- A * B}
+included BLAS.  \code{C = alpha * A * B + beta * C}
 }
 \examples{
 A <- matrix(1, 8, 4)
 B <- matrix(2, 4, 4)  
+C <- matrix(1, nrow(A), ncol(B))
 
-A \%*\% B  # Base R result.
+br_mul_mat_mat(C, A, B) # By reference. Overwriting 'C'
+C
 
-br_mul_mat_mat(A, B) # By reference. Overwriting 'A'
-A
+A \%*\% B  # Compare to base R
 }

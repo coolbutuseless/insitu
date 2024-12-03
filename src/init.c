@@ -103,9 +103,6 @@ extern SEXP br_mul_mat_vec_(SEXP y_, SEXP A_, SEXP x_,
 extern SEXP br_mul_mat_mat_full_(SEXP C_, SEXP A_, SEXP B_, 
                                  SEXP alpha_, SEXP beta_, 
                                  SEXP A_transpose_, SEXP B_transpose_);
-extern SEXP br_mul_mat_mat_slim_(SEXP A_, SEXP B_, 
-                                 SEXP alpha_, 
-                                 SEXP A_transpose_, SEXP B_transpose_);
 
 static const R_CallMethodDef CEntries[] = {
 
@@ -207,7 +204,6 @@ static const R_CallMethodDef CEntries[] = {
   {"br_mul_mat_vec_"   , (DL_FUNC) &br_mul_mat_vec_   , 6},
   
   {"br_mul_mat_mat_full_", (DL_FUNC) &br_mul_mat_mat_full_, 7},
-  {"br_mul_mat_mat_slim_", (DL_FUNC) &br_mul_mat_mat_slim_, 5},
   
   {NULL , NULL, 0}
 };
