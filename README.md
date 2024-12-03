@@ -213,12 +213,12 @@ bm <- bench::mark(
 knitr::kable(bm)
 ```
 
-| expression           |      min |   median |    itr/sec | mem_alloc |
-|:---------------------|---------:|---------:|-----------:|----------:|
-| conv_nested(x, y)    | 104.74ms | 105.35ms |   9.485452 |    88.6KB |
-| conv_vec(x, y)       |  11.08ms |  11.61ms |  66.061914 |    34.6MB |
-| conv_fft(x, y)       |   3.89ms |   3.93ms | 252.591607 |     380KB |
-| conv_vec_byref(x, y) |   7.52ms |   7.68ms | 111.709716 |   115.8KB |
+| expression           |     min |  median |   itr/sec | mem_alloc |
+|:---------------------|--------:|--------:|----------:|----------:|
+| conv_nested(x, y)    | 61.58ms | 62.22ms |  16.11074 |    88.5KB |
+| conv_vec(x, y)       | 10.39ms | 10.98ms |  90.89365 |    34.6MB |
+| conv_fft(x, y)       |  3.58ms |  3.76ms | 267.15272 |     380KB |
+| conv_vec_byref(x, y) |  2.89ms |  3.17ms | 315.19105 |   115.9KB |
 
 ## Matrix multiplication
 
@@ -237,26 +237,46 @@ to be calculated.
 
 ``` r
 # Two matrices to multiply
-k <- 2000
+k <- 500
 set.seed(1)
 A <- matrix(runif(2 * k * k), 2*k, k)
-B <- matrix(runif(1 * k * k), 1*k, k)  
+B <- matrix(runif(2 * k * k),   k, 2 * k)  
 
 # Pre-allocate the output location
 C <- alloc_matrix_mul(A, B)
 
 bench::mark(
-  br_mul_mat_mat(A, B), # Overwriting 'A' with result.
-  A %*% B,              # Compare to base R
+  br_mul_mat_mat(C, A, B), # Overwriting 'C' with result.
+  A %*% B,                 # Compare to base R
   check = FALSE
 )
 ```
 
-    #> Warning: Some expressions had a GC in every iteration; so filtering is
-    #> disabled.
+    #> # A tibble: 2 × 6
+    #>   expression                   min   median `itr/sec` mem_alloc `gc/sec`
+    #>   <bch:expr>              <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
+    #> 1 br_mul_mat_mat(C, A, B)    152ms    152ms      6.52    5.45KB     0   
+    #> 2 A %*% B                    152ms    154ms      6.52    7.63MB     2.17
+
+When ‘B’ is a square matrix, a simpler matrix multiplication can
+overwrite the existing ‘A’ matrix.
+
+``` r
+# Two matrices to multiply
+k <- 500
+set.seed(1)
+A <- matrix(runif(2 * k * k), 2*k, k)
+B <- matrix(runif(1 * k * k),   k, k) # Square matrix  
+
+bench::mark(
+  br_mul_mat_mat_bsq(A, B), # Overwriting 'A' with result.
+  A %*% B,                  # Compare to base R
+  check = FALSE
+)
+```
 
     #> # A tibble: 2 × 6
-    #>   expression                min   median `itr/sec` mem_alloc `gc/sec`
-    #>   <bch:expr>           <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 br_mul_mat_mat(A, B)    724ms    724ms      1.38    5.09KB     0   
-    #> 2 A %*% B                 738ms    738ms      1.35   61.03MB     1.35
+    #>   expression                    min   median `itr/sec` mem_alloc `gc/sec`
+    #>   <bch:expr>               <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
+    #> 1 br_mul_mat_mat_bsq(A, B)   75.3ms   76.3ms      13.1    5.09KB     0   
+    #> 2 A %*% B                      76ms   76.5ms      13.0    3.81MB     2.17

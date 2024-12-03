@@ -146,7 +146,7 @@ SEXP br_mul_mat_mat_full_(SEXP C_, SEXP A_, SEXP B_,
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SEXP br_mul_mat_mat_slim_(
+SEXP br_mul_mat_mat_bsq_(
     SEXP A_, SEXP B_, 
     SEXP alpha_, 
     SEXP A_transpose_, SEXP B_transpose_) {
@@ -158,8 +158,13 @@ SEXP br_mul_mat_mat_slim_(
   // Confirm dimensions
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   if (!isMatrix(A_) || !isMatrix(B_)) {
-    error("br_mul_mat_mat_(): A, B & C must all be matrices");
+    error("br_mul_mat_mat_bsq_(): A & B must be matrices");
   }
+  
+  if (Rf_nrows(B_) != Rf_ncols(B_)) {
+    error("br_mul_mat_mat_bsq_() requires that 'B' is a square matrix");
+  }
+  
   
   // A = M * k
   // B = k * N

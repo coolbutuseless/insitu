@@ -50,17 +50,17 @@ alloc_matrix_mul <- function(A, B) {
 #' @param A_transpose,B_transpose Should matrix be transposed? Default: FALSE
 #' @return C is modified by-reference and returned invisibly
 #' @examples
-#' A <- matrix(1, 8, 4)
-#' B <- matrix(2, 4, 4)  
-#' C <- matrix(1, nrow(A), ncol(B))
+#' A <- matrix(as.numeric(1:32), 8, 4)
+#' B <- matrix(as.numeric(1:24), 4, 6)  
+#' C <- alloc_matrix_mul(A, B)
 #' 
 #' br_mul_mat_mat(C, A, B) # By reference. Overwriting 'C'
 #' C
 #' 
 #' A %*% B  # Compare to base R
-#' @noRd
+#' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_mul_mat_mat_full <- function(C, A, B, alpha = 1, beta = 0, A_transpose = FALSE, B_transpose = FALSE) {
+br_mul_mat_mat <- function(C, A, B, alpha = 1, beta = 0, A_transpose = FALSE, B_transpose = FALSE) {
   invisible(
     .Call(br_mul_mat_mat_full_, C, A, B, alpha, beta, A_transpose, B_transpose)
   )
@@ -70,7 +70,7 @@ br_mul_mat_mat_full <- function(C, A, B, alpha = 1, beta = 0, A_transpose = FALS
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' Matrix-matrix multiply
+#' Matrix-matrix multiply when B is a square matrix.
 #' 
 #' This function exposes the general matrix multiplication operation from R's
 #' included BLAS.  \code{A <- A * B}
@@ -80,18 +80,18 @@ br_mul_mat_mat_full <- function(C, A, B, alpha = 1, beta = 0, A_transpose = FALS
 #' @param A_transpose,B_transpose Should matrix be transposed? Default: FALSE
 #' @return A is modified by-reference and returned invisibly
 #' @examples
-#' A <- matrix(1, 8, 4)
-#' B <- matrix(2, 4, 4)  
+#' A <- matrix(as.numeric(1:32), 8, 4)
+#' B <- matrix(as.numeric(1:16), 4, 4)  
 #' 
 #' A %*% B  # Base R result.
 #' 
-#' br_mul_mat_mat(A, B) # By reference. Overwriting 'A'
+#' br_mul_mat_mat_bsq(A, B) # By reference. Overwriting 'A'
 #' A
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_mul_mat_mat <- function(A, B, alpha = 1, A_transpose = FALSE, B_transpose = FALSE) {
+br_mul_mat_mat_bsq <- function(A, B, alpha = 1, A_transpose = FALSE, B_transpose = FALSE) {
   invisible(
-    .Call(br_mul_mat_mat_slim_, A, B, alpha, A_transpose, B_transpose)
+    .Call(br_mul_mat_mat_bsq_, A, B, alpha, A_transpose, B_transpose)
   )
 }
 
@@ -141,7 +141,7 @@ if (FALSE) {
   
   bench::mark(
     A %*% B,
-    br_mul_mat_mat_slim(A, B),
+    br_mul_mat_mat_bsq(A, B),
     br_mul_mat_mat(C, A, B),
     check = FALSE
   )
