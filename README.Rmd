@@ -275,7 +275,7 @@ calculated.
 
 ```{r}
 # Two matrices to multiply
-k <- 500
+k <- 2000
 set.seed(1)
 A <- matrix(runif(2 * k * k), 2*k, k)
 B <- matrix(runif(1 * k * k), 1*k, k)  
@@ -284,8 +284,8 @@ B <- matrix(runif(1 * k * k), 1*k, k)
 C <- alloc_matrix_mul(A, B)
 
 bench::mark(
-  br_mul_mat_mat(C, A, B), # C <- A %*% B. C is pre-allocated
-  A %*% B,                 # Compare to base R
+  br_mul_mat_mat(A, B), # Overwriting 'A' with result.
+  A %*% B,              # Compare to base R
   check = FALSE
 )
 ```

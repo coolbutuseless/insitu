@@ -213,12 +213,12 @@ bm <- bench::mark(
 knitr::kable(bm)
 ```
 
-| expression           |     min |  median |   itr/sec | mem_alloc |
-|:---------------------|--------:|--------:|----------:|----------:|
-| conv_nested(x, y)    | 60.95ms | 61.25ms |  16.33252 |    88.5KB |
-| conv_vec(x, y)       | 10.12ms | 10.72ms |  92.78467 |    34.6MB |
-| conv_fft(x, y)       |  3.59ms |  3.68ms | 270.21537 |     380KB |
-| conv_vec_byref(x, y) |  2.87ms |  3.02ms | 324.95302 |   115.9KB |
+| expression           |      min |   median |    itr/sec | mem_alloc |
+|:---------------------|---------:|---------:|-----------:|----------:|
+| conv_nested(x, y)    | 104.74ms | 105.35ms |   9.485452 |    88.6KB |
+| conv_vec(x, y)       |  11.08ms |  11.61ms |  66.061914 |    34.6MB |
+| conv_fft(x, y)       |   3.89ms |   3.93ms | 252.591607 |     380KB |
+| conv_vec_byref(x, y) |   7.52ms |   7.68ms | 111.709716 |   115.8KB |
 
 ## Matrix multiplication
 
@@ -237,7 +237,7 @@ to be calculated.
 
 ``` r
 # Two matrices to multiply
-k <- 500
+k <- 2000
 set.seed(1)
 A <- matrix(runif(2 * k * k), 2*k, k)
 B <- matrix(runif(1 * k * k), 1*k, k)  
@@ -246,14 +246,17 @@ B <- matrix(runif(1 * k * k), 1*k, k)
 C <- alloc_matrix_mul(A, B)
 
 bench::mark(
-  br_mul_mat_mat(C, A, B), # C <- A %*% B. C is pre-allocated
-  A %*% B,                 # Compare to base R
+  br_mul_mat_mat(A, B), # Overwriting 'A' with result.
+  A %*% B,              # Compare to base R
   check = FALSE
 )
 ```
 
+    #> Warning: Some expressions had a GC in every iteration; so filtering is
+    #> disabled.
+
     #> # A tibble: 2 × 6
-    #>   expression                   min   median `itr/sec` mem_alloc `gc/sec`
-    #>   <bch:expr>              <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 br_mul_mat_mat(C, A, B)   74.2ms   74.4ms      13.4    5.45KB        0
-    #> 2 A %*% B                   75.1ms   75.3ms      13.3    3.81MB        0
+    #>   expression                min   median `itr/sec` mem_alloc `gc/sec`
+    #>   <bch:expr>           <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
+    #> 1 br_mul_mat_mat(A, B)    724ms    724ms      1.38    5.09KB     0   
+    #> 2 A %*% B                 738ms    738ms      1.35   61.03MB     1.35
