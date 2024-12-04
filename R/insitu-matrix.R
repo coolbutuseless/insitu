@@ -21,24 +21,29 @@ alloc_matrix <- function(nrow, ncol) {
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' Allocate empty matrix for the result of the matrix multiplication \code{A * B}
-#' @param A,B matrices to be multiplied
+#' 
+#' @inheritParams br_mat_mat_mul
 #' @return Uninitialized matrix of the correct size to hold the result 
 #' @examples
 #' A <- matrix(1, 2, 4)
 #' B <- matrix(1, 4, 7)
-#' C <- alloc_matrix_mul(A, B)
+#' C <- alloc_mat_mat_mul(A, B)
 #' is.matrix(C)
 #' dim(C)
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-alloc_matrix_mul <- function(A, B) {
-  .Call(alloc_matrix_mul_, A, B)
+alloc_mat_mat_mul <- function(A, B, ta = FALSE, tb = FALSE) {
+  
+  asize <- ifelse(ta, ncol(A), nrow(A))
+  bsize <- ifelse(tb, nrow(B), ncol(B))
+  
+  alloc_matrix(asize, bsize)
 }
 
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' Matrix-matrix multiply
+#' Matrix-matrix multiplication
 #' 
 #' This function exposes the general matrix multiplication operation from R's
 #' included BLAS.  \code{C = alpha * A * B + beta * C}
@@ -47,22 +52,22 @@ alloc_matrix_mul <- function(A, B) {
 #' @param A,B Primary multiplication matrices
 #' @param alpha Scaling factor for \code{A * B}. Default: 1.0
 #' @param beta Scaling factor for \code{C}. Default: 0.0
-#' @param A_transpose,B_transpose Should matrix be transposed? Default: FALSE
+#' @param ta,tb Should matrix be transposed? Default: FALSE
 #' @return C is modified by-reference and returned invisibly
 #' @examples
 #' A <- matrix(as.numeric(1:32), 8, 4)
 #' B <- matrix(as.numeric(1:24), 4, 6)  
-#' C <- alloc_matrix_mul(A, B)
+#' C <- alloc_mat_mat_mul(A, B)
 #' 
-#' br_mul_mat_mat(C, A, B) # By reference. Overwriting 'C'
+#' br_mat_mat_mul(C, A, B) # By reference. Overwriting 'C'
 #' C
 #' 
 #' A %*% B  # Compare to base R
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_mul_mat_mat <- function(C, A, B, alpha = 1, beta = 0, A_transpose = FALSE, B_transpose = FALSE) {
+br_mat_mat_mul <- function(C, A, B, alpha = 1, beta = 0, ta = FALSE, tb = FALSE) {
   invisible(
-    .Call(br_mul_mat_mat_full_, C, A, B, alpha, beta, A_transpose, B_transpose)
+    .Call(br_mat_mat_mul_full_, C, A, B, alpha, beta, ta, tb)
   )
 }
 
@@ -70,14 +75,13 @@ br_mul_mat_mat <- function(C, A, B, alpha = 1, beta = 0, A_transpose = FALSE, B_
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' Matrix-matrix multiply when B is a square matrix.
+#' Matrix-matrix multiplication when B is a square matrix.
 #' 
 #' This function exposes the general matrix multiplication operation from R's
 #' included BLAS.  \code{A <- A * B}
 #' 
 #' @param A,B Matrices
 #' @param alpha Scaling factor for \code{A * B}. Default: 1.0
-#' @param A_transpose,B_transpose Should matrix be transposed? Default: FALSE
 #' @return A is modified by-reference and returned invisibly
 #' @examples
 #' A <- matrix(as.numeric(1:32), 8, 4)
@@ -85,19 +89,19 @@ br_mul_mat_mat <- function(C, A, B, alpha = 1, beta = 0, A_transpose = FALSE, B_
 #' 
 #' A %*% B  # Base R result.
 #' 
-#' br_mul_mat_mat_bsq(A, B) # By reference. Overwriting 'A'
+#' br_mat_mat_mul_bsq(A, B) # By reference. Overwriting 'A'
 #' A
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_mul_mat_mat_bsq <- function(A, B, alpha = 1, A_transpose = FALSE, B_transpose = FALSE) {
+br_mat_mat_mul_bsq <- function(A, B, alpha = 1) {
   invisible(
-    .Call(br_mul_mat_mat_bsq_, A, B, alpha, A_transpose, B_transpose)
+    .Call(br_mat_mat_mul_bsq_, A, B, alpha)
   )
 }
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' Matrix-vector multiply
+#' Matrix-vector multiplication
 #' 
 #' This function exposes the general matrix-vector multiplication operation from R's
 #' included BLAS.  \code{y = alpha * A * x + beta * y}
@@ -107,7 +111,6 @@ br_mul_mat_mat_bsq <- function(A, B, alpha = 1, A_transpose = FALSE, B_transpose
 #' @param x vector
 #' @param alpha Scaling factor for \code{A * x}. Default: 1.0
 #' @param beta Scaling factor for \code{y}. Default: 0.0
-#' @param A_transpose Should matrix be transposed? Default: FALSE
 #' @return y is modified by-reference and returned invisibly
 #' @examples
 #' A <- matrix(1, 3, 5)
@@ -115,7 +118,7 @@ br_mul_mat_mat_bsq <- function(A, B, alpha = 1, A_transpose = FALSE, B_transpose
 #' y <- rep(0, 3)
 #' 
 #' # Calculate. By-reference. Overwriting 'y'
-#' br_mul_mat_vec(y, A, x)
+#' br_mat_vec_mul(y, A, x)
 #' y
 #' 
 #' # Compare to R's method
@@ -123,11 +126,44 @@ br_mul_mat_mat_bsq <- function(A, B, alpha = 1, A_transpose = FALSE, B_transpose
 #' 
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_mul_mat_vec <- function(y, A, x, alpha = 1, beta = 0, A_transpose = FALSE) {
+br_mat_vec_mul <- function(y, A, x, alpha = 1, beta = 0) {
   invisible(
-    .Call(br_mul_mat_vec_, y, A, x, alpha, beta, A_transpose)
+    .Call(br_mat_vec_mul_, y, A, x, alpha, beta)
   )
 }
+
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#' Matrix-vector multiplication when A is a square matrix
+#' 
+#' This function calculates matrix-vector multiplication operation when 'A'
+#' is a square matrix: \code{x <- alpha * A * x}
+#' 
+#' @param A Matrix
+#' @param x vector. This will be modified by-reference 
+#' @param alpha Scaling factor for \code{A * x}. Default: 1.0
+#' @return x is modified by-reference and returned invisibly
+#' @examples
+#' A <- matrix(1, 4, 4)
+#' x <- rep(1, 4)
+#' 
+#' # Compare to R's method
+#' A %*% x
+#' 
+#' # Calculate. By-reference. Overwriting 'y'
+#' br_mat_vec_mul_asq(A, x)
+#' x
+#' 
+#' @export
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+br_mat_vec_mul_asq <- function(A, x, alpha = 1) {
+  invisible(
+    .Call(br_mat_vec_mul_asq_, A, x, alpha)
+  )
+}
+
+
 
 
 
@@ -136,13 +172,13 @@ if (FALSE) {
   k <- 100
   A <- matrix(runif(k * k), k, k)
   B <- matrix(runif(k * k), k, k)
-  C <- alloc_matrix_mul(A, B)
+  C <- alloc_mat_mat_mul(A, B)
   
   
   bench::mark(
     A %*% B,
-    br_mul_mat_mat_bsq(A, B),
-    br_mul_mat_mat(C, A, B),
+    br_mat_mat_mul_bsq(A, B),
+    br_mat_mat_mul(C, A, B),
     check = FALSE
   )
   

@@ -1,7 +1,8 @@
 
-# insitu 0.1.3.9008
+# insitu 0.1.3.9009
 
-* [9008] Att mat-mat and mat-vec multiplication.
+* [9009] Refactor & add tests for matrix operations.
+* [9008] Add mat-mat and mat-vec multiplication.
 * [9007] changed function prefix from `ins_` to `br_`
 * [9007] changed helper from `insitu` to `by_reference`
 * [9007] `br_dist2()`, `br_dist3()`, `br_hypot2()`, `br_hypot3()`

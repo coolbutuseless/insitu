@@ -49,10 +49,11 @@ number of garbage collection operations is also reduced.
 | Matrix functions | Description |
 |----|----|
 | `alloc_matrix(nrow, ncol)` | Allocate a matrix of the given size, but do not initialise |
-| `alloc_matrix_mul(A, B)` | Alloate a matrix to hold the result of `A * B`, but do not initialise matrix, or perform the calculation |
-| `br_mul_mat_mat()` | Multiply two matrices `A <- A %*% B` |
-| `br_mul_mat_mat_full()` | Multiply two matrices `C <- A %*% B + C` (C must be pre-allocated) |
-| `br_mul_mat_vec()` | Matrix-Vector multiplication (using a pre-allocated output matrix) |
+| `alloc_mat_mat_mul(A, B)` | Allocate a matrix to hold the result of `A * B`, but do not initialise matrix, or perform the calculation |
+| `br_mat_mat_mul()` | Multiply two matrices `C <- A %*% B + C` (C must be pre-allocated) |
+| `br_mat_mat_mul_bsq()` | Multiply two matrices when `B` is a square matrix `A <- A %*% B` |
+| `br_mat_vec_mul(y, A, x)` | `y <- A %*% x` Matrix-Vector multiplication (using a pre-allocated output matrix) |
+| `br_mat_vec_mul_asq(A, x)` | `x <- A %*% x` Matrix-Vector multiplication |
 
 #### RNG
 
@@ -215,21 +216,21 @@ knitr::kable(bm)
 
 | expression           |     min |  median |   itr/sec | mem_alloc |
 |:---------------------|--------:|--------:|----------:|----------:|
-| conv_nested(x, y)    | 61.58ms | 62.22ms |  16.11074 |    88.5KB |
-| conv_vec(x, y)       | 10.39ms | 10.98ms |  90.89365 |    34.6MB |
-| conv_fft(x, y)       |  3.58ms |  3.76ms | 267.15272 |     380KB |
-| conv_vec_byref(x, y) |  2.89ms |  3.17ms | 315.19105 |   115.9KB |
+| conv_nested(x, y)    | 60.31ms | 60.67ms |  16.41156 |    88.5KB |
+| conv_vec(x, y)       | 10.44ms | 10.83ms |  91.65230 |    34.6MB |
+| conv_fft(x, y)       |  3.59ms |  3.66ms | 272.02651 |     380KB |
+| conv_vec_byref(x, y) |  2.88ms |  3.06ms | 312.24076 |   115.9KB |
 
 ## Matrix multiplication
 
 By-reference matrix multiplication still uses R’s linked BLAS functions,
 and requires pre-allocation of the output matrix (or vector).
 
-Use the helper function `alloc_matrix_mul()` to allocate a matrix to fit
-the result of the given multiplication (but this matrix can be created
-however you want).
+Use the helper function `alloc_mat_mat_mul()` to allocate a matrix to
+fit the result of the given multiplication (but this matrix can be
+created however you want).
 
-Note that `br_mul_mat_mat()` exposes the full interface to the BLAS
+Note that `br_mat_mat_mul()` exposes the full interface to the BLAS
 function
 [dgemm()](https://www.math.utah.edu/software/lapack/lapack-blas/dgemm.html).
 `dgemm()` allows any matrix of the form `C = alpha * A * B + beta * C`
@@ -243,10 +244,10 @@ A <- matrix(runif(2 * k * k), 2*k, k)
 B <- matrix(runif(2 * k * k),   k, 2 * k)  
 
 # Pre-allocate the output location
-C <- alloc_matrix_mul(A, B)
+C <- alloc_mat_mat_mul(A, B)
 
 bench::mark(
-  br_mul_mat_mat(C, A, B), # Overwriting 'C' with result.
+  br_mat_mat_mul(C, A, B), # Overwriting 'C' with result.
   A %*% B,                 # Compare to base R
   check = FALSE
 )
@@ -255,8 +256,8 @@ bench::mark(
     #> # A tibble: 2 × 6
     #>   expression                   min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>              <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 br_mul_mat_mat(C, A, B)    152ms    152ms      6.52    5.45KB     0   
-    #> 2 A %*% B                    152ms    154ms      6.52    7.63MB     2.17
+    #> 1 br_mat_mat_mul(C, A, B)    148ms    149ms      6.72    5.41KB     0   
+    #> 2 A %*% B                    151ms    151ms      6.39    7.63MB     2.13
 
 When ‘B’ is a square matrix, a simpler matrix multiplication can
 overwrite the existing ‘A’ matrix.
@@ -269,7 +270,7 @@ A <- matrix(runif(2 * k * k), 2*k, k)
 B <- matrix(runif(1 * k * k),   k, k) # Square matrix  
 
 bench::mark(
-  br_mul_mat_mat_bsq(A, B), # Overwriting 'A' with result.
+  br_mat_mat_mul_bsq(A, B), # Overwriting 'A' with result.
   A %*% B,                  # Compare to base R
   check = FALSE
 )
@@ -278,5 +279,5 @@ bench::mark(
     #> # A tibble: 2 × 6
     #>   expression                    min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>               <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 br_mul_mat_mat_bsq(A, B)   75.3ms   76.3ms      13.1    5.09KB     0   
-    #> 2 A %*% B                      76ms   76.5ms      13.0    3.81MB     2.17
+    #> 1 br_mat_mat_mul_bsq(A, B)   74.3ms   75.2ms      13.3    4.67KB     0   
+    #> 2 A %*% B                      75ms   75.3ms      13.3    3.81MB     2.21
