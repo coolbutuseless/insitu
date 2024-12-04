@@ -116,9 +116,9 @@ SEXP br_mat_vec_mul_asq_(SEXP A_, SEXP x_, SEXP alpha_) {
   
   int ysize_desired = M;
   if (y == NULL) {
-    y = malloc(M * sizeof(double));
+    y = malloc((size_t)M * sizeof(double));
   } else if (ysize_desired > ysize) {
-    y = realloc(y, M * sizeof(double));
+    y = realloc(y, (size_t)M * sizeof(double));
   }
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -154,7 +154,7 @@ SEXP br_mat_vec_mul_asq_(SEXP A_, SEXP x_, SEXP alpha_) {
       &INCY FCONE
   );
   
-  memcpy(REAL(x_), y, M * sizeof(double));
+  memcpy(REAL(x_), y, (size_t)M * sizeof(double));
   return(x_);
 }
 

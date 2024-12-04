@@ -151,9 +151,9 @@ SEXP br_mat_mat_mul_bsq_(
   
   int Csize_desired = asize * bsize;
   if (C == NULL) {
-    C = malloc(Csize_desired * sizeof(double));
+    C = malloc((size_t)Csize_desired * sizeof(double));
   } else if (Csize_desired > Csize) {
-    C = realloc(C, Csize_desired * sizeof(double));
+    C = realloc(C, (size_t)Csize_desired * sizeof(double));
   }
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -201,7 +201,7 @@ SEXP br_mat_mat_mul_bsq_(
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  memcpy(REAL(A_), C, M * N * sizeof(double));
+  memcpy(REAL(A_), C, (size_t)M * (size_t)N * sizeof(double));
   return(A_);
 }
 
