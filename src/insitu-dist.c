@@ -1,4 +1,5 @@
 
+#define R_NO_REMAP
 
 #include <R.h>
 #include <Rinternals.h>
@@ -16,9 +17,9 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 SEXP br_dist2_(SEXP x1_, SEXP y1_, SEXP x2_, SEXP y2_) {
   
-  int n = (int)length(x1_);
-  if (length(y1_) != n || length(x2_) !=n || length(y2_) != n) {
-    error("br_dist2_(): All inputs must be the same length");
+  int n = (int)Rf_length(x1_);
+  if (Rf_length(y1_) != n || Rf_length(x2_) !=n || Rf_length(y2_) != n) {
+    Rf_error("br_dist2_(): All inputs must be the same length");
   }
   
   double *x1 = REAL(x1_);
@@ -46,10 +47,10 @@ SEXP br_dist2_(SEXP x1_, SEXP y1_, SEXP x2_, SEXP y2_) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 SEXP br_dist3_(SEXP x1_, SEXP y1_, SEXP z1_, SEXP x2_, SEXP y2_, SEXP z2_) {
   
-  int n = (int)length(x1_);
-  if (length(y1_) != n || length(z1_) != n ||
-      length(x2_) != n || length(y2_) != n || length(z2_) != n) {
-    error("br_dist3_(): All inputs must be the same length");
+  int n = (int)Rf_length(x1_);
+  if (Rf_length(y1_) != n || Rf_length(z1_) != n ||
+      Rf_length(x2_) != n || Rf_length(y2_) != n || Rf_length(z2_) != n) {
+    Rf_error("br_dist3_(): All inputs must be the same length");
   }
   
   double *x1 = REAL(x1_);
@@ -79,9 +80,9 @@ SEXP br_dist3_(SEXP x1_, SEXP y1_, SEXP z1_, SEXP x2_, SEXP y2_, SEXP z2_) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 SEXP br_hypot3_(SEXP x_, SEXP y_, SEXP z_) {
   
-  int n = (int)length(x_);
-  if (length(y_) != n || length(z_) != n) {
-    error("br_hypot3_(): All inputs must be the same length");
+  int n = (int)Rf_length(x_);
+  if (Rf_length(y_) != n || Rf_length(z_) != n) {
+    Rf_error("br_hypot3_(): All inputs must be the same length");
   }
   
   double *x = REAL(x_);
@@ -110,15 +111,15 @@ SEXP br_hypot3_(SEXP x_, SEXP y_, SEXP z_) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 SEXP br_normalise2_(SEXP x_, SEXP y_) {
   
-  int n = (int)length(x_);
-  if (length(y_) != n) {
-    error("br_normalise2_(): All inputs must be the same length");
+  int n = (int)Rf_length(x_);
+  if (Rf_length(y_) != n) {
+    Rf_error("br_normalise2_(): All inputs must be the same length");
   }
   
   double *x = REAL(x_);
   double *y = REAL(y_);
   
-  for (int i = 0; i < length(x_); i++) {
+  for (int i = 0; i < Rf_length(x_); i++) {
     double len = hypot(*x, *y); 
     *x /= len;
     *y /= len;
@@ -135,16 +136,16 @@ SEXP br_normalise2_(SEXP x_, SEXP y_) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 SEXP br_normalise3_(SEXP x_, SEXP y_, SEXP z_) {
   
-  int n = (int)length(x_);
-  if (length(y_) != n || length(z_) != n) {
-    error("br_normalise3_(): All inputs must be the same length");
+  int n = (int)Rf_length(x_);
+  if (Rf_length(y_) != n || Rf_length(z_) != n) {
+    Rf_error("br_normalise3_(): All inputs must be the same length");
   }
   
   double *x = REAL(x_);
   double *y = REAL(y_);
   double *z = REAL(z_);
   
-  for (int i = 0; i < length(x_); i++) {
+  for (int i = 0; i < Rf_length(x_); i++) {
     double len = sqrt(*x * *x + *y * *y + *z * *z); 
     *x /= len;
     *y /= len;

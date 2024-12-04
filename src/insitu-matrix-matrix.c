@@ -1,4 +1,5 @@
 
+#define R_NO_REMAP
 #define USE_FC_LEN_T
 
 #include <R.h>
@@ -32,7 +33,7 @@
 // Alloc matrix of a given size
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 SEXP alloc_matrix_(SEXP nrow_, SEXP ncol_) {
-  return allocMatrix(REALSXP, asInteger(nrow_), asInteger(ncol_));
+  return Rf_allocMatrix(REALSXP, Rf_asInteger(nrow_), Rf_asInteger(ncol_));
 }
 
 
@@ -47,25 +48,25 @@ SEXP br_mat_mat_mul_full_(SEXP C_, SEXP A_, SEXP B_,
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Confirm dimensions are conformable
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  if (!isMatrix(A_) || !isMatrix(B_) || !isMatrix(C_)) {
-    error("br_mat_mat_mul_(): A, B & C must all be matrices");
+  if (!Rf_isMatrix(A_) || !Rf_isMatrix(B_) || !Rf_isMatrix(C_)) {
+    Rf_error("br_mat_mat_mul_(): A, B & C must all be matrices");
   }
   
-  bool ta = asLogical(ta_);
-  bool tb = asLogical(tb_);
+  bool ta = Rf_asLogical(ta_);
+  bool tb = Rf_asLogical(tb_);
   
   int ka = ta ? Rf_nrows(A_) : Rf_ncols(A_);
   int kb = tb ? Rf_ncols(B_) : Rf_nrows(B_);
   
   if (ka != kb) {
-    error("A, B are non-conformable");
+    Rf_error("A, B are non-conformable");
   }
   
   int asize = ta ? Rf_ncols(A_) : Rf_nrows(A_);
   int bsize = tb ? Rf_nrows(B_) : Rf_ncols(B_);
     
   if (Rf_nrows(C_) != asize || Rf_ncols(C_) != bsize) {
-    error("C not dimensioned for holding A * B");
+    Rf_error("C not dimensioned for holding A * B");
   }  
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -90,8 +91,8 @@ SEXP br_mat_mat_mul_full_(SEXP C_, SEXP A_, SEXP B_,
   double *A = REAL(A_);
   double *B = REAL(B_);
   double *C = REAL(C_);
-  double alpha = asReal(alpha_);
-  double beta  = asReal(beta_);
+  double alpha = Rf_asReal(alpha_);
+  double beta  = Rf_asReal(beta_);
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Call
@@ -132,8 +133,8 @@ SEXP br_mat_mat_mul_bsq_(
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Confirm dimensions are conformable
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  if (!isMatrix(A_) || !isMatrix(B_)) {
-    error("br_mat_mat_mul_(): A, B & C must all be matrices");
+  if (!Rf_isMatrix(A_) || !Rf_isMatrix(B_)) {
+    Rf_error("br_mat_mat_mul_(): A, B & C must all be matrices");
   }
   
   bool ta = false;
@@ -143,7 +144,7 @@ SEXP br_mat_mat_mul_bsq_(
   int kb = tb ? Rf_ncols(B_) : Rf_nrows(B_);
   
   if (ka != kb) {
-    error("A, B are non-conformable");
+    Rf_error("A, B are non-conformable");
   }
   
   int asize = ta ? Rf_ncols(A_) : Rf_nrows(A_);
@@ -177,7 +178,7 @@ SEXP br_mat_mat_mul_bsq_(
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   double *A = REAL(A_);
   double *B = REAL(B_);
-  double alpha = asReal(alpha_);
+  double alpha = Rf_asReal(alpha_);
   double beta  = 0;
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -20,13 +20,13 @@
 //   double *x = REAL(x_);
 //     
 //     int i = 0;
-//     for (; i < length(x_) - (UNROLL - 1); i += UNROLL) {
+//     for (; i < Rf_length(x_) - (UNROLL - 1); i += UNROLL) {
 //       *x = sqrt(*x); x++;
 //       *x = sqrt(*x); x++;
 //       *x = sqrt(*x); x++;
 //       *x = sqrt(*x); x++;
 //     }
-//     for (; i< length(x_); i++) {
+//     for (; i< Rf_length(x_); i++) {
 //       *x = sqrt(*x); x++;
 //     }
 //   
@@ -40,19 +40,20 @@ SEXP br_##nm##_(SEXP x_) {                                    \
                                                                \
   int i = startidx;                                            \
   x += startidx;                                               \
-  for (; i < length(x_) - (UNROLL - 1); i += UNROLL) {         \
+  for (; i < Rf_length(x_) - (UNROLL - 1); i += UNROLL) {         \
     *x = unaryop; x++;                                         \
     *x = unaryop; x++;                                         \
     *x = unaryop; x++;                                         \
     *x = unaryop; x++;                                         \
   }                                                            \
-  for (; i< length(x_); i++) {                                 \
+  for (; i< Rf_length(x_); i++) {                                 \
     *x = unaryop; x++;                                         \
   }                                                            \
                                                                \
   return x_;                                                   \
 }                                                              
 
+#define R_NO_REMAP
 
 INSUNARYOP(abs  ,  fabs(*x), 0)
 INSUNARYOP(sqrt ,  sqrt(*x), 0)

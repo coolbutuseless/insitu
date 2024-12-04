@@ -1,4 +1,5 @@
 
+#define R_NO_REMAP
 #define USE_FC_LEN_T
 
 #include <R.h>
@@ -26,19 +27,19 @@ SEXP br_mat_vec_mul_(SEXP y_, SEXP A_, SEXP x_,
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Confirm dimensions
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  if (!isMatrix(A_)) {
-    error("br_mat_mat_mul_(): A must be a matrix");
+  if (!Rf_isMatrix(A_)) {
+    Rf_error("br_mat_mat_mul_(): A must be a matrix");
   }
   
   int M = Rf_nrows(A_);
   int N = Rf_ncols(A_);
   
   if (M == 0 || N == 0) {
-    error("Dimensions of zero are not supported");
+    Rf_error("Dimensions of zero are not supported");
   }
   
-  if ((length(x_) != N || length(y_) != M)) {
-    error("x, y lengths must match ncols(A)");
+  if ((Rf_length(x_) != N || Rf_length(y_) != M)) {
+    Rf_error("x, y lengths must match ncols(A)");
   }
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -47,8 +48,8 @@ SEXP br_mat_vec_mul_(SEXP y_, SEXP A_, SEXP x_,
   double *A = REAL(A_);
   double *x = REAL(x_);
   double *y = REAL(y_);
-  double alpha = asReal(alpha_);
-  double beta  = asReal(beta_);
+  double alpha = Rf_asReal(alpha_);
+  double beta  = Rf_asReal(beta_);
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Transposition?
@@ -93,8 +94,8 @@ SEXP br_mat_vec_mul_asq_(SEXP A_, SEXP x_, SEXP alpha_) {
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Confirm dimensions
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  if (!isMatrix(A_)) {
-    error("br_mat_mat_mul_(): A, B & C must all be matrices");
+  if (!Rf_isMatrix(A_)) {
+    Rf_error("br_mat_mat_mul_(): A, B & C must all be matrices");
   }
   
   // A = M * k
@@ -103,15 +104,15 @@ SEXP br_mat_vec_mul_asq_(SEXP A_, SEXP x_, SEXP alpha_) {
   int N = Rf_ncols(A_);
   
   if (M == 0 || N == 0) {
-    error("Dimensions of zero are not supported");
+    Rf_error("Dimensions of zero are not supported");
   }
   
   if (M != N) {
-    error("'A' must be a square matrix");
+    Rf_error("'A' must be a square matrix");
   }
   
-  if (length(x_) != N) {
-    error("Dimensions of A and x non-conformal");
+  if (Rf_length(x_) != N) {
+    Rf_error("Dimensions of A and x non-conformal");
   }
   
   int ysize_desired = M;
@@ -126,7 +127,7 @@ SEXP br_mat_vec_mul_asq_(SEXP A_, SEXP x_, SEXP alpha_) {
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   double *A = REAL(A_);
   double *x = REAL(x_);
-  double alpha = asReal(alpha_);
+  double alpha = Rf_asReal(alpha_);
   double beta  = 0;
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -1,4 +1,6 @@
 
+#define R_NO_REMAP
+
 #include <R.h>
 #include <Rinternals.h>
 #include <Rdefines.h>
@@ -21,9 +23,9 @@ SEXP br_runif_(SEXP x_, SEXP min_, SEXP max_) {
   }
   
   
-  double min = asReal(min_);
-  double max = asReal(max_);
-  runif_random64_(REAL(x_), length(x_), min, max);
+  double min = Rf_asReal(min_);
+  double max = Rf_asReal(max_);
+  runif_random64_(REAL(x_), Rf_length(x_), min, max);
   
   return x_;
 }

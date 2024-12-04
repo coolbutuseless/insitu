@@ -1,6 +1,5 @@
 
-
-
+#define R_NO_REMAP
 
 #include <R.h>
 #include <Rinternals.h>
@@ -15,7 +14,7 @@
 // Is Altrep?
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 SEXP is_altrep_(SEXP x_) {
-  return ScalarLogical(ALTREP(x_));
+  return Rf_ScalarLogical(ALTREP(x_));
 }
 
 
@@ -24,7 +23,7 @@ SEXP is_altrep_(SEXP x_) {
 // Is mutable
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 SEXP is_mutable_(SEXP x_) {
-  return ScalarLogical(REFCNT(x_) < (1 << 16) - 1);
+  return Rf_ScalarLogical(REFCNT(x_) < (1 << 16) - 1);
 }
 
 
@@ -32,7 +31,7 @@ SEXP is_mutable_(SEXP x_) {
 // REFCNT
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 SEXP get_refcnt_(SEXP x_) {
-  return ScalarInteger(REFCNT(x_));
+  return Rf_ScalarInteger(REFCNT(x_));
 }
 
 
@@ -40,5 +39,5 @@ SEXP get_refcnt_(SEXP x_) {
 // duplicate
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 SEXP duplicate_(SEXP x_) {
-  return duplicate(x_);
+  return Rf_duplicate(x_);
 }

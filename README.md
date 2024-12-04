@@ -216,10 +216,10 @@ knitr::kable(bm)
 
 | expression           |     min |  median |   itr/sec | mem_alloc |
 |:---------------------|--------:|--------:|----------:|----------:|
-| conv_nested(x, y)    | 60.31ms | 60.67ms |  16.41156 |    88.5KB |
-| conv_vec(x, y)       | 10.44ms | 10.83ms |  91.65230 |    34.6MB |
-| conv_fft(x, y)       |  3.59ms |  3.66ms | 272.02651 |     380KB |
-| conv_vec_byref(x, y) |  2.88ms |  3.06ms | 312.24076 |   115.9KB |
+| conv_nested(x, y)    | 60.86ms | 61.33ms |  16.30743 |    88.5KB |
+| conv_vec(x, y)       | 10.43ms |  11.2ms |  89.98632 |    34.6MB |
+| conv_fft(x, y)       |  3.59ms |  3.67ms | 271.10029 |     380KB |
+| conv_vec_byref(x, y) |  2.88ms |  3.04ms | 323.52873 |   115.9KB |
 
 ## Matrix multiplication
 
@@ -256,8 +256,8 @@ bench::mark(
     #> # A tibble: 2 × 6
     #>   expression                   min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>              <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 br_mat_mat_mul(C, A, B)    148ms    149ms      6.72    5.41KB     0   
-    #> 2 A %*% B                    151ms    151ms      6.39    7.63MB     2.13
+    #> 1 br_mat_mat_mul(C, A, B)    148ms    149ms      6.71    5.41KB     0   
+    #> 2 A %*% B                    150ms    151ms      6.62    7.63MB     2.21
 
 When ‘B’ is a square matrix, a simpler matrix multiplication can
 overwrite the existing ‘A’ matrix.
@@ -279,5 +279,5 @@ bench::mark(
     #> # A tibble: 2 × 6
     #>   expression                    min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>               <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 br_mat_mat_mul_bsq(A, B)   74.3ms   75.2ms      13.3    4.67KB     0   
-    #> 2 A %*% B                      75ms   75.3ms      13.3    3.81MB     2.21
+    #> 1 br_mat_mat_mul_bsq(A, B)   74.5ms   75.6ms      12.9    4.67KB     0   
+    #> 2 A %*% B                    75.1ms   75.5ms      13.0    3.81MB     2.17

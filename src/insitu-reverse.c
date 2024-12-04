@@ -1,5 +1,6 @@
 
 
+#define R_NO_REMAP
 
 
 #include <R.h>
@@ -16,7 +17,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 SEXP br_rev_(SEXP x_) {
   
-  int i = length(x_) - 1;
+  int i = Rf_length(x_) - 1;
   int j = 0;
   double *x = REAL(x_);
   while(i > j)

@@ -1,4 +1,6 @@
 
+#define R_NO_REMAP
+
 #include <R.h>
 #include <Rinternals.h>
 #include <Rdefines.h>
@@ -18,7 +20,7 @@ SEXP br_shuffle_(SEXP x_)  {
   }
   
   
-  int n = length(x_);
+  int n = Rf_length(x_);
   double *x = REAL(x_);
   for (int i = n-1; i > 0; i--)  {
     int j = (int)random_integer_on_interval((uint64_t)i + 1);

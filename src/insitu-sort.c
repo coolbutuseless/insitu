@@ -1,5 +1,7 @@
 
 
+#define R_NO_REMAP
+
 #include <R.h>
 #include <Rinternals.h>
 #include <Rdefines.h>
@@ -32,7 +34,7 @@ int dbl_cmpfunc_dec (const void * a, const void * b) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 SEXP br_sort_(SEXP x_, SEXP decreasing_) {
 
-  qsort(REAL(x_), (size_t)length(x_), sizeof(double), asLogical(decreasing_) ? dbl_cmpfunc_dec : dbl_cmpfunc_inc);
+  qsort(REAL(x_), (size_t)Rf_length(x_), sizeof(double), Rf_asLogical(decreasing_) ? dbl_cmpfunc_dec : dbl_cmpfunc_inc);
 
   return x_;
 }

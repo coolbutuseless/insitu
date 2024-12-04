@@ -1,4 +1,5 @@
 
+#define R_NO_REMAP
 
 #include <R.h>
 #include <Rinternals.h>
@@ -20,13 +21,13 @@
 //   
 // #define UNROLL 4
 //   int i = 0;
-//   for (; i < length(x_) - (UNROLL - 1); i += UNROLL) {
+//   for (; i < Rf_length(x_) - (UNROLL - 1); i += UNROLL) {
 //     *x++ += *y++;
 //     *x++ += *y++;
 //     *x++ += *y++;
 //     *x++ += *y++;
 //   }
-//   for (; i< length(x_); i++) {
+//   for (; i< Rf_length(x_); i++) {
 //     *x++ += *y++;
 //   }
 //   
@@ -43,13 +44,13 @@
 //   
 // #define UNROLL 4
 //   int i = 0;
-//   for (; i < length(x_) - (UNROLL - 1); i += UNROLL) {
+//   for (; i < Rf_length(x_) - (UNROLL - 1); i += UNROLL) {
 //     *x++ += y;
 //     *x++ += y;
 //     *x++ += y;
 //     *x++ += y;
 //   }
-//   for (; i< length(x_); i++) {
+//   for (; i< Rf_length(x_); i++) {
 //     *x++ += y;
 //   }
 //   
@@ -62,8 +63,8 @@
 // //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // SEXP br_add_(SEXP x_, SEXP y_) {
 //   
-//   R_xlen_t lx = length(x_);
-//   R_xlen_t ly = length(y_);
+//   R_xlen_t lx = Rf_length(x_);
+//   R_xlen_t ly = Rf_length(y_);
 //   
 //   if (lx == ly) {
 //     return br_add_vxy_(x_, y_);
@@ -71,7 +72,7 @@
 //     return br_add_sy_(x_, y_);
 //   }
 //   
-//   error("br_add(): Lengths not compatible: x = %.0f, y = %.0f", (double)lx, (double)ly);
+//   Rf_error("br_add(): Lengths not compatible: x = %.0f, y = %.0f", (double)lx, (double)ly);
 // }
 
 
@@ -85,13 +86,13 @@ SEXP br_##nm##_vxy_(SEXP x_, SEXP y_) {                                         
   double *y = REAL(y_);                                                          \
                                                                                  \
   int i = 0;                                                                     \
-  for (; i < length(x_) - (UNROLL - 1); i += UNROLL) {                           \
+  for (; i < Rf_length(x_) - (UNROLL - 1); i += UNROLL) {                           \
     vectorop; ++x;                                                               \
     vectorop; ++x;                                                               \
     vectorop; ++x;                                                               \
     vectorop; ++x;                                                               \
   }                                                                              \
-  for (; i< length(x_); i++) {                                                   \
+  for (; i< Rf_length(x_); i++) {                                                   \
     vectorop; ++x;                                                               \
   }                                                                              \
                                                                                  \
@@ -102,17 +103,17 @@ SEXP br_##nm##_vxy_(SEXP x_, SEXP y_) {                                         
 SEXP br_##nm##_sy_(SEXP x_, SEXP y_) {                                          \
                                                                                  \
   double *x = REAL(x_);                                                          \
-  double  y = asReal(y_);                                                        \
+  double  y = Rf_asReal(y_);                                                        \
                                                                                  \
                                                                                  \
   int i = 0;                                                                     \
-  for (; i < length(x_) - (UNROLL - 1); i += UNROLL) {                           \
+  for (; i < Rf_length(x_) - (UNROLL - 1); i += UNROLL) {                           \
     scalarop; ++x;                                                               \
     scalarop; ++x;                                                               \
     scalarop; ++x;                                                               \
     scalarop; ++x;                                                               \
   }                                                                              \
-  for (; i< length(x_); i++) {                                                   \
+  for (; i< Rf_length(x_); i++) {                                                   \
     scalarop; ++x;                                                               \
   }                                                                              \
                                                                                  \
@@ -122,8 +123,8 @@ SEXP br_##nm##_sy_(SEXP x_, SEXP y_) {                                          
                                                                                  \
 SEXP br_##nm##_(SEXP x_, SEXP y_) {                                             \
                                                                                  \
-  R_xlen_t lx = length(x_);                                                      \
-  R_xlen_t ly = length(y_);                                                      \
+  R_xlen_t lx = Rf_length(x_);                                                      \
+  R_xlen_t ly = Rf_length(y_);                                                      \
                                                                                  \
   if (lx == ly) {                                                                \
     return br_##nm##_vxy_(x_, y_);                                              \
@@ -131,7 +132,7 @@ SEXP br_##nm##_(SEXP x_, SEXP y_) {                                             
     return br_##nm##_sy_(x_, y_);                                               \
   }                                                                              \
                                                                                  \
-  error("Lengths not compatible: x = %.0f, y = %.0f", (double)lx, (double)ly);   \
+  Rf_error("Lengths not compatible: x = %.0f, y = %.0f", (double)lx, (double)ly);   \
 }
 
 
