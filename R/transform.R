@@ -4,11 +4,14 @@
 #' Create identity transform
 #' 
 #' @return 4x4 identity matrix
+#' @examples
+#' tf_create()
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-tf_create_identity <- function() {
+tf_create <- function() {
   diag(4)
 }
+
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -28,6 +31,7 @@ tf_reset <- function(mat) {
 }
 
 
+
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' Add a translation transformation to a given matrix
 #' 
@@ -35,16 +39,18 @@ tf_reset <- function(mat) {
 #' @param x,y,z translation
 #' @return None. \code{mat} modified by reference and returned invisibly
 #' @examples
-#' mat <- tf_create_identity()
-#' tf_add_translation(mat, 1, 2, 3)
+#' mat <- tf_create()
+#' tf_add_translate(mat, 1, 2, 3)
 #' mat
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-tf_add_translation <- function(mat, x = 0, y = 0, z = 0) {
+tf_add_translate <- function(mat, x = 0, y = 0, z = 0) {
   invisible(
-    .Call(tf_add_translation_, mat, x, y, z)
+    .Call(tf_add_translate_, mat, x, y, z)
   )
 }
+
+
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' Add a scale transformation to a given matrix
@@ -53,7 +59,7 @@ tf_add_translation <- function(mat, x = 0, y = 0, z = 0) {
 #' @param x,y,z translation
 #' @return None. \code{mat} modified by reference and returned invisibly
 #' @examples
-#' mat <- tf_create_identity()
+#' mat <- tf_create()
 #' tf_add_scale(mat, 1, 2, 3)
 #' mat
 #' @export
@@ -65,6 +71,28 @@ tf_add_scale <- function(mat, x = 1, y = x, z = x) {
 }
 
 
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#' Add a scale transformation to a given matrix
+#' 
+#' @inheritParams tf_reset
+#' @param theta rotation angle (radians)
+#' @return None. \code{mat} modified by reference and returned invisibly
+#' @examples
+#' mat <- tf_create()
+#' tf_add_rotate_z(mat, pi/6)
+#' mat
+#' @export
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+tf_add_rotate_z <- function(mat, theta) {
+  invisible(
+    .Call(tf_add_rotate_z_, mat, theta)
+  )
+}
+
+
+
+
 # tf_rotate_x
 # tf_rotate_u
 # tf_rotate_z
@@ -74,7 +102,7 @@ tf_add_scale <- function(mat, x = 1, y = x, z = x) {
 
 if (FALSE) {
   
-  N <- 5000
+  N <- 5
   x <- runif(N)
   y <- runif(N)
   z <- runif(N)
@@ -85,9 +113,10 @@ if (FALSE) {
   
   plot(mat[, 1:2], xlim = c(-1, 3), ylim = c(-1, 3))
 
-  tf <- diag(4) |>
-    tf_scale(0.5) |>
-    tf_translate(y = 1)
+  tf <- tf_create() |>
+    tf_add_scale(0.5) |>
+    tf_add_translate(y = 1) |>
+    tf_add_rotate_z(pi/6)
   tf
 
   if (FALSE) {

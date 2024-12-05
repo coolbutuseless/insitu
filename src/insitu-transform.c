@@ -48,9 +48,9 @@ SEXP tf_reset_(SEXP mat_) {
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Reset a transformation matrix back to the identity
+// Add translation
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SEXP tf_add_translation_(SEXP mat_, SEXP x_, SEXP y_, SEXP z_) {
+SEXP tf_add_translate_(SEXP mat_, SEXP x_, SEXP y_, SEXP z_) {
   
   assert_mat44(mat_);
   double *mat = REAL(mat_);
@@ -65,7 +65,7 @@ SEXP tf_add_translation_(SEXP mat_, SEXP x_, SEXP y_, SEXP z_) {
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Reset a transformation matrix back to the identity
+// Add scaling
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 SEXP tf_add_scale_(SEXP mat_, SEXP x_, SEXP y_, SEXP z_) {
   
@@ -78,4 +78,24 @@ SEXP tf_add_scale_(SEXP mat_, SEXP x_, SEXP y_, SEXP z_) {
   
   return mat_;
 }
+
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Add a rotation around the z axis
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SEXP tf_add_rotate_z_(SEXP mat_, SEXP x_, SEXP y_, SEXP z_) {
+  
+  assert_mat44(mat_);
+
+  
+  return mat_;
+}
+
+
+
+
+
+
+
 

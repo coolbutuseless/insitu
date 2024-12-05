@@ -113,8 +113,9 @@ extern SEXP br_mat_transpose_(SEXP mat_);
 // Transforms
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 extern SEXP tf_reset_(SEXP mat_);
-extern SEXP tf_add_translation_(SEXP mat_, SEXP x_, SEXP y_, SEXP z_);
-extern SEXP tf_add_scale_      (SEXP mat_, SEXP x_, SEXP y_, SEXP z_);
+extern SEXP tf_add_translate_(SEXP mat_, SEXP x_, SEXP y_, SEXP z_);
+extern SEXP tf_add_scale_    (SEXP mat_, SEXP x_, SEXP y_, SEXP z_);
+extern SEXP tf_add_rotate_z_ (SEXP mat_, SEXP theta_);
 
 
 
@@ -227,8 +228,9 @@ static const R_CallMethodDef CEntries[] = {
   // Transforms
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   {"tf_reset_", (DL_FUNC) &tf_reset_, 1},
-  {"tf_add_translation_", (DL_FUNC) &tf_add_translation_, 4},
-  {"tf_add_scale_"      , (DL_FUNC) &tf_add_scale_      , 4},
+  {"tf_add_translate_", (DL_FUNC) &tf_add_translate_, 4},
+  {"tf_add_scale_"    , (DL_FUNC) &tf_add_scale_    , 4},
+  {"tf_add_rotate_z_" , (DL_FUNC) &tf_add_rotate_z_ , 2},
   
   
   {NULL , NULL, 0}
