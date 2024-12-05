@@ -9,7 +9,9 @@ alloc_mat_mat_mul(A, B, ta = FALSE, tb = FALSE)
 \arguments{
 \item{A, B}{Primary multiplication matrices}
 
-\item{ta, tb}{Should matrix be transposed? Default: FALSE}
+\item{ta}{Should matrix 'A' be transposed? Default: FALSE}
+
+\item{tb}{Should matrix 'B' be transposed? Default: FALSE}
 }
 \value{
 Uninitialized matrix of the correct size to hold the result

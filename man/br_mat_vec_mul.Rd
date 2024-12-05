@@ -4,7 +4,7 @@
 \alias{br_mat_vec_mul}
 \title{Matrix-vector multiplication}
 \usage{
-br_mat_vec_mul(y, A, x, alpha = 1, beta = 0)
+br_mat_vec_mul(y, A, x, alpha = 1, beta = 0, ta = FALSE)
 }
 \arguments{
 \item{y}{Vector which will be modified by-reference}
@@ -16,6 +16,8 @@ br_mat_vec_mul(y, A, x, alpha = 1, beta = 0)
 \item{alpha}{Scaling factor for \code{A * x}. Default: 1.0}
 
 \item{beta}{Scaling factor for \code{y}. Default: 0.0}
+
+\item{ta}{Should matrix 'A' be transposed? Default: FALSE}
 }
 \value{
 y is modified by-reference and returned invisibly

@@ -15,7 +15,9 @@ br_mat_mat_mul(C, A, B, alpha = 1, beta = 0, ta = FALSE, tb = FALSE)
 
 \item{beta}{Scaling factor for \code{C}. Default: 0.0}
 
-\item{ta, tb}{Should matrix be transposed? Default: FALSE}
+\item{ta}{Should matrix 'A' be transposed? Default: FALSE}
+
+\item{tb}{Should matrix 'B' be transposed? Default: FALSE}
 }
 \value{
 C is modified by-reference and returned invisibly
