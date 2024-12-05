@@ -1,42 +1,67 @@
 
+
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' Add a translation transformation to a given matrix
+#' Create identity transform
 #' 
+#' @return 4x4 identity matrix
+#' @export
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+tf_create_identity <- function() {
+  diag(4)
+}
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#' Reset a transformation matrix back to the identity matrix
 #' @param mat 4x4 transformation matrix
-#' @param x,y,z translation
 #' @return None. \code{mat} modified by reference and returned invisibly
 #' @examples
-#' mat <- identity(4)
-#' tf_translate(mat, 1, 2 3)
+#' mat <- matrix(1, 4, 4)
+#' tf_reset(mat)
 #' mat
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-tf_translate <- function(mat, x = 0, y = 0, z = 0) {
-  mat[1, 4] <- mat[1, 4] + x
-  mat[2, 4] <- mat[2, 4] + y
-  mat[3, 4] <- mat[3, 4] + z
-  
-  mat
+tf_reset <- function(mat) {
+  invisible(
+    .Call(tf_reset_, mat)
+  )
+}
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#' Add a translation transformation to a given matrix
+#' 
+#' @inheritParams tf_reset
+#' @param x,y,z translation
+#' @return None. \code{mat} modified by reference and returned invisibly
+#' @examples
+#' mat <- tf_create_identity()
+#' tf_add_translation(mat, 1, 2, 3)
+#' mat
+#' @export
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+tf_add_translation <- function(mat, x = 0, y = 0, z = 0) {
+  invisible(
+    .Call(tf_add_translation_, mat, x, y, z)
+  )
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' Add a scale transformation to a given matrix
 #' 
-#' @param mat 4x4 transformation matrix
+#' @inheritParams tf_reset
 #' @param x,y,z translation
 #' @return None. \code{mat} modified by reference and returned invisibly
 #' @examples
-#' mat <- identity(4)
-#' tf_translate(mat, 1, 2 3)
+#' mat <- tf_create_identity()
+#' tf_add_scale(mat, 1, 2, 3)
 #' mat
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-tf_scale <- function(mat, x = 1, y = x, z = x) {
-  mat[1, 1] <- mat[1, 1] * x
-  mat[2, 2] <- mat[2, 2] * y
-  mat[3, 3] <- mat[3, 3] * z
-  
-  mat
+tf_add_scale <- function(mat, x = 1, y = x, z = x) {
+  invisible(
+    .Call(tf_add_scale_, mat, x, y, z)
+  )
 }
 
 
