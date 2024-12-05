@@ -2,7 +2,7 @@
 % Please edit documentation in R/transform.R
 \name{tf_add_translate}
 \alias{tf_add_translate}
-\title{Add a translation transformation to a given matrix}
+\title{Add translation to a transformation matrix}
 \usage{
 tf_add_translate(mat, x = 0, y = 0, z = 0)
 }
@@ -15,7 +15,7 @@ tf_add_translate(mat, x = 0, y = 0, z = 0)
 None. \code{mat} modified by reference and returned invisibly
 }
 \description{
-Add a translation transformation to a given matrix
+Add translation to a transformation matrix
 }
 \examples{
 mat <- tf_create()

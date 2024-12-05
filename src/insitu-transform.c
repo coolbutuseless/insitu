@@ -166,6 +166,62 @@ SEXP tf_add_scale_(SEXP mat_, SEXP x_, SEXP y_, SEXP z_) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Add a rotation around the z axis
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SEXP tf_add_rotate_x_(SEXP mat_, SEXP theta_) {
+  
+  static double t[16] = { 1, 0, 0, 0, 
+                          0, 1, 0, 0,
+                          0, 0, 1, 0,
+                          0, 0, 0, 1 };
+  assert_mat44(mat_);
+  
+  // setup transformation matrix
+  double theta = Rf_asReal(theta_);
+  t[I(1, 1)] =  cos(theta);
+  t[I(1, 2)] =  sin(theta);
+  t[I(2, 1)] = -sin(theta);
+  t[I(2, 2)] =  cos(theta);
+  
+  // do the multiplication
+  double *mat = REAL(mat_);
+  mat44_mul(t, mat);
+  
+  
+  return mat_;
+}
+
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Add a rotation around the z axis
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SEXP tf_add_rotate_y_(SEXP mat_, SEXP theta_) {
+  
+  static double t[16] = { 1, 0, 0, 0, 
+                          0, 1, 0, 0,
+                          0, 0, 1, 0,
+                          0, 0, 0, 1 };
+  assert_mat44(mat_);
+  
+  // setup transformation matrix
+  double theta = Rf_asReal(theta_);
+  t[I(0, 0)] =  cos(theta);
+  t[I(0, 2)] = -sin(theta);
+  t[I(2, 0)] =  sin(theta);
+  t[I(2, 2)] =  cos(theta);
+  
+  // do the multiplication
+  double *mat = REAL(mat_);
+  mat44_mul(t, mat);
+  
+  
+  return mat_;
+}
+
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Add a rotation around the z axis
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 SEXP tf_add_rotate_z_(SEXP mat_, SEXP theta_) {
   
   static double t[16] = { 1, 0, 0, 0, 

@@ -2,20 +2,20 @@
 % Please edit documentation in R/transform.R
 \name{tf_add_scale}
 \alias{tf_add_scale}
-\title{Add a scale transformation to a given matrix}
+\title{Add scaling to a transformation matrix}
 \usage{
 tf_add_scale(mat, x = 1, y = x, z = x)
 }
 \arguments{
 \item{mat}{4x4 transformation matrix}
 
-\item{x, y, z}{translation}
+\item{x, y, z}{scaling}
 }
 \value{
 None. \code{mat} modified by reference and returned invisibly
 }
 \description{
-Add a scale transformation to a given matrix
+Add scaling to a transformation matrix
 }
 \examples{
 mat <- tf_create()

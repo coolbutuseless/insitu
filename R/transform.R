@@ -33,7 +33,7 @@ tf_reset <- function(mat) {
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' Add a translation transformation to a given matrix
+#' Add translation to a transformation matrix
 #' 
 #' @inheritParams tf_reset
 #' @param x,y,z translation
@@ -53,10 +53,10 @@ tf_add_translate <- function(mat, x = 0, y = 0, z = 0) {
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' Add a scale transformation to a given matrix
+#' Add scaling to a transformation matrix
 #' 
 #' @inheritParams tf_reset
-#' @param x,y,z translation
+#' @param x,y,z scaling
 #' @return None. \code{mat} modified by reference and returned invisibly
 #' @examples
 #' mat <- tf_create()
@@ -73,7 +73,7 @@ tf_add_scale <- function(mat, x = 1, y = x, z = x) {
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' Add a scale transformation to a given matrix
+#' Add rotation to a transformation matrix
 #' 
 #' @inheritParams tf_reset
 #' @param theta rotation angle (radians)
@@ -82,6 +82,30 @@ tf_add_scale <- function(mat, x = 1, y = x, z = x) {
 #' mat <- tf_create()
 #' tf_add_rotate_z(mat, pi/6)
 #' mat
+#' @export
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+tf_add_rotate_x <- function(mat, theta) {
+  invisible(
+    .Call(tf_add_rotate_x_, mat, theta)
+  )
+}
+
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#' @rdname tf_add_rotate_x
+#' @export
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+tf_add_rotate_y <- function(mat, theta) {
+  invisible(
+    .Call(tf_add_rotate_y_, mat, theta)
+  )
+}
+
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#' @rdname tf_add_rotate_x
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 tf_add_rotate_z <- function(mat, theta) {
