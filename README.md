@@ -40,11 +40,8 @@ number of garbage collection operations is also reduced.
 | `br_copy(x, y, n, xi, yi)` | copy ‘n’ elements from ‘y’ into ‘x’ starting at ‘xi’ and ‘yi’ |
 | `br_fill_seq(x, from, to, step)` | Fill vector with a sequence |
 | `br_copy_if(x, y, lgl)` | copy ‘y’ into ‘x’ where `lgl != 0` |
-| `br_dist2(x1, y1, x2, y2)`, `br_dist3(x1, y1, z1, x2, y2, z2)` | distance between points |
-| `br_hypot2(x, y)` `br_hypot3(x, y ,z)` | distance from point to origin |
-| `br_normalise2(x, y)`, `br_normalise3(x, y, z)` | normalise coordinates |
 | `br_abs()`, `br_sqrt()`,`br_floor()`,`br_ceil()`, `br_trunc()`, `br_round()`, `br_exp()`, `br_log()`, `br_cos()`, `br_sin()`, `br_tan()`, `br_not()`, `br_expm1()`, `br_log1p()`, `br_acos()`,`br_asin()`, `br_atan()`,`br_acosh()`,`br_asinh()`,`br_atanh()`,`br_cosh()`, `br_sinh()`,`br_tanh()`, `br_sign()`, `br_cospi()`, `br_sinpi()`, `br_tanpi()`, `br_cumsum()`, `br_cumprod()`, `br_cummax()`, `br_cummin()`, `br_log2()`, `br_log10()`, `br_is_na()` | Standard single argument math operations |
-| `br_add()`, `br_sub()`, `br_mul()`, `br_div()`, `br_eq()`, `br_ne()`, `br_lt()`, `br_le()`, `br_gt()`, `br_ge()`, `br_and()`, `br_or()`, `br_rem()`, `br_idiv()`, `br_max()`, `br_min()`, `br_hypot()` | Standard two-argument math operations |
+| `br_add()`, `br_sub()`, `br_mul()`, `br_div()`, `br_eq()`, `br_ne()`, `br_lt()`, `br_le()`, `br_gt()`, `br_ge()`, `br_and()`, `br_or()`, `br_rem()`, `br_idiv()`, `br_max()`, `br_min()`, `br_mat_hypot()` | Standard two-argument math operations |
 
 | Matrix functions | Description |
 |----|----|
@@ -52,6 +49,9 @@ number of garbage collection operations is also reduced.
 | `alloc_mat_mat_mul(A, B)` | Allocate a matrix to hold the result of `A * B`, but do not initialise matrix, or perform the calculation |
 | `br_mat_mat_mul(C, A, B)` | Multiply two matrices `C <- A %*% B + C` (C must be pre-allocated) |
 | `br_mat_vec_mul(y, A, x)` | `y <- A %*% x` Matrix-Vector multiplication (using a pre-allocated output matrix) |
+| `br_mat_normalise2(mat)`, `br_mat_normalise3(mat)` | normalise coordinates |
+| `br_mat_hypot2(d, mat)` `br_mat_hypot3(d, mat)` | distance from point to origin |
+| `br_mat_dist2(d, mat1, mat2)`, `br_mat_dist3(d, mat1, mat2)` | distance between points |
 
 #### RNG
 
@@ -214,10 +214,10 @@ knitr::kable(bm)
 
 | expression           |     min |  median |   itr/sec | mem_alloc |
 |:---------------------|--------:|--------:|----------:|----------:|
-| conv_nested(x, y)    | 60.46ms | 60.91ms |  16.41834 |    88.5KB |
-| conv_vec(x, y)       | 10.05ms | 10.96ms |  91.38725 |    34.6MB |
-| conv_fft(x, y)       |  3.59ms |  3.66ms | 272.47033 |     380KB |
-| conv_vec_byref(x, y) |  2.85ms |  2.98ms | 328.78769 |   115.9KB |
+| conv_nested(x, y)    | 60.53ms | 61.09ms |  16.39230 |    88.5KB |
+| conv_vec(x, y)       | 10.05ms | 11.03ms |  91.20604 |    34.6MB |
+| conv_fft(x, y)       |  3.59ms |  3.66ms | 272.19387 |     380KB |
+| conv_vec_byref(x, y) |  2.87ms |  2.96ms | 331.14994 |   115.9KB |
 
 ## Matrix multiplication
 
@@ -254,5 +254,5 @@ bench::mark(
     #> # A tibble: 2 × 6
     #>   expression                   min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>              <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 br_mat_mat_mul(C, A, B)    148ms    148ms      6.76    5.41KB     0   
-    #> 2 A %*% B                    149ms    149ms      6.71    7.63MB     2.24
+    #> 1 br_mat_mat_mul(C, A, B)    148ms    149ms      6.72    7.86KB     0   
+    #> 2 A %*% B                    150ms    150ms      6.67    7.63MB     2.22

@@ -1,6 +1,6 @@
 Package: insitu
 Type: Package
-Title: By-Reference Routiners for Numeric Vectors
+Title: By-Reference Routines for Numeric Vectors
 Version: 0.1.3.9009
 Authors@R: c(
     person("Mike", "Cheng", role = c("aut", "cre", 'cph'), email = "mikefc@coolbutuseless.com")
@@ -8,7 +8,11 @@ Authors@R: c(
 Maintainer: Mike Cheng <mikefc@coolbutuseless.com>
 URL: https://github.com/coolbutuseless/insitu
 BugReports: https://github.com/coolbutuseless/insitu/issues
-Description: Functions for by-reference calculation with numeric vectors.
+Description: Using by-reference semantics, functions in this package are crafted to 
+    modify the input objects in-place and avoid allocating new memory.  By avoiding 
+    memory allocations (and the associated garbage colection these require), operations 
+    performed by-reference can be faster than those performed with R's default 
+    copy-on-modify semantics.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

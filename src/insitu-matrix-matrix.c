@@ -29,13 +29,6 @@
 # define FCONE
 #endif
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Alloc matrix of a given size
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SEXP alloc_matrix_(SEXP nrow_, SEXP ncol_) {
-  return Rf_allocMatrix(REALSXP, Rf_asInteger(nrow_), Rf_asInteger(ncol_));
-}
-
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

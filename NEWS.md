@@ -6,7 +6,7 @@
 * [9008] Add mat-mat and mat-vec multiplication.
 * [9007] changed function prefix from `ins_` to `br_`
 * [9007] changed helper from `insitu` to `by_reference`
-* [9007] `br_dist2()`, `br_dist3()`, `br_hypot2()`, `br_hypot3()`
+* [9007] `br_mat_dist2()`, `br_mat_dist3()`, `br_mat_hypot2()`, `br_mat_hypot3()`
 * [9006] `br_copy_if()`
 * [9006] `br_is_na()`
 * [9006] `br_copy()` replaces old `br_copy()`, `br_copy_from()`, 

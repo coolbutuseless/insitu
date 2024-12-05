@@ -71,8 +71,8 @@ by_reference <- list(
   `%/%`   = br_idiv,
   `max`   = br_max,
   `min`   = br_min,
-  `hypot` = br_hypot2,
-  `hypot2`= br_hypot2,
+  `hypot` = br_mat_hypot2,
+  `hypot2`= br_mat_hypot2,
   
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Other ops
@@ -84,9 +84,9 @@ by_reference <- list(
   fmsub     = br_fmsub,
   fnmadd    = br_fnmadd,
   fnmsub    = br_fnmsub,
-  `hypot3`  = br_hypot3,
-  dist2     = br_dist2,
-  dist3     = br_dist3
+  `hypot3`  = br_mat_hypot3,
+  dist2     = br_mat_dist2,
+  dist3     = br_mat_dist3
 )
 
 

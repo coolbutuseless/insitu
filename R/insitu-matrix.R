@@ -1,48 +1,6 @@
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' Allocate empty matrix of the given dimensions.
-#' 
-#' The values are in the matrix are \emph{not} initialised to zero.
-#' 
-#' @param nrow,ncol dimensions
-#' @return Matrix of the requested dimensions. Values are \emph{not} initialised.
-#' @examples
-#' m <- alloc_matrix(nrow = 3, ncol = 2)
-#' is.matrix(m)
-#' dim(m)
-#' @export
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-alloc_matrix <- function(nrow, ncol) {
-  .Call(alloc_matrix_, nrow, ncol)
-}
-
-
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' Allocate empty matrix for the result of the matrix multiplication \code{A * B}
-#' 
-#' @inheritParams br_mat_mat_mul
-#' @return Uninitialized matrix of the correct size to hold the result 
-#' @examples
-#' A <- matrix(1, 2, 4)
-#' B <- matrix(1, 4, 7)
-#' C <- alloc_mat_mat_mul(A, B)
-#' is.matrix(C)
-#' dim(C)
-#' @export
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-alloc_mat_mat_mul <- function(A, B, ta = FALSE, tb = FALSE) {
-  
-  asize <- ifelse(ta, ncol(A), nrow(A))
-  bsize <- ifelse(tb, nrow(B), ncol(B))
-  
-  alloc_matrix(asize, bsize)
-}
-
-
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' Matrix-matrix multiplication
 #' 
 #' This function exposes the general matrix multiplication operation from R's

@@ -82,16 +82,18 @@ extern SEXP br_rem_  (SEXP x_, SEXP y_);
 extern SEXP br_idiv_ (SEXP x_, SEXP y_);
 extern SEXP br_max_  (SEXP x_, SEXP y_);
 extern SEXP br_min_  (SEXP x_, SEXP y_);
-extern SEXP br_hypot2_(SEXP x_, SEXP y_);
-extern SEXP br_hypot3_(SEXP x_, SEXP y_, SEXP z_);
 
 extern SEXP set_seed_random64_(void);
 
-extern SEXP br_dist2_(SEXP x1_, SEXP y1_, SEXP x2_, SEXP y2_);
-extern SEXP br_dist3_(SEXP x1_, SEXP y1_, SEXP z1_, SEXP x2_, SEXP y2_, SEXP z2_);
 
-extern SEXP br_normalise2_(SEXP x_, SEXP y_);
-extern SEXP br_normalise3_(SEXP x_, SEXP y_, SEXP z_);
+extern SEXP br_mat_hypot2_(SEXP d_, SEXP mat_);
+extern SEXP br_mat_hypot3_(SEXP d_, SEXP mat_);
+
+extern SEXP br_mat_dist2_(SEXP d_, SEXP mat1_, SEXP mat2_);
+extern SEXP br_mat_dist3_(SEXP d_, SEXP mat1_, SEXP mat2_);
+
+extern SEXP br_normalise2_(SEXP mat_);
+extern SEXP br_normalise3_(SEXP mat_);
 
 
 extern SEXP alloc_matrix_(SEXP nrow_, SEXP ncol_);
@@ -184,16 +186,17 @@ static const R_CallMethodDef CEntries[] = {
   {"br_idiv_" , (DL_FUNC) &br_idiv_ , 2},
   {"br_max_"  , (DL_FUNC) &br_max_  , 2},
   {"br_min_"  , (DL_FUNC) &br_min_  , 2},
-  {"br_hypot2_", (DL_FUNC) &br_hypot2_, 2},
-  {"br_hypot3_", (DL_FUNC) &br_hypot3_, 3},
 
   {"set_seed_random64_"     , (DL_FUNC) &set_seed_random64_     , 0},
   
-  {"br_dist2_", (DL_FUNC) &br_dist2_, 4},
-  {"br_dist3_", (DL_FUNC) &br_dist3_, 6},
+  {"br_mat_hypot2_", (DL_FUNC) &br_mat_hypot2_, 2},
+  {"br_mat_hypot3_", (DL_FUNC) &br_mat_hypot3_, 2},
   
-  {"br_normalise2_", (DL_FUNC) &br_normalise2_, 2},
-  {"br_normalise3_", (DL_FUNC) &br_normalise3_, 3},
+  {"br_mat_dist2_", (DL_FUNC) &br_mat_dist2_, 3},
+  {"br_mat_dist3_", (DL_FUNC) &br_mat_dist3_, 3},
+  
+  {"br_normalise2_", (DL_FUNC) &br_normalise2_, 1},
+  {"br_normalise3_", (DL_FUNC) &br_normalise3_, 1},
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Matrix

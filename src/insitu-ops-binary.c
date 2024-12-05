@@ -163,6 +163,5 @@ INSBINOP(idiv, *x = floor(*x / *y++)   , *x = floor(*x / y))
 INSBINOP(max, *x = *x > *y++ ? *x : *(y - 1), *x = *x > y ? *x : y)
 INSBINOP(min, *x = *x < *y++ ? *x : *(y - 1), *x = *x < y ? *x : y)
   
-INSBINOP(hypot2, *x = hypot(*x, *y++), *x = hypot(*x, y))
   
 

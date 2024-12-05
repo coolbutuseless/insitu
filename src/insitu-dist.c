@@ -15,92 +15,159 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // addition with vector x,y
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SEXP br_dist2_(SEXP x1_, SEXP y1_, SEXP x2_, SEXP y2_) {
+SEXP br_mat_dist2_(SEXP d_, SEXP mat1_, SEXP mat2_) {
   
-  int n = (int)Rf_length(x1_);
-  if (Rf_length(y1_) != n || Rf_length(x2_) !=n || Rf_length(y2_) != n) {
-    Rf_error("br_dist2_(): All inputs must be the same length");
+  int nrow = Rf_nrows(mat1_);
+  if (nrow != Rf_nrows(mat2_)) {
+    Rf_error("br_mat_dist2_(): mat1 and mat2 must have the same number of rows. %i != %i", nrow, Rf_nrows(mat2_));
   }
   
-  double *x1 = REAL(x1_);
-  double *y1 = REAL(y1_);
-  double *x2 = REAL(x2_);
-  double *y2 = REAL(y2_);
-
+  if (Rf_length(d_) != nrow) {
+    Rf_error("br_mat_dist2_(): 'd' must have a length to match nrow(mat1).  %i != %i", (int)Rf_length(d_), nrow);
+  }
+  
+  if (Rf_ncols(mat1_) < 2 || Rf_ncols(mat2_) < 2) {
+    Rf_error("br_mat_dist2_(): Must be at least 2 columns in each matrix");
+  }
+  
+  double *x1 = REAL(mat1_);
+  double *y1 = x1 + nrow;
+  double *x2 = REAL(mat2_);
+  double *y2 = x2 + nrow;
+  double *d = REAL(d_);
+  
   int i = 0;
-  for (; i < n - (UNROLL - 1); i += UNROLL) {
-    *x1 = sqrt((*x2 - *x1) * (*x2 - *x1) + (*y2 - *y1) * (*y2 - *y1)); ++x1; ++y1; ++x2; ++y2;
-    *x1 = sqrt((*x2 - *x1) * (*x2 - *x1) + (*y2 - *y1) * (*y2 - *y1)); ++x1; ++y1; ++x2; ++y2;
-    *x1 = sqrt((*x2 - *x1) * (*x2 - *x1) + (*y2 - *y1) * (*y2 - *y1)); ++x1; ++y1; ++x2; ++y2;
-    *x1 = sqrt((*x2 - *x1) * (*x2 - *x1) + (*y2 - *y1) * (*y2 - *y1)); ++x1; ++y1; ++x2; ++y2;
+  for (; i < nrow - (UNROLL - 1); i += UNROLL) {
+    *d++ = sqrt((*x2 - *x1) * (*x2 - *x1) + (*y2 - *y1) * (*y2 - *y1)); ++x1; ++y1; ++x2; ++y2;
+    *d++ = sqrt((*x2 - *x1) * (*x2 - *x1) + (*y2 - *y1) * (*y2 - *y1)); ++x1; ++y1; ++x2; ++y2;
+    *d++ = sqrt((*x2 - *x1) * (*x2 - *x1) + (*y2 - *y1) * (*y2 - *y1)); ++x1; ++y1; ++x2; ++y2;
+    *d++ = sqrt((*x2 - *x1) * (*x2 - *x1) + (*y2 - *y1) * (*y2 - *y1)); ++x1; ++y1; ++x2; ++y2;
   }
-  for (; i < n; i++) {
-    *x1 = sqrt((*x2 - *x1) * (*x2 - *x1) + (*y2 - *y1) * (*y2 - *y1)); ++x1; ++y1; ++x2; ++y2;
+  for (; i < nrow; i++) {
+    *d++ = sqrt((*x2 - *x1) * (*x2 - *x1) + (*y2 - *y1) * (*y2 - *y1)); ++x1; ++y1; ++x2; ++y2;
   }
-
-  return x1_;
+  
+  return d_;
 }
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // addition with vector x,y
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SEXP br_dist3_(SEXP x1_, SEXP y1_, SEXP z1_, SEXP x2_, SEXP y2_, SEXP z2_) {
+SEXP br_mat_dist3_(SEXP d_, SEXP mat1_, SEXP mat2_) {
   
-  int n = (int)Rf_length(x1_);
-  if (Rf_length(y1_) != n || Rf_length(z1_) != n ||
-      Rf_length(x2_) != n || Rf_length(y2_) != n || Rf_length(z2_) != n) {
-    Rf_error("br_dist3_(): All inputs must be the same length");
+  int nrow = Rf_nrows(mat1_);
+  if (nrow != Rf_nrows(mat2_)) {
+    Rf_error("br_mat_dist3_(): mat1 and mat2 must have the same number of rows. %i != %i", nrow, Rf_nrows(mat2_));
   }
   
-  double *x1 = REAL(x1_);
-  double *y1 = REAL(y1_);
-  double *z1 = REAL(z1_);
-  double *x2 = REAL(x2_);
-  double *y2 = REAL(y2_);
-  double *z2 = REAL(z2_);
+  if (Rf_length(d_) != nrow) {
+    Rf_error("br_mat_dist3_(): 'd' must have a length to match nrow(mat1).  %i != %i", (int)Rf_length(d_), nrow);
+  }
+
+  if (Rf_ncols(mat1_) < 3 || Rf_ncols(mat2_) < 3) {
+    Rf_error("br_mat_dist3_(): Must be at least 3 columns in each matrix");
+  }
+  
+  double *x1 = REAL(mat1_);
+  double *y1 = x1 + nrow;
+  double *z1 = y1 + nrow;
+  double *x2 = REAL(mat2_);
+  double *y2 = x2 + nrow;
+  double *z2 = y2 + nrow;
+  double *d = REAL(d_);
   
   int i = 0;
-  for (; i < n - (UNROLL - 1); i += UNROLL) {
-    *x1 = sqrt((*x2 - *x1) * (*x2 - *x1) + (*y2 - *y1) * (*y2 - *y1) + (*z2 - *z1) * (*z2 - *z1)); ++x1; ++y1; ++z1; ++x2; ++y2; ++z2;
-    *x1 = sqrt((*x2 - *x1) * (*x2 - *x1) + (*y2 - *y1) * (*y2 - *y1) + (*z2 - *z1) * (*z2 - *z1)); ++x1; ++y1; ++z1; ++x2; ++y2; ++z2;
-    *x1 = sqrt((*x2 - *x1) * (*x2 - *x1) + (*y2 - *y1) * (*y2 - *y1) + (*z2 - *z1) * (*z2 - *z1)); ++x1; ++y1; ++z1; ++x2; ++y2; ++z2;
-    *x1 = sqrt((*x2 - *x1) * (*x2 - *x1) + (*y2 - *y1) * (*y2 - *y1) + (*z2 - *z1) * (*z2 - *z1)); ++x1; ++y1; ++z1; ++x2; ++y2; ++z2;
+  for (; i < nrow - (UNROLL - 1); i += UNROLL) {
+    *d++ = sqrt((*x2 - *x1) * (*x2 - *x1) + (*y2 - *y1) * (*y2 - *y1) + (*z2 - *z1) * (*z2 - *z1)); ++x1; ++y1; ++z1; ++x2; ++y2; ++z2;
+    *d++ = sqrt((*x2 - *x1) * (*x2 - *x1) + (*y2 - *y1) * (*y2 - *y1) + (*z2 - *z1) * (*z2 - *z1)); ++x1; ++y1; ++z1; ++x2; ++y2; ++z2;
+    *d++ = sqrt((*x2 - *x1) * (*x2 - *x1) + (*y2 - *y1) * (*y2 - *y1) + (*z2 - *z1) * (*z2 - *z1)); ++x1; ++y1; ++z1; ++x2; ++y2; ++z2;
+    *d++ = sqrt((*x2 - *x1) * (*x2 - *x1) + (*y2 - *y1) * (*y2 - *y1) + (*z2 - *z1) * (*z2 - *z1)); ++x1; ++y1; ++z1; ++x2; ++y2; ++z2;
   }
-  for (; i < n; i++) {
-    *x1 = sqrt((*x2 - *x1) * (*x2 - *x1) + (*y2 - *y1) * (*y2 - *y1) + (*z2 - *z1) * (*z2 - *z1)); ++x1; ++y1; ++z1; ++x2; ++y2; ++z2;
+  for (; i < nrow; i++) {
+    *d++ = sqrt((*x2 - *x1) * (*x2 - *x1) + (*y2 - *y1) * (*y2 - *y1) + (*z2 - *z1) * (*z2 - *z1)); ++x1; ++y1; ++z1; ++x2; ++y2; ++z2;
   }
   
-  return x1_;
+  return d_;
 }
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// addition with vector x,y
+// Length of (x, y, z) 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SEXP br_hypot3_(SEXP x_, SEXP y_, SEXP z_) {
+SEXP br_mat_hypot2_(SEXP d_, SEXP mat_) {
   
-  int n = (int)Rf_length(x_);
-  if (Rf_length(y_) != n || Rf_length(z_) != n) {
-    Rf_error("br_hypot3_(): All inputs must be the same length");
+  
+  if (!Rf_isMatrix(mat_)) {
+    Rf_error("br_mat_hypot2_(): input must be a 2D matrix");
   }
   
-  double *x = REAL(x_);
-  double *y = REAL(y_);
-  double *z = REAL(z_);
+  int nrow = Rf_nrows(mat_);
+  int ncol = Rf_ncols(mat_);
+  if (ncol < 2) {
+    Rf_error("br_mat_hypot2_(): input must have at least 2 columns");
+  }
+  
+  if (Rf_length(d_) != nrow) {
+    Rf_error("br_mat_hypot2_(): length(d) != nrow(mat)");
+  }
+  
+  double *x = REAL(mat_);
+  double *y = x + nrow;
+  double *d = REAL(d_);
   
   int i = 0;
-  for (; i < n - (UNROLL - 1); i += UNROLL) {
-    *x = sqrt(*x * *x + *y * *y + *z * *z); ++x; ++y; ++z; 
-    *x = sqrt(*x * *x + *y * *y + *z * *z); ++x; ++y; ++z; 
-    *x = sqrt(*x * *x + *y * *y + *z * *z); ++x; ++y; ++z; 
-    *x = sqrt(*x * *x + *y * *y + *z * *z); ++x; ++y; ++z; 
+  for (; i < nrow - (UNROLL - 1); i += UNROLL) {
+    *d++ = hypot(*x++, *y++);  
+    *d++ = hypot(*x++, *y++);  
+    *d++ = hypot(*x++, *y++);  
+    *d++ = hypot(*x++, *y++);  
   }
-  for (; i < n; i++) {
-    *x = sqrt(*x * *x + *y * *y + *z * *z); ++x; ++y; ++z; 
+  for (; i < nrow; i++) {
+    *d++ = hypot(*x++, *y++);  
   }
   
-  return x_;
+  return d_;
+}
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Length of (x, y, z) 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SEXP br_mat_hypot3_(SEXP d_, SEXP mat_) {
+  
+  
+  if (!Rf_isMatrix(mat_)) {
+    Rf_error("br_mat_hypot3_(): input must be a 2D matrix");
+  }
+  
+  int nrow = Rf_nrows(mat_);
+  int ncol = Rf_ncols(mat_);
+  if (ncol < 3) {
+    Rf_error("br_mat_hypot3_(): input must have at least 3 columns");
+  }
+  
+  if (Rf_length(d_) != nrow) {
+    Rf_error("br_mat_hypot3_(): length(d) != nrow(mat)");
+  }
+  
+  double *x = REAL(mat_);
+  double *y = x + nrow;
+  double *z = y + nrow;
+  double *d = REAL(d_);
+  
+  int i = 0;
+  for (; i < nrow - (UNROLL - 1); i += UNROLL) {
+    *d++ = sqrt(*x * *x + *y * *y + *z * *z); ++x; ++y; ++z; 
+    *d++ = sqrt(*x * *x + *y * *y + *z * *z); ++x; ++y; ++z; 
+    *d++ = sqrt(*x * *x + *y * *y + *z * *z); ++x; ++y; ++z; 
+    *d++ = sqrt(*x * *x + *y * *y + *z * *z); ++x; ++y; ++z; 
+  }
+  for (; i < nrow; i++) {
+    *d++ = sqrt(*x * *x + *y * *y + *z * *z); ++x; ++y; ++z; 
+  }
+  
+  return d_;
 }
 
 
@@ -109,24 +176,29 @@ SEXP br_hypot3_(SEXP x_, SEXP y_, SEXP z_) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Normalise
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SEXP br_normalise2_(SEXP x_, SEXP y_) {
+SEXP br_normalise2_(SEXP mat_) {
   
-  int n = (int)Rf_length(x_);
-  if (Rf_length(y_) != n) {
-    Rf_error("br_normalise2_(): All inputs must be the same length");
+  if (!Rf_isMatrix(mat_)) {
+    Rf_error("br_normalise2_(): input must be a 2D matrix");
   }
   
-  double *x = REAL(x_);
-  double *y = REAL(y_);
+  int nrow = Rf_nrows(mat_);
+  int ncol = Rf_ncols(mat_);
+  if (ncol < 2) {
+    Rf_error("br_normalise2_(): input must have at least 2 columns");
+  }
   
-  for (int i = 0; i < Rf_length(x_); i++) {
+  double *x = REAL(mat_);
+  double *y = x + nrow;
+  
+  for (int i = 0; i < nrow; i++) {
     double len = hypot(*x, *y); 
     *x /= len;
     *y /= len;
     ++x; ++y; 
   }
   
-  return x_;
+  return mat_;
 }
 
 
@@ -134,18 +206,23 @@ SEXP br_normalise2_(SEXP x_, SEXP y_) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Normalise
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SEXP br_normalise3_(SEXP x_, SEXP y_, SEXP z_) {
+SEXP br_normalise3_(SEXP mat_) {
   
-  int n = (int)Rf_length(x_);
-  if (Rf_length(y_) != n || Rf_length(z_) != n) {
-    Rf_error("br_normalise3_(): All inputs must be the same length");
+  if (!Rf_isMatrix(mat_)) {
+    Rf_error("br_normalise3_(): input must be a 2D matrix");
   }
   
-  double *x = REAL(x_);
-  double *y = REAL(y_);
-  double *z = REAL(z_);
+  int nrow = Rf_nrows(mat_);
+  int ncol = Rf_ncols(mat_);
+  if (ncol < 3) {
+    Rf_error("br_normalise3_(): input must have at least 3 columns");
+  }
   
-  for (int i = 0; i < Rf_length(x_); i++) {
+  double *x = REAL(mat_);
+  double *y = x + nrow;
+  double *z = y + nrow;
+  
+  for (int i = 0; i < nrow; i++) {
     double len = sqrt(*x * *x + *y * *y + *z * *z); 
     *x /= len;
     *y /= len;
@@ -153,7 +230,7 @@ SEXP br_normalise3_(SEXP x_, SEXP y_, SEXP z_) {
     ++x; ++y; ++z; 
   }
   
-  return x_;
+  return mat_;
 }
 
 
