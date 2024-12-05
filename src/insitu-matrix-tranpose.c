@@ -24,6 +24,9 @@ SEXP br_mat_transpose_(SEXP mat_) {
   int cols = Rf_ncols(mat_);
   
   double *tmp = malloc((size_t)rows * (size_t)cols * sizeof(double));
+  if (tmp == NULL) {
+    Rf_error("Could not allocate 'tmp'");
+  }
   
   R_xlen_t len = Rf_xlength(mat_);
   R_xlen_t i, j;
@@ -40,6 +43,7 @@ SEXP br_mat_transpose_(SEXP mat_) {
   UNPROTECT(1);
   
   memcpy(mat, tmp, (size_t)rows * (size_t)cols * sizeof(double));
+  free(tmp);
   return mat_;  
 }
 
