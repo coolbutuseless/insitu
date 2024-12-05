@@ -20,58 +20,31 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SEXP mat44_mul_(SEXP C_, SEXP A_, SEXP B_, 
-                SEXP alpha_, SEXP beta_, 
-                SEXP ta_, SEXP tb_) {
+void mat44_mul(double *A, double *B) {
   
-  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // Confirm dimensions are conformable
-  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  if (!Rf_isMatrix(A_) || !Rf_isMatrix(B_) || !Rf_isMatrix(C_)) {
-    Rf_error("br_mat_mat_mul_(): A, B & C must all be matrices");
-  }
-  
-  bool ta = Rf_asLogical(ta_);
-  bool tb = Rf_asLogical(tb_);
-  
-  int ka = ta ? Rf_nrows(A_) : Rf_ncols(A_);
-  int kb = tb ? Rf_ncols(B_) : Rf_nrows(B_);
-  
-  if (ka != kb) {
-    Rf_error("A, B are non-conformable");
-  }
-  
-  int asize = ta ? Rf_ncols(A_) : Rf_nrows(A_);
-  int bsize = tb ? Rf_nrows(B_) : Rf_ncols(B_);
-  
-  if (Rf_nrows(C_) != asize || Rf_ncols(C_) != bsize) {
-    Rf_error("C not dimensioned for holding A * B");
-  }  
+  double C[16];
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Setup arguments to dgemm()
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  char *A_op = ta ? "T" : "N"; 
-  char *B_op = tb ? "T" : "N"; 
+  char *A_op = "N"; 
+  char *B_op = "N"; 
   
   // A = M * k
   // B = k * N
-  int M = ta ? Rf_ncols(A_) : Rf_nrows(A_);
-  int N = tb ? Rf_nrows(B_) : Rf_ncols(B_);
-  int k = ta ? Rf_nrows(A_) : Rf_ncols(A_);
+  int M = 4;
+  int N = 4;
+  int k = 4;
   
-  int LDA = ta ? k : M;
-  int LDB = tb ? N : k;
-  int LDC = M;
+  int LDA = 4;
+  int LDB = 4;
+  int LDC = 4;
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Get pointers
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  double *A = REAL(A_);
-  double *B = REAL(B_);
-  double *C = REAL(C_);
-  double alpha = Rf_asReal(alpha_);
-  double beta  = Rf_asReal(beta_);
+  double alpha = 1;
+  double beta  = 0;
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Call
@@ -91,14 +64,11 @@ SEXP mat44_mul_(SEXP C_, SEXP A_, SEXP B_,
       C,
       &LDC FCONE FCONE
   );
-  
-  return(C_);
+
+  memcpy(A, C, 16 * sizeof(double));
 }
 
 
-void mat44_mul(double *A, double *B) {
-  
-}
 
 
 

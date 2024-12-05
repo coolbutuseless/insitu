@@ -102,7 +102,8 @@ tf_add_rotate_z <- function(mat, theta) {
 
 if (FALSE) {
   
-  N <- 5
+  N <- 50
+  set.seed(1)
   x <- runif(N)
   y <- runif(N)
   z <- runif(N)
@@ -111,12 +112,14 @@ if (FALSE) {
   mat <- cbind(x, y, z, d)
   # mat
   
-  plot(mat[, 1:2], xlim = c(-1, 3), ylim = c(-1, 3))
+  plot(mat[, 1:2], xlim = c(-1, 3), ylim = c(-1, 3), asp = 1)
 
   tf <- tf_create() |>
-    tf_add_scale(0.5) |>
-    tf_add_translate(y = 1) |>
-    tf_add_rotate_z(pi/6)
+    # tf_add_scale(0.5) |>
+    # tf_add_translate(y = 1) |>
+    tf_add_translate(x = -0.5, y = -0.5) |>
+    tf_add_rotate_z(pi) |>
+    tf_add_translate(x = 0.5, y = 0.5)
   tf
 
   if (FALSE) {
