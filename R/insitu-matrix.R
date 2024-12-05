@@ -63,3 +63,48 @@ br_mat_vec_mul <- function(y, A, x, alpha = 1, beta = 0) {
   )
 }
 
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#' Transpose matrix
+#' 
+#' @param mat matrix
+#' @return None. Matrix is modified by-reference and returned invisibly
+#' @examples
+#' m <- matrix(as.numeric(1:6), 2, 3)
+#' m
+#' br_mat_transpose(m)
+#' m
+#' @export
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+br_mat_transpose <- function(mat) {
+  invisible(
+    .Call(br_mat_transpose_, mat)
+  )
+}
+
+
+
+if (FALSE) {
+  
+  N <- 1000
+  mat0 <- matrix(as.numeric(seq(2 * N * N)), N, N * 2)
+  mat1 <- duplicate(mat0)
+  
+  if (FALSE) {
+    br_mat_transpose(mat1)
+    
+    identical(mat1, t(mat0))
+  }
+  
+  
+  bench::mark(
+    br_mat_transpose(mat1),
+    t(mat0),
+    check = TRUE
+  )
+  
+  
+}
+
+

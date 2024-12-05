@@ -71,6 +71,7 @@ that the number of garbage collection operations is also reduced.
 | `br_mat_normalise2(mat)`, `br_mat_normalise3(mat)` | normalise coordinates  |
 | `br_mat_hypot2(d, mat)` `br_mat_hypot3(d, mat)` | distance from point to origin |
 | `br_mat_dist2(d, mat1, mat2)`, `br_mat_dist3(d, mat1, mat2)` | distance between points |
+| `br_mat_transpose(mat)` | matrix transpose |
 
 
 #### RNG

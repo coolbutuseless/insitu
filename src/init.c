@@ -105,6 +105,8 @@ extern SEXP br_mat_mat_mul_full_(SEXP C_, SEXP A_, SEXP B_,
                                  SEXP alpha_, SEXP beta_, 
                                  SEXP ta_, SEXP tb_);
 
+extern SEXP br_mat_transpose_(SEXP mat_);
+
 static const R_CallMethodDef CEntries[] = {
 
   {"is_altrep_"  , (DL_FUNC) &is_altrep_   , 1},
@@ -204,6 +206,8 @@ static const R_CallMethodDef CEntries[] = {
   {"alloc_matrix_"       , (DL_FUNC) &alloc_matrix_       , 2},
   {"br_mat_vec_mul_"     , (DL_FUNC) &br_mat_vec_mul_     , 5},
   {"br_mat_mat_mul_full_", (DL_FUNC) &br_mat_mat_mul_full_, 7},
+  
+  {"br_mat_transpose_", (DL_FUNC) &br_mat_transpose_, 1},
   
   {NULL , NULL, 0}
 };

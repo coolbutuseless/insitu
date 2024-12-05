@@ -1,6 +1,7 @@
 
 # insitu 0.1.3.9009
 
+* [9009] Add `br_mat_transpose()`
 * [9009] Add `R_NO_REMAP`
 * [9009] Refactor & add tests for matrix operations.
 * [9008] Add mat-mat and mat-vec multiplication.
