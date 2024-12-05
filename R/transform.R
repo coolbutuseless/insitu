@@ -112,14 +112,15 @@ if (FALSE) {
   mat <- cbind(x, y, z, d)
   # mat
   
-  plot(mat[, 1:2], xlim = c(-1, 3), ylim = c(-1, 3), asp = 1)
+  plot(mat[, 1:2], xlim = c(-1, 1), ylim = c(-1, 1), asp = 1)
 
   tf <- tf_create() |>
     # tf_add_scale(0.5) |>
     # tf_add_translate(y = 1) |>
     tf_add_translate(x = -0.5, y = -0.5) |>
     tf_add_rotate_z(pi) |>
-    tf_add_translate(x = 0.5, y = 0.5)
+    tf_add_translate(x = 0.5, y = 0.5) |>
+    identity()
   tf
 
   if (FALSE) {

@@ -18,7 +18,8 @@
 #endif
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// 
+// BLAS matrix multiply
+// TODO: just roll a simple nested loop and benchmark.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void mat44_mul(double *A, double *B) {
   
@@ -65,7 +66,7 @@ void mat44_mul(double *A, double *B) {
       &LDC FCONE FCONE
   );
 
-  memcpy(A, C, 16 * sizeof(double));
+  memcpy(B, C, 16 * sizeof(double));
 }
 
 
@@ -114,12 +115,22 @@ SEXP tf_reset_(SEXP mat_) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 SEXP tf_add_translate_(SEXP mat_, SEXP x_, SEXP y_, SEXP z_) {
   
+  static double t[16] = { 1, 0, 0, 0, 
+                          0, 1, 0, 0,
+                          0, 0, 1, 0,
+                          0, 0, 0, 1 };
   assert_mat44(mat_);
-  double *mat = REAL(mat_);
   
-  mat[I(0, 3)] += Rf_asReal(x_);
-  mat[I(1, 3)] += Rf_asReal(y_);
-  mat[I(2, 3)] += Rf_asReal(z_);
+  // setup transformation matrix
+  t[I(0, 3)] = Rf_asReal(x_);
+  t[I(1, 3)] = Rf_asReal(y_);
+  t[I(2, 3)] = Rf_asReal(z_);
+  
+  
+  // do the multiplication
+  double *mat = REAL(mat_);
+  mat44_mul(t, mat);
+  
   
   return mat_;
 }
@@ -131,12 +142,21 @@ SEXP tf_add_translate_(SEXP mat_, SEXP x_, SEXP y_, SEXP z_) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 SEXP tf_add_scale_(SEXP mat_, SEXP x_, SEXP y_, SEXP z_) {
   
+  static double t[16] = { 1, 0, 0, 0, 
+                          0, 1, 0, 0,
+                          0, 0, 1, 0,
+                          0, 0, 0, 1 };
   assert_mat44(mat_);
-  double *mat = REAL(mat_);
   
-  mat[I(0, 0)] *= Rf_asReal(x_);
-  mat[I(1, 1)] *= Rf_asReal(y_);
-  mat[I(2, 2)] *= Rf_asReal(z_);
+  // setup transformation matrix
+  t[I(0, 0)] = Rf_asReal(x_);
+  t[I(1, 1)] = Rf_asReal(y_);
+  t[I(2, 2)] = Rf_asReal(z_);
+  
+  // do the multiplication
+  double *mat = REAL(mat_);
+  mat44_mul(t, mat);
+  
   
   return mat_;
 }
@@ -148,23 +168,23 @@ SEXP tf_add_scale_(SEXP mat_, SEXP x_, SEXP y_, SEXP z_) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 SEXP tf_add_rotate_z_(SEXP mat_, SEXP theta_) {
   
-  static double r[16];
+  static double t[16] = { 1, 0, 0, 0, 
+                          0, 1, 0, 0,
+                          0, 0, 1, 0,
+                          0, 0, 0, 1 };
   assert_mat44(mat_);
-
-  // setup rotation matrix
+  
+  // setup transformation matrix
   double theta = Rf_asReal(theta_);
-  memset(r, 0, 16 * sizeof(double));
-  r[I(0, 0)] =  cos(theta);
-  r[I(0, 1)] = -sin(theta);
-  r[I(1, 0)] =  sin(theta);
-  r[I(1, 1)] =  cos(theta);
-  r[I(2, 2)] = 1;
-  r[I(3, 3)] = 1;
+  t[I(0, 0)] =  cos(theta);
+  t[I(0, 1)] = -sin(theta);
+  t[I(1, 0)] =  sin(theta);
+  t[I(1, 1)] =  cos(theta);
   
   // do the multiplication
   double *mat = REAL(mat_);
+  mat44_mul(t, mat);
   
-  mat44_mul(mat, r);
   
   return mat_;
 }
