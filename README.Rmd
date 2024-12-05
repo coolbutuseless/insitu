@@ -69,10 +69,8 @@ that the number of garbage collection operations is also reduced.
 |------------------|-------------|
 | `alloc_matrix(nrow, ncol)` | Allocate a matrix of the given size, but do not initialise |
 | `alloc_mat_mat_mul(A, B)` | Allocate a matrix to hold the result of `A * B`, but do not initialise matrix, or perform the calculation |
-| `br_mat_mat_mul()` | Multiply two matrices `C <- A %*% B + C` (C must be pre-allocated) |
-| `br_mat_mat_mul_bsq()` | Multiply two matrices when `B` is a square matrix `A <- A %*% B` |
+| `br_mat_mat_mul(C, A, B)` | Multiply two matrices `C <- A %*% B + C` (C must be pre-allocated) |
 | `br_mat_vec_mul(y, A, x)` | `y <- A %*% x` Matrix-Vector multiplication (using a pre-allocated output matrix) |
-| `br_mat_vec_mul_asq(A, x)` | `x <- A %*% x` Matrix-Vector multiplication |
 
 
 #### RNG
@@ -272,7 +270,7 @@ you want).
 Note that `br_mat_mat_mul()` exposes the full interface to the BLAS 
 function [dgemm()](https://www.math.utah.edu/software/lapack/lapack-blas/dgemm.html).
 `dgemm()` allows any matrix of the form `C = alpha * A * B + beta * C` to be
-calculated.  
+calculated (include options to transpose `A` or `B`)
 
 ```{r}
 # Two matrices to multiply
@@ -290,26 +288,4 @@ bench::mark(
   check = FALSE
 )
 ```
-
-When 'B' is a square matrix, a simpler matrix multiplication can overwrite the 
-existing 'A' matrix.
-
-```{r}
-# Two matrices to multiply
-k <- 500
-set.seed(1)
-A <- matrix(runif(2 * k * k), 2*k, k)
-B <- matrix(runif(1 * k * k),   k, k) # Square matrix  
-
-bench::mark(
-  br_mat_mat_mul_bsq(A, B), # Overwriting 'A' with result.
-  A %*% B,                  # Compare to base R
-  check = FALSE
-)
-```
-
-
-
-
-
 

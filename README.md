@@ -50,10 +50,8 @@ number of garbage collection operations is also reduced.
 |----|----|
 | `alloc_matrix(nrow, ncol)` | Allocate a matrix of the given size, but do not initialise |
 | `alloc_mat_mat_mul(A, B)` | Allocate a matrix to hold the result of `A * B`, but do not initialise matrix, or perform the calculation |
-| `br_mat_mat_mul()` | Multiply two matrices `C <- A %*% B + C` (C must be pre-allocated) |
-| `br_mat_mat_mul_bsq()` | Multiply two matrices when `B` is a square matrix `A <- A %*% B` |
+| `br_mat_mat_mul(C, A, B)` | Multiply two matrices `C <- A %*% B + C` (C must be pre-allocated) |
 | `br_mat_vec_mul(y, A, x)` | `y <- A %*% x` Matrix-Vector multiplication (using a pre-allocated output matrix) |
-| `br_mat_vec_mul_asq(A, x)` | `x <- A %*% x` Matrix-Vector multiplication |
 
 #### RNG
 
@@ -216,10 +214,10 @@ knitr::kable(bm)
 
 | expression           |     min |  median |   itr/sec | mem_alloc |
 |:---------------------|--------:|--------:|----------:|----------:|
-| conv_nested(x, y)    | 60.86ms | 61.33ms |  16.30743 |    88.5KB |
-| conv_vec(x, y)       | 10.43ms |  11.2ms |  89.98632 |    34.6MB |
-| conv_fft(x, y)       |  3.59ms |  3.67ms | 271.10029 |     380KB |
-| conv_vec_byref(x, y) |  2.88ms |  3.04ms | 323.52873 |   115.9KB |
+| conv_nested(x, y)    | 60.46ms | 60.91ms |  16.41834 |    88.5KB |
+| conv_vec(x, y)       | 10.05ms | 10.96ms |  91.38725 |    34.6MB |
+| conv_fft(x, y)       |  3.59ms |  3.66ms | 272.47033 |     380KB |
+| conv_vec_byref(x, y) |  2.85ms |  2.98ms | 328.78769 |   115.9KB |
 
 ## Matrix multiplication
 
@@ -234,7 +232,7 @@ Note that `br_mat_mat_mul()` exposes the full interface to the BLAS
 function
 [dgemm()](https://www.math.utah.edu/software/lapack/lapack-blas/dgemm.html).
 `dgemm()` allows any matrix of the form `C = alpha * A * B + beta * C`
-to be calculated.
+to be calculated (include options to transpose `A` or `B`)
 
 ``` r
 # Two matrices to multiply
@@ -256,28 +254,5 @@ bench::mark(
     #> # A tibble: 2 × 6
     #>   expression                   min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>              <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 br_mat_mat_mul(C, A, B)    148ms    149ms      6.71    5.41KB     0   
-    #> 2 A %*% B                    150ms    151ms      6.62    7.63MB     2.21
-
-When ‘B’ is a square matrix, a simpler matrix multiplication can
-overwrite the existing ‘A’ matrix.
-
-``` r
-# Two matrices to multiply
-k <- 500
-set.seed(1)
-A <- matrix(runif(2 * k * k), 2*k, k)
-B <- matrix(runif(1 * k * k),   k, k) # Square matrix  
-
-bench::mark(
-  br_mat_mat_mul_bsq(A, B), # Overwriting 'A' with result.
-  A %*% B,                  # Compare to base R
-  check = FALSE
-)
-```
-
-    #> # A tibble: 2 × 6
-    #>   expression                    min   median `itr/sec` mem_alloc `gc/sec`
-    #>   <bch:expr>               <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 br_mat_mat_mul_bsq(A, B)   74.5ms   75.6ms      12.9    4.67KB     0   
-    #> 2 A %*% B                    75.1ms   75.5ms      13.0    3.81MB     2.17
+    #> 1 br_mat_mat_mul(C, A, B)    148ms    148ms      6.76    5.41KB     0   
+    #> 2 A %*% B                    149ms    149ms      6.71    7.63MB     2.24

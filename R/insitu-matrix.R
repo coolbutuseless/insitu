@@ -73,33 +73,6 @@ br_mat_mat_mul <- function(C, A, B, alpha = 1, beta = 0, ta = FALSE, tb = FALSE)
 
 
 
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' Matrix-matrix multiplication when B is a square matrix.
-#' 
-#' This function exposes the general matrix multiplication operation from R's
-#' included BLAS.  \code{A <- A * B}
-#' 
-#' @param A,B Matrices
-#' @param alpha Scaling factor for \code{A * B}. Default: 1.0
-#' @return A is modified by-reference and returned invisibly
-#' @examples
-#' A <- matrix(as.numeric(1:32), 8, 4)
-#' B <- matrix(as.numeric(1:16), 4, 4)  
-#' 
-#' A %*% B  # Base R result.
-#' 
-#' br_mat_mat_mul_bsq(A, B) # By reference. Overwriting 'A'
-#' A
-#' @export
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_mat_mat_mul_bsq <- function(A, B, alpha = 1) {
-  invisible(
-    .Call(br_mat_mat_mul_bsq_, A, B, alpha)
-  )
-}
-
-
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' Matrix-vector multiplication
 #' 
@@ -131,60 +104,4 @@ br_mat_vec_mul <- function(y, A, x, alpha = 1, beta = 0) {
     .Call(br_mat_vec_mul_, y, A, x, alpha, beta)
   )
 }
-
-
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' Matrix-vector multiplication when A is a square matrix
-#' 
-#' This function calculates matrix-vector multiplication operation when 'A'
-#' is a square matrix: \code{x <- alpha * A * x}
-#' 
-#' @param A Matrix
-#' @param x vector. This will be modified by-reference 
-#' @param alpha Scaling factor for \code{A * x}. Default: 1.0
-#' @return x is modified by-reference and returned invisibly
-#' @examples
-#' A <- matrix(1, 4, 4)
-#' x <- rep(1, 4)
-#' 
-#' # Compare to R's method
-#' A %*% x
-#' 
-#' # Calculate. By-reference. Overwriting 'y'
-#' br_mat_vec_mul_asq(A, x)
-#' x
-#' 
-#' @export
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_mat_vec_mul_asq <- function(A, x, alpha = 1) {
-  invisible(
-    .Call(br_mat_vec_mul_asq_, A, x, alpha)
-  )
-}
-
-
-
-
-
-if (FALSE) {
-  
-  k <- 100
-  A <- matrix(runif(k * k), k, k)
-  B <- matrix(runif(k * k), k, k)
-  C <- alloc_mat_mat_mul(A, B)
-  
-  
-  bench::mark(
-    A %*% B,
-    br_mat_mat_mul_bsq(A, B),
-    br_mat_mat_mul(C, A, B),
-    check = FALSE
-  )
-  
-  
-}
-
-
-
 
