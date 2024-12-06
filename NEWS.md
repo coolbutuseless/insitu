@@ -1,6 +1,7 @@
 
-# insitu 0.1.3.9010
+# insitu 0.1.3.9011
 
+* [9011]3D transformation matrices
 * [9010] Reintroduce specialised methods for `asq` and `bsq` in matrix multiplication
 * [9009] Add `br_mat_transpose()`
 * [9009] Add `R_NO_REMAP`

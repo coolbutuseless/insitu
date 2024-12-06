@@ -56,6 +56,16 @@ number of garbage collection operations is also reduced.
 | `br_mat_dist2(d, mat1, mat2)`, `br_mat_dist3(d, mat1, mat2)` | distance between points |
 | `br_mat_transpose(mat)` | matrix transpose |
 
+| 3D Matrix transforms | Description                                    |
+|----------------------|------------------------------------------------|
+| `tf_create()`        | Create the identity transform                  |
+| `tf_reset()`         | Reset a transform to be the identity transform |
+| `tf_add_translate()` | Add translation to the transform               |
+| `tf_add_scale()`     | Add scaling to the transform                   |
+| `tf_add_rotate_x()`  | Add rotation about the x-axis to the transform |
+| `tf_add_rotate_y()`  | Add rotation about the y-axis to the transform |
+| `tf_add_rotate_z()`  | Add rotation about the z-axis to the transform |
+
 #### RNG
 
 `{insitu}` uses a custom random-number generator called
@@ -217,10 +227,10 @@ knitr::kable(bm)
 
 | expression           |     min |  median |   itr/sec | mem_alloc |
 |:---------------------|--------:|--------:|----------:|----------:|
-| conv_nested(x, y)    | 61.06ms | 61.47ms |  16.25189 |    88.5KB |
-| conv_vec(x, y)       | 10.09ms |    11ms |  91.21590 |    34.6MB |
-| conv_fft(x, y)       |   3.6ms |  3.68ms | 270.32186 |     380KB |
-| conv_vec_byref(x, y) |  2.87ms |  2.97ms | 321.81867 |   115.9KB |
+| conv_nested(x, y)    | 60.73ms | 61.03ms |  16.35390 |    88.5KB |
+| conv_vec(x, y)       |  9.98ms | 11.12ms |  90.35133 |    34.6MB |
+| conv_fft(x, y)       |   3.6ms |  3.68ms | 270.96370 |     380KB |
+| conv_vec_byref(x, y) |  2.85ms |  2.98ms | 328.77072 |   115.9KB |
 
 ## Matrix-matrix multiplication
 
@@ -257,8 +267,8 @@ bench::mark(
     #> # A tibble: 2 × 6
     #>   expression                   min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>              <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 br_mat_mat_mul(C, A, B)    149ms    149ms      6.68    7.87KB     0   
-    #> 2 A %*% B                    150ms    150ms      6.65    7.63MB     2.22
+    #> 1 br_mat_mat_mul(C, A, B)    148ms    148ms      6.75    7.87KB     0   
+    #> 2 A %*% B                    150ms    150ms      6.67    7.63MB     2.22
 
 Note in the above benchmark that `br_mat_ma_mul()` only allocates
 several **kilobytes** of R memory, while `A %*% B` allocates several
@@ -287,5 +297,58 @@ bench::mark(
     #> # A tibble: 2 × 6
     #>   expression                    min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>               <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 br_mat_mat_mul_bsq(A, B)   73.9ms   75.3ms      13.3    4.86KB     0   
-    #> 2 A %*% B                    74.6ms   74.9ms      13.4    3.81MB     2.23
+    #> 1 br_mat_mat_mul_bsq(A, B)   74.2ms   74.7ms      13.3    4.86KB     0   
+    #> 2 A %*% B                    74.8ms   75.5ms      13.3    3.81MB     2.21
+
+## Matrix transforms
+
+The following script opens a graphics windows and shows the realtime
+rotation of random points within a unit cube.
+
+``` r
+library(grid)
+library(insitu)
+
+# Open a fast graphics device
+x11(type = 'dbcairo', antialias = 'none')
+dev.control(displaylist = 'inhibit')  
+
+# Create random points in the unit cube
+N <- 1000
+set.seed(1)
+x <- runif(N, -1, 1)
+y <- runif(N, -1, 1)
+z <- runif(N, -1, 1)
+d <- rep(1, N)
+mat0 <- cbind(x, y, z, d)
+mat  <- duplicate(mat0)
+
+plot(1, xlim = c(-1.15, 1.15), ylim = c(-1.15, 1.15), asp = 1, axes = F, ann = F)
+
+cols <- viridisLite::inferno(N, begin = 0.1, end = 0.9)
+
+# Create empty Transform
+tf <- tf_create() 
+
+dev.flush()
+for (t in 1:1000) {
+  # Create transform for this timestep
+  tf |>
+    tf_reset() |>
+    tf_add_rotate_x( t / 100) |>
+    tf_add_rotate_y( t /  77 + pi / 3) |>
+    tf_add_rotate_z(-t /  50 + pi / 6)
+  
+  # Apply transform to the points
+  br_copy(mat, mat0)
+  br_mat_mat_mul_bsq(mat, tf)
+  
+  # Clear the screen and plot the points for this timestep
+  dev.hold()
+  grid.rect(gp = gpar(fill = 'white'))
+  points(mat, pch = 19, cex = 1, col = cols)
+  dev.flush()
+}
+```
+
+<img src="man/figures/transform-dots.png" width="75%"/>

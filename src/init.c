@@ -109,6 +109,19 @@ extern SEXP br_mat_mat_mul_bsq_(SEXP A_, SEXP B_, SEXP alpha_, SEXP tb_);
 
 extern SEXP br_mat_transpose_(SEXP mat_);
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Transforms
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+extern SEXP tf_reset_(SEXP mat_);
+extern SEXP tf_add_translate_(SEXP mat_, SEXP x_, SEXP y_, SEXP z_);
+extern SEXP tf_add_scale_    (SEXP mat_, SEXP x_, SEXP y_, SEXP z_);
+extern SEXP tf_add_rotate_x_ (SEXP mat_, SEXP theta_);
+extern SEXP tf_add_rotate_y_ (SEXP mat_, SEXP theta_);
+extern SEXP tf_add_rotate_z_ (SEXP mat_, SEXP theta_);
+
+
+
+
 static const R_CallMethodDef CEntries[] = {
 
   {"is_altrep_"  , (DL_FUNC) &is_altrep_   , 1},
@@ -212,6 +225,17 @@ static const R_CallMethodDef CEntries[] = {
   {"br_mat_mat_mul_bsq_" , (DL_FUNC) &br_mat_mat_mul_bsq_ , 4},
   
   {"br_mat_transpose_", (DL_FUNC) &br_mat_transpose_, 1},
+  
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Transforms
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  {"tf_reset_", (DL_FUNC) &tf_reset_, 1},
+  {"tf_add_translate_", (DL_FUNC) &tf_add_translate_, 4},
+  {"tf_add_scale_"    , (DL_FUNC) &tf_add_scale_    , 4},
+  {"tf_add_rotate_x_" , (DL_FUNC) &tf_add_rotate_x_ , 2},
+  {"tf_add_rotate_y_" , (DL_FUNC) &tf_add_rotate_y_ , 2},
+  {"tf_add_rotate_z_" , (DL_FUNC) &tf_add_rotate_z_ , 2},
+  
   
   {NULL , NULL, 0}
 };
