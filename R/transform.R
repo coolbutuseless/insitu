@@ -166,4 +166,73 @@ if (FALSE) {
 
 
 
+if (FALSE) {
+  
+  library(grid)
+  
+  x11(type = 'dbcairo', antialias = 'none')
+  dev.control(displaylist = 'inhibit')  
+  
+  
+  dev.flush()
+  dev.flush()
+  N <- 21
+  N3 <- N^3
+  set.seed(1)
+  x <- runif(N3, -1, 1)
+  y <- runif(N3, -1, 1)
+  z <- runif(N3, -1, 1)
+  d <- rep(1, nrow(df))
+  mat0 <- cbind(x, y, z, d)
+  mat  <- duplicate(mat0)
+  
+  plot(1, xlim = c(-1.15, 1.15), ylim = c(-1.15, 1.15), asp = 1, axes = F, ann = F)
+  
+  cols <- rainbow(N)
+  
+  # Transform
+  tf <- tf_create() 
+  
+  gc(full = TRUE)
+  
+  for (t in 1:1000) {
+    
+    tf |>
+      tf_reset() |>
+      tf_add_rotate_x( t / 100) |>
+      tf_add_rotate_y( t /  77 + pi / 3) |>
+      tf_add_rotate_z(-t /  50 + pi / 6)
+    
+    br_copy(mat, mat0)
+    br_mat_mat_mul_bsq(mat, tf)
+    
+    # dev.hold()
+    # grid.rect(gp = gpar(fill = 'white'))
+    # points(mat, pch = 19, cex = 0.5, col = cols)
+    # dev.flush()
+  }
+  
+  gc(full = TRUE)
+  
+  
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
