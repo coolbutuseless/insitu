@@ -182,7 +182,7 @@ if (FALSE) {
   x <- runif(N3, -1, 1)
   y <- runif(N3, -1, 1)
   z <- runif(N3, -1, 1)
-  d <- rep(1, nrow(df))
+  d <- rep(1, N3)
   mat0 <- cbind(x, y, z, d)
   mat  <- duplicate(mat0)
   
@@ -206,10 +206,10 @@ if (FALSE) {
     br_copy(mat, mat0)
     br_mat_mat_mul_bsq(mat, tf)
     
-    # dev.hold()
-    # grid.rect(gp = gpar(fill = 'white'))
-    # points(mat, pch = 19, cex = 0.5, col = cols)
-    # dev.flush()
+    dev.hold()
+    grid.rect(gp = gpar(fill = 'white'))
+    points(mat, pch = 19, cex = 0.5, col = cols)
+    dev.flush()
   }
   
   gc(full = TRUE)
