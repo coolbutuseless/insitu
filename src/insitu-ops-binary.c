@@ -12,6 +12,55 @@
 #define UNROLL 4 
 
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// addition with vector x,y
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SEXP br_add_vxy_(SEXP x_, SEXP y_) {
+
+  double *x = REAL(x_);
+  double *y = REAL(y_);
+
+#define UNROLL 4
+  int i = 0;
+  for (; i < Rf_length(x_) - (UNROLL - 1); i += UNROLL) {
+    *x += *y; ++x; ++y;
+    *x += *y; ++x; ++y;
+    *x += *y; ++x; ++y;
+    *x += *y; ++x; ++y;
+  }
+  for (; i< Rf_length(x_); ++i) {
+    *x += *y; ++x; ++y;
+  }
+
+  return x_;
+}
+
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// addition with scalar y
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SEXP br_add_sy_(SEXP x_, SEXP y_) {
+
+  double *x = REAL(x_);
+  double  y = REAL(y_)[0];
+
+#define UNROLL 4
+  int i = 0;
+  for (; i < Rf_length(x_) - (UNROLL - 1); i += UNROLL) {
+    *x += y; ++x;
+    *x += y; ++x;
+    *x += y; ++x;
+    *x += y; ++x;
+  }
+  for (; i< Rf_length(x_); ++i) {
+    *x += y; ++x;
+  }
+
+  return x_;
+}
+
+
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // addition with vector x,y
@@ -45,50 +94,34 @@ SEXP br_add_vxy_where_(SEXP x_, SEXP y_, SEXP where_) {
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// addition with vector x,y
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SEXP br_add_vxy_(SEXP x_, SEXP y_) {
-
-  double *x = REAL(x_);
-  double *y = REAL(y_);
-
-#define UNROLL 4
-  int i = 0;
-  for (; i < Rf_length(x_) - (UNROLL - 1); i += UNROLL) {
-    *x += *y; ++x; ++y;
-    *x += *y; ++x; ++y;
-    *x += *y; ++x; ++y;
-    *x += *y; ++x; ++y;
-  }
-  for (; i< Rf_length(x_); ++i) {
-    *x += *y; ++x; ++y;
-  }
-
-  return x_;
-}
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // addition with scalar y
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SEXP br_add_sy_(SEXP x_, SEXP y_) {
-
+SEXP br_add_sy_where_(SEXP x_, SEXP y_, SEXP where_) {
+  
+  if (Rf_length(where_) != Rf_length(x_)) {
+    Rf_error("'where' must be the same length as 'x'.  %.0f != %.0f", 
+             (double)Rf_length(where_), (double)Rf_length(x_));
+  }
+  
   double *x = REAL(x_);
   double  y = REAL(y_)[0];
-
+  double *where = REAL(where_);
+  
 #define UNROLL 4
   int i = 0;
   for (; i < Rf_length(x_) - (UNROLL - 1); i += UNROLL) {
-    *x += y; ++x;
-    *x += y; ++x;
-    *x += y; ++x;
-    *x += y; ++x;
+    if (*where++) *x += y; ++x;
+    if (*where++) *x += y; ++x;
+    if (*where++) *x += y; ++x;
+    if (*where++) *x += y; ++x;
   }
   for (; i< Rf_length(x_); ++i) {
-    *x += y; ++x;
+    if (*where++) *x += y; ++x;
   }
-
+  
   return x_;
 }
+
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -109,7 +142,7 @@ SEXP br_add_(SEXP x_, SEXP y_, SEXP where_) {
     if (Rf_isNull(where_)) {
       return br_add_sy_(x_, y_);
     } else {
-      Rf_error("br_add_sy_where_ is not done yet");
+      return br_add_sy_where_(x_, y_, where_);
     }
   }
 
