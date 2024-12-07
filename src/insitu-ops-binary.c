@@ -12,6 +12,38 @@
 #define UNROLL 4 
 
 
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// addition with vector x,y
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SEXP br_add_vxy_where_(SEXP x_, SEXP y_, SEXP where_) {
+  
+  if (Rf_length(where_) != Rf_length(x_)) {
+    Rf_error("'where' must be the same length as 'x'.  %.0f != %.0f", 
+             (double)Rf_length(where_), (double)Rf_length(x_));
+  }
+  
+  double *x = REAL(x_);
+  double *y = REAL(y_);
+  double *where = REAL(where_);
+  
+#define UNROLL 4
+  int i = 0;
+  for (; i < Rf_length(x_) - (UNROLL - 1); i += UNROLL) {
+    if (*where++ != 0) *x += *y; ++x; ++y;
+    if (*where++ != 0) *x += *y; ++x; ++y;
+    if (*where++ != 0) *x += *y; ++x; ++y;
+    if (*where++ != 0) *x += *y; ++x; ++y;
+  }
+  for (; i< Rf_length(x_); ++i) {
+    if (*where++ != 0) *x += *y; ++x; ++y;
+  }
+  
+  return x_;
+}
+
+
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // addition with vector x,y
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -71,7 +103,7 @@ SEXP br_add_(SEXP x_, SEXP y_, SEXP where_) {
     if (Rf_isNull(where_)) {
       return br_add_vxy_(x_, y_);
     } else {
-      Rf_error("br_add_vxy_where_ not done yet");
+      return br_add_vxy_where_(x_, y_, where_);
     }
   } else if (ly == 1) {
     if (Rf_isNull(where_)) {
