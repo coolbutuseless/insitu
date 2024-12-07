@@ -1,6 +1,7 @@
 
-# insitu 0.1.3.9011
+# insitu 0.1.3.9012
 
+* [9012] 'where' conditional for unary ops
 * [9011]3D transformation matrices
 * [9010] Reintroduce specialised methods for `asq` and `bsq` in matrix multiplication
 * [9009] Add `br_mat_transpose()`

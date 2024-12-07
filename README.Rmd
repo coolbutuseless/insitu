@@ -381,6 +381,54 @@ for (t in 1:1000) {
 <img src="man/figures/transform-dots.png" width="75%"/>
 
 
+## Conditional unary ops
 
+```{r}
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Array with negative numbers
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+N <- 5
+x <- as.numeric(seq(-N, N))
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Use R 'ifelse()'
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ifelse(x > 0, sqrt(x), x)
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Use insitu
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+t <- duplicate(x)     # clone x
+br_gt(t, 0)           # test where x > 0
+br_sqrt(x, where = t) # perform sqrt(x) where x > 0
+x
+```
+
+
+```{r}
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Benchmark
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+N <- 10000
+x <- as.numeric(seq(-N, N))
+t <- duplicate(x)            # <----------  Pre-allocate 't'     
+
+suppressWarnings({
+  bm <- bench::mark(
+    
+    insitu = {
+      br_copy(t, x)         # clone x
+      br_gt(t, 0)           # test where x > 0
+      br_sqrt(x, where = t) # perform sqrt(x) where x > 0
+    },
+    ifelse = ifelse(x > 0, sqrt(x), x),
+    check = FALSE,
+    relative = TRUE
+  )[, 1:5]
+})
+
+
+knitr::kable(bm)
+```
 
 

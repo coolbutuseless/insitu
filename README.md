@@ -227,10 +227,10 @@ knitr::kable(bm)
 
 | expression           |     min |  median |   itr/sec | mem_alloc |
 |:---------------------|--------:|--------:|----------:|----------:|
-| conv_nested(x, y)    | 60.65ms | 61.14ms |  16.35956 |    88.5KB |
-| conv_vec(x, y)       |    10ms | 10.97ms |  91.26551 |    34.6MB |
-| conv_fft(x, y)       |  3.61ms |  3.68ms | 270.59973 |     380KB |
-| conv_vec_byref(x, y) |  2.89ms |  3.03ms | 324.75941 |   115.9KB |
+| conv_nested(x, y)    | 60.61ms | 61.41ms |  16.27474 |    88.5KB |
+| conv_vec(x, y)       | 10.04ms | 10.85ms |  92.27832 |    34.6MB |
+| conv_fft(x, y)       |  3.62ms |  3.71ms | 268.73788 |     380KB |
+| conv_vec_byref(x, y) |  2.87ms |  3.01ms | 323.19332 |   115.9KB |
 
 ## Matrix-matrix multiplication
 
@@ -267,8 +267,8 @@ bench::mark(
     #> # A tibble: 2 × 6
     #>   expression                   min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>              <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 br_mat_mat_mul(C, A, B)    148ms    148ms      6.74    7.87KB     0   
-    #> 2 A %*% B                    149ms    150ms      6.68    7.63MB     2.23
+    #> 1 br_mat_mat_mul(C, A, B)    149ms    150ms      6.68    7.87KB     0   
+    #> 2 A %*% B                    148ms    150ms      6.66    7.63MB     2.22
 
 Note in the above benchmark that `br_mat_ma_mul()` only allocates
 several **kilobytes** of R memory, while `A %*% B` allocates several
@@ -297,8 +297,8 @@ bench::mark(
     #> # A tibble: 2 × 6
     #>   expression                    min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>               <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 br_mat_mat_mul_bsq(A, B)   74.5ms   74.9ms      13.3    4.86KB     0   
-    #> 2 A %*% B                      75ms   75.3ms      13.3    3.81MB     2.21
+    #> 1 br_mat_mat_mul_bsq(A, B)   74.6ms   75.6ms      13.2    4.86KB     0   
+    #> 2 A %*% B                      75ms   75.4ms      13.3    3.81MB     2.21
 
 ## Matrix transforms
 
@@ -352,3 +352,67 @@ for (t in 1:1000) {
 ```
 
 <img src="man/figures/transform-dots.png" width="75%"/>
+
+## Conditional unary ops
+
+``` r
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Array with negative numbers
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+N <- 5
+x <- as.numeric(seq(-N, N))
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Use R 'ifelse()'
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ifelse(x > 0, sqrt(x), x)
+```
+
+    #> Warning in sqrt(x): NaNs produced
+
+    #>  [1] -5.000000 -4.000000 -3.000000 -2.000000 -1.000000  0.000000  1.000000
+    #>  [8]  1.414214  1.732051  2.000000  2.236068
+
+``` r
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Use insitu
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+t <- duplicate(x)     # clone x
+br_gt(t, 0)           # test where x > 0
+br_sqrt(x, where = t) # perform sqrt(x) where x > 0
+x
+```
+
+    #>  [1] -5.000000 -4.000000 -3.000000 -2.000000 -1.000000  0.000000  1.000000
+    #>  [8]  1.414214  1.732051  2.000000  2.236068
+
+``` r
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Benchmark
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+N <- 10000
+x <- as.numeric(seq(-N, N))
+t <- duplicate(x)            # <----------  Pre-allocate 't'     
+
+suppressWarnings({
+  bm <- bench::mark(
+    
+    insitu = {
+      br_copy(t, x)         # clone x
+      br_gt(t, 0)           # test where x > 0
+      br_sqrt(x, where = t) # perform sqrt(x) where x > 0
+    },
+    ifelse = ifelse(x > 0, sqrt(x), x),
+    check = FALSE,
+    relative = TRUE
+  )[, 1:5]
+})
+
+
+knitr::kable(bm)
+```
+
+| expression |      min |   median |  itr/sec | mem_alloc |
+|:-----------|---------:|---------:|---------:|----------:|
+| insitu     | 1.000000 |  1.00000 | 10.65747 |  1.000000 |
+| ifelse     | 9.041561 | 10.88844 |  1.00000 |  8.040386 |
