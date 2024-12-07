@@ -43,7 +43,7 @@ SEXP br_mat_dist2_(SEXP d_, SEXP mat1_, SEXP mat2_) {
     *d++ = sqrt((*x2 - *x1) * (*x2 - *x1) + (*y2 - *y1) * (*y2 - *y1)); ++x1; ++y1; ++x2; ++y2;
     *d++ = sqrt((*x2 - *x1) * (*x2 - *x1) + (*y2 - *y1) * (*y2 - *y1)); ++x1; ++y1; ++x2; ++y2;
   }
-  for (; i < nrow; i++) {
+  for (; i < nrow; ++i) {
     *d++ = sqrt((*x2 - *x1) * (*x2 - *x1) + (*y2 - *y1) * (*y2 - *y1)); ++x1; ++y1; ++x2; ++y2;
   }
   
@@ -84,7 +84,7 @@ SEXP br_mat_dist3_(SEXP d_, SEXP mat1_, SEXP mat2_) {
     *d++ = sqrt((*x2 - *x1) * (*x2 - *x1) + (*y2 - *y1) * (*y2 - *y1) + (*z2 - *z1) * (*z2 - *z1)); ++x1; ++y1; ++z1; ++x2; ++y2; ++z2;
     *d++ = sqrt((*x2 - *x1) * (*x2 - *x1) + (*y2 - *y1) * (*y2 - *y1) + (*z2 - *z1) * (*z2 - *z1)); ++x1; ++y1; ++z1; ++x2; ++y2; ++z2;
   }
-  for (; i < nrow; i++) {
+  for (; i < nrow; ++i) {
     *d++ = sqrt((*x2 - *x1) * (*x2 - *x1) + (*y2 - *y1) * (*y2 - *y1) + (*z2 - *z1) * (*z2 - *z1)); ++x1; ++y1; ++z1; ++x2; ++y2; ++z2;
   }
   
@@ -123,7 +123,7 @@ SEXP br_mat_hypot2_(SEXP d_, SEXP mat_) {
     *d++ = hypot(*x++, *y++);  
     *d++ = hypot(*x++, *y++);  
   }
-  for (; i < nrow; i++) {
+  for (; i < nrow; ++i) {
     *d++ = hypot(*x++, *y++);  
   }
   
@@ -163,7 +163,7 @@ SEXP br_mat_hypot3_(SEXP d_, SEXP mat_) {
     *d++ = sqrt(*x * *x + *y * *y + *z * *z); ++x; ++y; ++z; 
     *d++ = sqrt(*x * *x + *y * *y + *z * *z); ++x; ++y; ++z; 
   }
-  for (; i < nrow; i++) {
+  for (; i < nrow; ++i) {
     *d++ = sqrt(*x * *x + *y * *y + *z * *z); ++x; ++y; ++z; 
   }
   
@@ -191,7 +191,7 @@ SEXP br_normalise2_(SEXP mat_) {
   double *x = REAL(mat_);
   double *y = x + nrow;
   
-  for (int i = 0; i < nrow; i++) {
+  for (int i = 0; i < nrow; ++i) {
     double len = hypot(*x, *y); 
     *x /= len;
     *y /= len;
@@ -222,7 +222,7 @@ SEXP br_normalise3_(SEXP mat_) {
   double *y = x + nrow;
   double *z = y + nrow;
   
-  for (int i = 0; i < nrow; i++) {
+  for (int i = 0; i < nrow; ++i) {
     double len = sqrt(*x * *x + *y * *y + *z * *z); 
     *x /= len;
     *y /= len;

@@ -22,13 +22,13 @@
 //     
 //     int i = 0;
 //     for (; i < Rf_length(x_) - (UNROLL - 1); i += UNROLL) {
-//       *x = sqrt(*x); x++;
-//       *x = sqrt(*x); x++;
-//       *x = sqrt(*x); x++;
-//       *x = sqrt(*x); x++;
+//       *x = sqrt(*x); ++x;
+//       *x = sqrt(*x); ++x;
+//       *x = sqrt(*x); ++x;
+//       *x = sqrt(*x); ++x;
 //     }
-//     for (; i< Rf_length(x_); i++) {
-//       *x = sqrt(*x); x++;
+//     for (; i< Rf_length(x_); ++i) {
+//       *x = sqrt(*x); ++x;
 //     }
 //   
 //   return x_;
@@ -46,13 +46,13 @@ SEXP br_##nm##_where_(SEXP x_, SEXP where_) {                                  \
   int i = startidx;                                                            \
   x += startidx;                                                               \
   for (; i < Rf_length(x_) - (UNROLL - 1); i += UNROLL) {                      \
-    if (*where++ != 0) *x = unaryop; x++;                                      \
-    if (*where++ != 0) *x = unaryop; x++;                                      \
-    if (*where++ != 0) *x = unaryop; x++;                                      \
-    if (*where++ != 0) *x = unaryop; x++;                                      \
+    if (*where++ != 0) *x = unaryop; ++x;                                      \
+    if (*where++ != 0) *x = unaryop; ++x;                                      \
+    if (*where++ != 0) *x = unaryop; ++x;                                      \
+    if (*where++ != 0) *x = unaryop; ++x;                                      \
   }                                                                            \
-  for (; i< Rf_length(x_); i++) {                                              \
-    if (*where++ != 0) *x = unaryop; x++;                                      \
+  for (; i< Rf_length(x_); ++i) {                                              \
+    if (*where++ != 0) *x = unaryop; ++x;                                      \
   }                                                                            \
                                                                                \
   return x_;                                                                   \
@@ -67,13 +67,13 @@ SEXP br_##nm##_(SEXP x_, SEXP where_) {                                        \
   int i = startidx;                                                            \
   x += startidx;                                                               \
   for (; i < Rf_length(x_) - (UNROLL - 1); i += UNROLL) {                      \
-    *x = unaryop; x++;                                                         \
-    *x = unaryop; x++;                                                         \
-    *x = unaryop; x++;                                                         \
-    *x = unaryop; x++;                                                         \
+    *x = unaryop; ++x;                                                         \
+    *x = unaryop; ++x;                                                         \
+    *x = unaryop; ++x;                                                         \
+    *x = unaryop; ++x;                                                         \
   }                                                                            \
-  for (; i< Rf_length(x_); i++) {                                              \
-    *x = unaryop; x++;                                                         \
+  for (; i< Rf_length(x_); ++i) {                                              \
+    *x = unaryop; ++x;                                                         \
   }                                                                            \
                                                                                \
   return x_;                                                                   \

@@ -56,7 +56,7 @@ SEXP br_copy_(SEXP x_, SEXP y_, SEXP n_, SEXP xi_, SEXP yi_) {
     
     double y = Rf_asReal(y_);
     double *x = REAL(x_);
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; ++i) {
       x[xi + i] = y;
     }
   } else {
@@ -91,7 +91,7 @@ SEXP br_copy_if_vxy_(SEXP x_, SEXP y_, SEXP lgl_) {
     *x = *lgl++ != 0 ? *y : *x; ++x; ++y;
     *x = *lgl++ != 0 ? *y : *x; ++x; ++y;
   }
-  for (; i< Rf_length(x_); i++) {
+  for (; i< Rf_length(x_); ++i) {
     *x = *lgl++ != 0 ? *y : *x; ++x; ++y;
   }
 
@@ -114,7 +114,7 @@ SEXP br_copy_if_sy_(SEXP x_, SEXP y_, SEXP lgl_) {
     *x = *lgl++ != 0 ? y : *x; ++x;
     *x = *lgl++ != 0 ? y : *x; ++x;
   }
-  for (; i< Rf_length(x_); i++) {
+  for (; i< Rf_length(x_); ++i) {
     *x = *lgl++ != 0 ? y : *x; ++x;
   }
 
