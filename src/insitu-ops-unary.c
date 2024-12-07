@@ -1,4 +1,5 @@
 
+#define R_NO_REMAP
 
 #include <R.h>
 #include <Rinternals.h>
@@ -34,35 +35,60 @@
 // }
 
 
-#define INSUNARYOP(nm, unaryop, startidx)                      \
-SEXP br_##nm##_(SEXP x_) {                                    \
-  double *x = REAL(x_);                                        \
-                                                               \
-  int i = startidx;                                            \
-  x += startidx;                                               \
-  for (; i < Rf_length(x_) - (UNROLL - 1); i += UNROLL) {         \
-    *x = unaryop; x++;                                         \
-    *x = unaryop; x++;                                         \
-    *x = unaryop; x++;                                         \
-    *x = unaryop; x++;                                         \
-  }                                                            \
-  for (; i< Rf_length(x_); i++) {                                 \
-    *x = unaryop; x++;                                         \
-  }                                                            \
-                                                               \
-  return x_;                                                   \
-}                                                              
+#define INSUNARYOP(nm, unaryop, startidx)                                      \
+SEXP br_##nm##_where_(SEXP x_, SEXP where_) {                                  \
+                                                                               \
+  if (Rf_length(x_) != Rf_length(where_)) {                                    \
+    Rf_error("'x' and 'where' must be the same length");                       \
+  }                                                                            \
+  double *x = REAL(x_);                                                        \
+  double *where = REAL(where_);                                                \
+  int i = startidx;                                                            \
+  x += startidx;                                                               \
+  for (; i < Rf_length(x_) - (UNROLL - 1); i += UNROLL) {                      \
+    if (*where++ != 0) *x = unaryop; x++;                                      \
+    if (*where++ != 0) *x = unaryop; x++;                                      \
+    if (*where++ != 0) *x = unaryop; x++;                                      \
+    if (*where++ != 0) *x = unaryop; x++;                                      \
+  }                                                                            \
+  for (; i< Rf_length(x_); i++) {                                              \
+    if (*where++ != 0) *x = unaryop; x++;                                      \
+  }                                                                            \
+                                                                               \
+  return x_;                                                                   \
+}                                                                              \
+                                                                               \
+SEXP br_##nm##_(SEXP x_, SEXP where_) {                                        \
+  if (!Rf_isNull(where_)) {                                                    \
+    return br_##nm##_where_(x_, where_);                                       \
+  }                                                                            \
+  double *x = REAL(x_);                                                        \
+                                                                               \
+  int i = startidx;                                                            \
+  x += startidx;                                                               \
+  for (; i < Rf_length(x_) - (UNROLL - 1); i += UNROLL) {                      \
+    *x = unaryop; x++;                                                         \
+    *x = unaryop; x++;                                                         \
+    *x = unaryop; x++;                                                         \
+    *x = unaryop; x++;                                                         \
+  }                                                                            \
+  for (; i< Rf_length(x_); i++) {                                              \
+    *x = unaryop; x++;                                                         \
+  }                                                                            \
+                                                                               \
+  return x_;                                                                   \
+}           
 
-#define R_NO_REMAP
 
 INSUNARYOP(abs  ,  fabs(*x), 0)
 INSUNARYOP(sqrt ,  sqrt(*x), 0)
 INSUNARYOP(floor, floor(*x), 0)
 INSUNARYOP(ceil ,  ceil(*x), 0)
 INSUNARYOP(trunc, trunc(*x), 0)
-// INSUNARYOP(round, round(*x), 0)
 INSUNARYOP(exp  ,   exp(*x), 0)
 INSUNARYOP(log  ,   log(*x), 0)
+INSUNARYOP(log2 ,  log2(*x), 0)
+INSUNARYOP(log10, log10(*x), 0)
 INSUNARYOP(cos  ,   cos(*x), 0)
 INSUNARYOP(sin  ,   sin(*x), 0)
 INSUNARYOP(tan  ,   tan(*x), 0)
@@ -89,8 +115,5 @@ INSUNARYOP(cumprod,  *x * *(x - 1), 1)
 INSUNARYOP(cummax ,  *x > *(x - 1) ? *x : *(x - 1), 1)
 INSUNARYOP(cummin ,  *x < *(x - 1) ? *x : *(x - 1), 1)
   
-INSUNARYOP(log2 ,   log2(*x), 0)
-INSUNARYOP(log10,   log10(*x), 0)
-
 INSUNARYOP(is_na, (double)isnan(*x), 0)
 
