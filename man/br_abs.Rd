@@ -37,77 +37,82 @@
 \alias{br_is_na}
 \title{Math operations taking only a single input vector}
 \usage{
-br_abs(x)
+br_abs(x, where = NULL)
 
-br_sqrt(x)
+br_sqrt(x, where = NULL)
 
-br_floor(x)
+br_floor(x, where = NULL)
 
-br_ceil(x)
+br_ceil(x, where = NULL)
 
-br_trunc(x)
+br_trunc(x, where = NULL)
 
 br_round(x, digits)
 
-br_exp(x)
+br_exp(x, where = NULL)
 
-br_log(x)
+br_log(x, where = NULL)
 
-br_cos(x)
+br_cos(x, where = NULL)
 
-br_sin(x)
+br_sin(x, where = NULL)
 
-br_tan(x)
+br_tan(x, where = NULL)
 
-br_not(x)
+br_not(x, where = NULL)
 
-br_expm1(x)
+br_expm1(x, where = NULL)
 
-br_log1p(x)
+br_log1p(x, where = NULL)
 
-br_acos(x)
+br_acos(x, where = NULL)
 
-br_asin(x)
+br_asin(x, where = NULL)
 
-br_atan(x)
+br_atan(x, where = NULL)
 
-br_acosh(x)
+br_acosh(x, where = NULL)
 
-br_asinh(x)
+br_asinh(x, where = NULL)
 
-br_atanh(x)
+br_atanh(x, where = NULL)
 
-br_cosh(x)
+br_cosh(x, where = NULL)
 
-br_sinh(x)
+br_sinh(x, where = NULL)
 
-br_tanh(x)
+br_tanh(x, where = NULL)
 
-br_cospi(x)
+br_cospi(x, where = NULL)
 
-br_sinpi(x)
+br_sinpi(x, where = NULL)
 
-br_tanpi(x)
+br_tanpi(x, where = NULL)
 
-br_sign(x)
+br_sign(x, where = NULL)
 
-br_cumsum(x)
+br_cumsum(x, where = NULL)
 
-br_cumprod(x)
+br_cumprod(x, where = NULL)
 
-br_cummax(x)
+br_cummax(x, where = NULL)
 
-br_cummin(x)
+br_cummin(x, where = NULL)
 
-br_log2(x)
+br_log2(x, where = NULL)
 
-br_log10(x)
+br_log10(x, where = NULL)
 
-br_is_na(x)
+br_is_na(x, where = NULL)
 }
 \arguments{
 \item{x}{numeric vector. This vector will be modified by-reference to 
 contain the result of the calculation}
+
+\item{where}{logical vector stored as floating point values. 0 = FALSE, 
+all non-zero values treated as TRUE. Default: NULL.
+This value indicates if the operation should be performed for the 
+corresponding element in \code{x}.}
 
 \item{digits}{number of decimal places}
 }
@@ -118,8 +123,15 @@ contain the result of the calculation}
 Math operations taking only a single input vector
 }
 \examples{
+# By-reference \code{abs()}
 x <- c(-1, 0, 1)
 br_abs(x)
 x
 
+# Conditional application of sqrt()
+x <- as.numeric(-5:5)
+t <- duplicate(x)     # will use this to hold a numeric logical vector
+br_gt(t, 0)           # where is the value > 0
+br_sqrt(x, where = t) # only sqrt(x) where x > 0
+x
 }
