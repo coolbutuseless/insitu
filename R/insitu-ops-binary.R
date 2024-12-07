@@ -6,6 +6,10 @@
 #' @inheritParams br_fmadd
 #' @param y Either scalar numeric value or numeric vector of the same 
 #'       length as \code{x}.
+#' @param where logical vector stored as floating point values. 0 = FALSE, 
+#'        all non-zero values treated as TRUE. Default: NULL.
+#'        This value indicates if the operation should be performed for the 
+#'        corresponding element in \code{x}.
 #' @return \code{x} argument is modified by-reference and returned invisibly
 #' @examples
 #' # x <- x + y
@@ -18,8 +22,8 @@
 #' x
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_add <- function(x, y) {
-  invisible(.Call(br_add_, x, y))
+br_add <- function(x, y, where = NULL) {
+  invisible(.Call(br_add_, x, y, where))
 }
 
 

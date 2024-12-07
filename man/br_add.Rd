@@ -20,7 +20,7 @@
 \alias{br_min}
 \title{Math operations taking two arguments}
 \usage{
-br_add(x, y)
+br_add(x, y, where = NULL)
 
 br_sub(x, y)
 
@@ -60,6 +60,11 @@ contain the result of the calculation}
 
 \item{y}{Either scalar numeric value or numeric vector of the same 
 length as \code{x}.}
+
+\item{where}{logical vector stored as floating point values. 0 = FALSE, 
+all non-zero values treated as TRUE. Default: NULL.
+This value indicates if the operation should be performed for the 
+corresponding element in \code{x}.}
 }
 \value{
 \code{x} argument is modified by-reference and returned invisibly

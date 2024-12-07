@@ -70,7 +70,7 @@ extern SEXP br_round_(SEXP x_, SEXP digits_);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Binary
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-extern SEXP br_add_  (SEXP x_, SEXP y_);
+extern SEXP br_add_  (SEXP x_, SEXP y_, SEXP where_);
 extern SEXP br_sub_  (SEXP x_, SEXP y_);
 extern SEXP br_mul_  (SEXP x_, SEXP y_);
 extern SEXP br_div_  (SEXP x_, SEXP y_);
@@ -198,7 +198,7 @@ static const R_CallMethodDef CEntries[] = {
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Binary
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  {"br_add_"  , (DL_FUNC) &br_add_  , 2},
+  {"br_add_"  , (DL_FUNC) &br_add_  , 3},
   {"br_sub_"  , (DL_FUNC) &br_sub_  , 2},
   {"br_mul_"  , (DL_FUNC) &br_mul_  , 2},
   {"br_div_"  , (DL_FUNC) &br_div_  , 2},

@@ -25,3 +25,18 @@ test_that("by reference addition vector-scalar", {
   )
   
 })
+
+
+# test_that("by reference addition vector-vector with 'where' conditional", {
+#   
+#   x <- as.numeric(1:10)
+#   y <- as.numeric(1:10)
+#   where <- c(1, 1, 1, 1, 1, 0, 0, 0, 0)
+#   
+#   br_add(x, y)
+#   expect_equal(
+#     x,
+#     c(seq(2, 10, 2), 6, 7, 8, 9, 10)
+#   )
+#   
+# })
