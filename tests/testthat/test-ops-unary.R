@@ -23,3 +23,15 @@ test_that("by-reference sqrt works with 'where'", {
     c(0, 1, 2, 3, 4, sqrt(5))
   )
 })
+
+
+test_that("by-reference sqrt works with 'where'", {
+  
+  x <- as.numeric(seq(0, 5))
+  where <- c(0, 0, 1, 0, 0, 1)
+  br_sqrt(x, where)
+  expect_equal(
+    x,
+    c(0, 1, sqrt(2), 3, 4, sqrt(5))
+  )
+})

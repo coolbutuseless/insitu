@@ -73,6 +73,8 @@ SEXP br_##nm##_where_(SEXP x_, int *idx, int idx_len) {        \
                                                                \
   return x_;                                                   \
 }                                                              \
+                                                               \
+                                                               \
 SEXP br_##nm##_(SEXP x_, SEXP where_) {                        \
   if (!Rf_isNull(where_)) {                                    \
     int idx_len = 0;                                           \
@@ -98,34 +100,34 @@ SEXP br_##nm##_(SEXP x_, SEXP where_) {                        \
 }           
 
 
-#define OP_ABS(offset)  fabs(x[i + (offset)])
-#define OP_SQRT(offset) sqrt(x[i + (offset)])
+#define OP_ABS(offset)    fabs(x[i + (offset)])
+#define OP_SQRT(offset)   sqrt(x[i + (offset)])
 #define OP_FLOOR(offset) floor(x[i + (offset)])
-#define OP_CEIL(offset) ceil(x[i + (offset)])
+#define OP_CEIL(offset)   ceil(x[i + (offset)])
 #define OP_TRUNC(offset) trunc(x[i + (offset)])
-#define OP_EXP(offset) exp(x[i + (offset)])
-#define OP_LOG(offset) log(x[i + (offset)])
-#define OP_LOG2(offset) log2(x[i + (offset)])
+#define OP_EXP(offset)     exp(x[i + (offset)])
+#define OP_LOG(offset)     log(x[i + (offset)])
+#define OP_LOG2(offset)   log2(x[i + (offset)])
 #define OP_LOG10(offset) log10(x[i + (offset)])
-#define OP_COS(offset) cos(x[i + (offset)])
-#define OP_SIN(offset) sin(x[i + (offset)])
-#define OP_TAN(offset) tan(x[i + (offset)])
-#define OP_NOT(offset) (double)(x[i + (offset)] == 0)
+#define OP_COS(offset)     cos(x[i + (offset)])
+#define OP_SIN(offset)     sin(x[i + (offset)])
+#define OP_TAN(offset)     tan(x[i + (offset)])
+#define OP_NOT(offset)   (double)(x[i + (offset)] == 0)
 #define OP_EXPM1(offset) expm1(x[i + (offset)])
 #define OP_LOG1P(offset) log1p(x[i + (offset)])
-#define OP_ACOS(offset) acos(x[i + (offset)])
-#define OP_ASIN(offset) asin(x[i + (offset)])
-#define OP_ATAN(offset) atan(x[i + (offset)])
+#define OP_ACOS(offset)   acos(x[i + (offset)])
+#define OP_ASIN(offset)   asin(x[i + (offset)])
+#define OP_ATAN(offset)   atan(x[i + (offset)])
 #define OP_ACOSH(offset) acosh(x[i + (offset)])
 #define OP_ASINH(offset) asinh(x[i + (offset)])
 #define OP_ATANH(offset) atanh(x[i + (offset)])
-#define OP_COSH(offset) cosh(x[i + (offset)])
-#define OP_SINH(offset) sinh(x[i + (offset)])
-#define OP_TANH(offset) tanh(x[i + (offset)])
-#define OP_SIGN(offset) (double)( (x[i + (offset)] > 0) - (x[i + (offset)] < 0)) 
-#define OP_COSPI(offset) cos(x[i + (offset)] * M_PI)
-#define OP_SINPI(offset) sin(x[i + (offset)] * M_PI)
-#define OP_TANPI(offset) tan(x[i + (offset)] * M_PI)
+#define OP_COSH(offset)   cosh(x[i + (offset)])
+#define OP_SINH(offset)   sinh(x[i + (offset)])
+#define OP_TANH(offset)   tanh(x[i + (offset)])
+#define OP_SIGN(offset)  (double)( (x[i + (offset)] > 0) - (x[i + (offset)] < 0)) 
+#define OP_COSPI(offset)   cos(x[i + (offset)] * M_PI)
+#define OP_SINPI(offset)   sin(x[i + (offset)] * M_PI)
+#define OP_TANPI(offset)   tan(x[i + (offset)] * M_PI)
 #define OP_IS_NA(offset) (double)isnan(x[i + (offset)])
 
 
