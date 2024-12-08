@@ -227,10 +227,10 @@ knitr::kable(bm)
 
 | expression           |     min |  median |   itr/sec | mem_alloc |
 |:---------------------|--------:|--------:|----------:|----------:|
-| conv_nested(x, y)    | 60.61ms | 61.41ms |  16.27474 |    88.5KB |
-| conv_vec(x, y)       | 10.04ms | 10.85ms |  92.27832 |    34.6MB |
-| conv_fft(x, y)       |  3.62ms |  3.71ms | 268.73788 |     380KB |
-| conv_vec_byref(x, y) |  2.87ms |  3.01ms | 323.19332 |   115.9KB |
+| conv_nested(x, y)    | 60.78ms |  61.3ms |  16.31246 |    88.5KB |
+| conv_vec(x, y)       | 10.61ms | 11.21ms |  89.67826 |    34.6MB |
+| conv_fft(x, y)       |   3.6ms |  3.69ms | 270.23869 |     380KB |
+| conv_vec_byref(x, y) |  2.89ms |  3.06ms | 322.35104 |   115.9KB |
 
 ## Matrix-matrix multiplication
 
@@ -267,8 +267,8 @@ bench::mark(
     #> # A tibble: 2 × 6
     #>   expression                   min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>              <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 br_mat_mat_mul(C, A, B)    149ms    150ms      6.68    7.87KB     0   
-    #> 2 A %*% B                    148ms    150ms      6.66    7.63MB     2.22
+    #> 1 br_mat_mat_mul(C, A, B)    149ms    149ms      6.70    7.87KB     0   
+    #> 2 A %*% B                    150ms    150ms      6.54    7.63MB     2.18
 
 Note in the above benchmark that `br_mat_ma_mul()` only allocates
 several **kilobytes** of R memory, while `A %*% B` allocates several
@@ -297,8 +297,8 @@ bench::mark(
     #> # A tibble: 2 × 6
     #>   expression                    min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>               <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 br_mat_mat_mul_bsq(A, B)   74.6ms   75.6ms      13.2    4.86KB     0   
-    #> 2 A %*% B                      75ms   75.4ms      13.3    3.81MB     2.21
+    #> 1 br_mat_mat_mul_bsq(A, B)   75.2ms   75.6ms      13.2    4.86KB     0   
+    #> 2 A %*% B                      75ms   75.3ms      13.3    3.81MB     2.21
 
 ## Matrix transforms
 
@@ -412,7 +412,7 @@ suppressWarnings({
 knitr::kable(bm)
 ```
 
-| expression |      min |   median |  itr/sec | mem_alloc |
-|:-----------|---------:|---------:|---------:|----------:|
-| insitu     | 1.000000 |  1.00000 | 10.65747 |  1.000000 |
-| ifelse     | 9.041561 | 10.88844 |  1.00000 |  8.040386 |
+| expression |      min |  median |  itr/sec | mem_alloc |
+|:-----------|---------:|--------:|---------:|----------:|
+| insitu     | 1.000000 | 1.00000 | 3.624914 |  1.000000 |
+| ifelse     | 2.989005 | 3.74079 | 1.000000 |  8.040386 |

@@ -31,20 +31,20 @@ SEXP br_fill_seq_(SEXP x_, SEXP from_, SEXP to_, SEXP step_) {
   }
   
   if (Rf_isNull(to_) && Rf_isNull(step_)) {
-    for (int i = 0; i < Rf_length(x_); i++) {
+    for (int i = 0; i < Rf_length(x_); ++i) {
       x[i] = from + (double)i;
     }
   } else if (!Rf_isNull(to_)) { 
     double to = Rf_asReal(to_);
     double step = (to - from) / (double)(Rf_length(x_) - 1);
-    for (int i = 0; i < Rf_length(x_); i++) {
+    for (int i = 0; i < Rf_length(x_); ++i) {
       x[i] = from + (double)(i * step);
     }
     // Ensure the final value is exactly what the user requested.
     x[Rf_length(x_) - 1] = to;
   } else if (!Rf_isNull(step_)) {
     double step = Rf_asReal(step_);
-    for (int i = 0; i < Rf_length(x_); i++) {
+    for (int i = 0; i < Rf_length(x_); ++i) {
       x[i] = from + (double)(i * step);
     }
   } else {

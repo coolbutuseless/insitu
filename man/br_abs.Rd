@@ -9,6 +9,8 @@
 \alias{br_round}
 \alias{br_exp}
 \alias{br_log}
+\alias{br_log2}
+\alias{br_log10}
 \alias{br_cos}
 \alias{br_sin}
 \alias{br_tan}
@@ -28,86 +30,86 @@
 \alias{br_sinpi}
 \alias{br_tanpi}
 \alias{br_sign}
+\alias{br_is_na}
 \alias{br_cumsum}
 \alias{br_cumprod}
 \alias{br_cummax}
 \alias{br_cummin}
-\alias{br_log2}
-\alias{br_log10}
-\alias{br_is_na}
 \title{Math operations taking only a single input vector}
 \usage{
-br_abs(x, where = NULL)
+br_abs(x, idx = NULL, where = NULL)
 
-br_sqrt(x, where = NULL)
+br_sqrt(x, idx = NULL, where = NULL)
 
-br_floor(x, where = NULL)
+br_floor(x, idx = NULL, where = NULL)
 
-br_ceil(x, where = NULL)
+br_ceil(x, idx = NULL, where = NULL)
 
-br_trunc(x, where = NULL)
+br_trunc(x, idx = NULL, where = NULL)
 
 br_round(x, digits)
 
-br_exp(x, where = NULL)
+br_exp(x, idx = NULL, where = NULL)
 
-br_log(x, where = NULL)
+br_log(x, idx = NULL, where = NULL)
 
-br_cos(x, where = NULL)
+br_log2(x, idx = NULL, where = NULL)
 
-br_sin(x, where = NULL)
+br_log10(x, idx = NULL, where = NULL)
 
-br_tan(x, where = NULL)
+br_cos(x, idx = NULL, where = NULL)
 
-br_not(x, where = NULL)
+br_sin(x, idx = NULL, where = NULL)
 
-br_expm1(x, where = NULL)
+br_tan(x, idx = NULL, where = NULL)
 
-br_log1p(x, where = NULL)
+br_not(x, idx = NULL, where = NULL)
 
-br_acos(x, where = NULL)
+br_expm1(x, idx = NULL, where = NULL)
 
-br_asin(x, where = NULL)
+br_log1p(x, idx = NULL, where = NULL)
 
-br_atan(x, where = NULL)
+br_acos(x, idx = NULL, where = NULL)
 
-br_acosh(x, where = NULL)
+br_asin(x, idx = NULL, where = NULL)
 
-br_asinh(x, where = NULL)
+br_atan(x, idx = NULL, where = NULL)
 
-br_atanh(x, where = NULL)
+br_acosh(x, idx = NULL, where = NULL)
 
-br_cosh(x, where = NULL)
+br_asinh(x, idx = NULL, where = NULL)
 
-br_sinh(x, where = NULL)
+br_atanh(x, idx = NULL, where = NULL)
 
-br_tanh(x, where = NULL)
+br_cosh(x, idx = NULL, where = NULL)
 
-br_cospi(x, where = NULL)
+br_sinh(x, idx = NULL, where = NULL)
 
-br_sinpi(x, where = NULL)
+br_tanh(x, idx = NULL, where = NULL)
 
-br_tanpi(x, where = NULL)
+br_cospi(x, idx = NULL, where = NULL)
 
-br_sign(x, where = NULL)
+br_sinpi(x, idx = NULL, where = NULL)
 
-br_cumsum(x, where = NULL)
+br_tanpi(x, idx = NULL, where = NULL)
 
-br_cumprod(x, where = NULL)
+br_sign(x, idx = NULL, where = NULL)
 
-br_cummax(x, where = NULL)
+br_is_na(x, idx = NULL, where = NULL)
 
-br_cummin(x, where = NULL)
+br_cumsum(x)
 
-br_log2(x, where = NULL)
+br_cumprod(x)
 
-br_log10(x, where = NULL)
+br_cummax(x)
 
-br_is_na(x, where = NULL)
+br_cummin(x)
 }
 \arguments{
 \item{x}{numeric vector. This vector will be modified by-reference to 
 contain the result of the calculation}
+
+\item{idx}{vector of indices}
 
 \item{where}{logical vector stored as floating point values. 0 = FALSE, 
 all non-zero values treated as TRUE. Default: NULL.

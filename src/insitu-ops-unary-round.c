@@ -16,7 +16,7 @@ SEXP br_round_(SEXP x_, SEXP digits_) {
   
   static char buf[1024];
   
-  for (int i = 0; i < Rf_length(x_); i++) {
+  for (int i = 0; i < Rf_length(x_); ++i) {
     snprintf(buf, 1023, "%.*f", digits, x[i]);
     x[i] = atof(buf);
   }
