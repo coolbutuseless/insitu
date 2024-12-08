@@ -52,9 +52,52 @@ int *lgl_to_idx(SEXP lgl_, int *len) {
         *pidx++ = i;
       }
     } 
+  } else {
+    Rf_error("Index type not understood");
   }
   
   
   return idx;
 }
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Convert an R index to a C index. 
+// Check for outliers
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+int *ridx_to_idx(SEXP idx_, int ref_len) {
+  
+  int *idx = malloc(Rf_length(idx_) * sizeof(int));
+  if (idx == NULL) {
+    Rf_error("ridx_to_idx(): Could not allocate 'idx'");
+  }
+  
+  if (TYPEOF(idx_) == INTSXP) {
+    int *ptr = INTEGER(idx_);
+    for (int i = 0; i < Rf_length(idx_); ++i) {
+      int val = ptr[i];
+      if (val < 1 || val > ref_len) {
+        free(idx);
+        Rprintf("Index out of range [1, %i]: %i", ref_len, val);
+      }
+      idx[i] = ptr[i];
+    }
+  } else if (TYPEOF(idx_) == REALSXP) {
+    double *ptr = REAL(idx_);
+    for (int i = 0; i < Rf_length(idx_); ++i) {
+      int val = (int)round(ptr[i]);
+      if (val < 1 || val > ref_len) {
+        free(idx);
+        Rprintf("Index out of range [1, %i]: %i", ref_len, val);
+      }
+      idx[i] = val;
+    }
+  } else {
+    free(idx);
+    Rf_error("index type not understood");
+  }
+  
+  return idx;
+}
+
 
