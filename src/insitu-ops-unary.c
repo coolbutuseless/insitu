@@ -19,12 +19,14 @@
 
 #define UNROLL 4
 
+#define OP_SQRT(offset) sqrt(x[i + (offset)])
+
 SEXP br_sqrt_where_(SEXP x_, int *idx, int idx_len) {
   double *x = REAL(x_);
   
   for (int j = 0; j < idx_len; ++j) {
     int i = idx[j];
-    x[i] = sqrt(x[i]);
+    x[i] = OP_SQRT(0);
   }
 
   return x_;
@@ -44,10 +46,10 @@ SEXP br_sqrt_(SEXP x_, SEXP where_) {
   
   int i = 0;
   for (; i < Rf_length(x_) - (UNROLL - 1); i += UNROLL) {
-    x[i + 0] = sqrt(x[i + 0]);
-    x[i + 1] = sqrt(x[i + 1]);
-    x[i + 2] = sqrt(x[i + 2]);
-    x[i + 3] = sqrt(x[i + 3]);
+    x[i + 0] = OP_SQRT(0);
+    x[i + 1] = OP_SQRT(1);
+    x[i + 2] = OP_SQRT(2);
+    x[i + 3] = OP_SQRT(3);
   }
   for (; i< Rf_length(x_); ++i) {
     x[i] = sqrt(x[i]);
@@ -55,7 +57,6 @@ SEXP br_sqrt_(SEXP x_, SEXP where_) {
   
   return x_;
 }
-
 
 
 
