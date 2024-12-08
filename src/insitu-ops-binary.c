@@ -20,7 +20,6 @@ SEXP br_add_vxy_(SEXP x_, SEXP y_) {
   double *x = REAL(x_);
   double *y = REAL(y_);
 
-#define UNROLL 4
   int i = 0;
   for (; i < Rf_length(x_) - (UNROLL - 1); i += UNROLL) {
     *x += *y; ++x; ++y;
@@ -45,7 +44,6 @@ SEXP br_add_sy_(SEXP x_, SEXP y_) {
   double *x = REAL(x_);
   double  y = REAL(y_)[0];
 
-#define UNROLL 4
   int i = 0;
   for (; i < Rf_length(x_) - (UNROLL - 1); i += UNROLL) {
     *x += y; ++x;
@@ -76,7 +74,6 @@ SEXP br_add_vxy_where_(SEXP x_, SEXP y_, SEXP where_) {
   double *y = REAL(y_);
   double *where = REAL(where_);
   
-#define UNROLL 4
   int i = 0;
   for (; i < Rf_length(x_) - (UNROLL - 1); i += UNROLL) {
     if (*where++ != 0) *x += *y; ++x; ++y;
@@ -107,7 +104,6 @@ SEXP br_add_sy_where_(SEXP x_, SEXP y_, SEXP where_) {
   double  y = REAL(y_)[0];
   double *where = REAL(where_);
   
-#define UNROLL 4
   int i = 0;
   for (; i < Rf_length(x_) - (UNROLL - 1); i += UNROLL) {
     if (*where++) *x += y; ++x;
@@ -159,61 +155,126 @@ SEXP br_add_(SEXP x_, SEXP y_, SEXP where_) {
 //  MEGA MACRO
 //  
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#define INSBINOP(nm, vectorop, scalarop)                                             \
-SEXP br_##nm##_vxy_(SEXP x_, SEXP y_) {                                              \
-                                                                                     \
-  double *x = REAL(x_);                                                              \
-  double *y = REAL(y_);                                                              \
-                                                                                     \
-  int i = 0;                                                                         \
-  for (; i < Rf_length(x_) - (UNROLL - 1); i += UNROLL) {                            \
-    vectorop; ++x; ++y;                                                              \
-    vectorop; ++x; ++y;                                                              \
-    vectorop; ++x; ++y;                                                              \
-    vectorop; ++x; ++y;                                                              \
-  }                                                                                  \
-  for (; i< Rf_length(x_); ++i) {                                                    \
-    vectorop; ++x; ++y;                                                              \
-  }                                                                                  \
-                                                                                     \
-  return x_;                                                                         \
-}                                                                                    \
-                                                                                    \
-                                                                                    \
-SEXP br_##nm##_sy_(SEXP x_, SEXP y_) {                                              \
-                                                                                    \
-  double *x = REAL(x_);                                                             \
-  double  y = Rf_asReal(y_);                                                        \
-                                                                                    \
-                                                                                    \
-  int i = 0;                                                                        \
-  for (; i < Rf_length(x_) - (UNROLL - 1); i += UNROLL) {                           \
-    scalarop; ++x;                                                                  \
-    scalarop; ++x;                                                                  \
-    scalarop; ++x;                                                                  \
-    scalarop; ++x;                                                                  \
-  }                                                                                 \
-  for (; i< Rf_length(x_); ++i) {                                                   \
-    scalarop; ++x;                                                                  \
-  }                                                                                 \
-                                                                                    \
-  return x_;                                                                        \
-}                                                                                   \
-                                                                                    \
-                                                                                    \
-SEXP br_##nm##_(SEXP x_, SEXP y_) {                                                 \
-                                                                                    \
-  R_xlen_t lx = Rf_length(x_);                                                      \
-  R_xlen_t ly = Rf_length(y_);                                                      \
-                                                                                    \
-  if (lx == ly) {                                                                   \
-    return br_##nm##_vxy_(x_, y_);                                                  \
-  } else if (ly == 1) {                                                             \
-    return br_##nm##_sy_(x_, y_);                                                   \
-  }                                                                                 \
-                                                                                    \
-  Rf_error("Lengths not compatible: x = %.0f, y = %.0f", (double)lx, (double)ly);   \
-}
+#define INSBINOP(nm, vectorop, scalarop)                                      \
+SEXP br_##nm##_vxy_(SEXP x_, SEXP y_) {                                       \
+                                                                              \
+  double *x = REAL(x_);                                                       \
+  double *y = REAL(y_);                                                       \
+                                                                              \
+  int i = 0;                                                                  \
+  for (; i < Rf_length(x_) - (UNROLL - 1); i += UNROLL) {                     \
+    vectorop; ++x; ++y;                                                       \
+    vectorop; ++x; ++y;                                                       \
+    vectorop; ++x; ++y;                                                       \
+    vectorop; ++x; ++y;                                                       \
+  }                                                                           \
+  for (; i< Rf_length(x_); ++i) {                                             \
+    vectorop; ++x; ++y;                                                       \
+  }                                                                           \
+                                                                              \
+  return x_;                                                                  \
+}                                                                             \
+                                                                              \
+                                                                              \
+SEXP br_##nm##_sy_(SEXP x_, SEXP y_) {                                        \
+                                                                              \
+  double *x = REAL(x_);                                                       \
+  double  y = Rf_asReal(y_);                                                  \
+                                                                              \
+                                                                              \
+  int i = 0;                                                                  \
+  for (; i < Rf_length(x_) - (UNROLL - 1); i += UNROLL) {                     \
+    scalarop; ++x;                                                            \
+    scalarop; ++x;                                                            \
+    scalarop; ++x;                                                            \
+    scalarop; ++x;                                                            \
+  }                                                                           \
+  for (; i< Rf_length(x_); ++i) {                                             \
+    scalarop; ++x;                                                            \
+  }                                                                           \
+                                                                              \
+  return x_;                                                                  \
+}                                                                             \
+                                                                              \
+                                                                              \
+                                                                              \
+/* Vector x,y & conditional */                                                \
+SEXP br_##nm##_vxy_where_(SEXP x_, SEXP y_, SEXP where_) {                    \
+                                                                              \
+  if (Rf_length(where_) != Rf_length(x_)) {                                   \
+    Rf_error("'where' must be the same length as 'x'.  %.0f != %.0f",         \
+             (double)Rf_length(where_), (double)Rf_length(x_));               \
+  }                                                                           \
+                                                                              \
+  double *x = REAL(x_);                                                       \
+  double *y = REAL(y_);                                                       \
+  double *where = REAL(where_);                                               \
+                                                                              \
+  int i = 0;                                                                  \
+  for (; i < Rf_length(x_) - (UNROLL - 1); i += UNROLL) {                     \
+    if (*where++ != 0) vectorop; ++x; ++y;                                    \
+    if (*where++ != 0) vectorop; ++x; ++y;                                    \
+    if (*where++ != 0) vectorop; ++x; ++y;                                    \
+    if (*where++ != 0) vectorop; ++x; ++y;                                    \
+  }                                                                           \
+  for (; i< Rf_length(x_); ++i) {                                             \
+    if (*where++ != 0) vectorop; ++x; ++y;                                    \
+  }                                                                           \
+                                                                              \
+  return x_;                                                                  \
+}                                                                             \
+                                                                              \
+                                                                              \
+                                                                              \
+/*  scalar y & conditional */                                                 \
+SEXP br_##nm##_sy_where_(SEXP x_, SEXP y_, SEXP where_) {                     \
+                                                                              \
+  if (Rf_length(where_) != Rf_length(x_)) {                                   \
+    Rf_error("'where' must be the same length as 'x'.  %.0f != %.0f",         \
+             (double)Rf_length(where_), (double)Rf_length(x_));               \
+  }                                                                           \
+                                                                              \
+  double *x = REAL(x_);                                                       \
+  double  y = REAL(y_)[0];                                                    \
+  double *where = REAL(where_);                                               \
+                                                                              \
+  int i = 0;                                                                  \
+  for (; i < Rf_length(x_) - (UNROLL - 1); i += UNROLL) {                     \
+    if (*where++) scalarop; ++x;                                              \
+    if (*where++) scalarop; ++x;                                              \
+    if (*where++) scalarop; ++x;                                              \
+    if (*where++) scalarop; ++x;                                              \
+  }                                                                           \
+  for (; i< Rf_length(x_); ++i) {                                             \
+    if (*where++) scalarop; ++x;                                              \
+  }                                                                           \
+                                                                              \
+  return x_;                                                                  \
+}                                                                             \
+                                                                              \
+/* Dispatch */                                                                \
+SEXP br_##nm##_(SEXP x_, SEXP y_, SEXP where_) {                              \
+                                                                              \
+  R_xlen_t lx = Rf_length(x_);                                                \
+  R_xlen_t ly = Rf_length(y_);                                                \
+                                                                              \
+  if (lx == ly) {                                                             \
+    if (Rf_isNull(where_)) {                                                  \
+      return br_##nm##_vxy_(x_, y_);                                          \
+    } else {                                                                  \
+      return br_##nm##_vxy_where_(x_, y_, where_);                            \
+    }                                                                         \
+  } else if (ly == 1) {                                                       \
+    if (Rf_isNull(where_)) {                                                  \
+      return br_##nm##_sy_(x_, y_);                                           \
+    } else {                                                                  \
+      return br_##nm##_sy_where_(x_, y_, where_);                             \
+    }                                                                         \
+  }                                                                           \
+                                                                              \
+  Rf_error("Lengths not compatible: x = %.0f, y = %.0f",                      \
+           (double)lx, (double)ly);                                           \
+}                                                                                    
 
 
 // * Group: Ops

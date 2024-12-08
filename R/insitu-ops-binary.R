@@ -31,8 +31,8 @@ br_add <- function(x, y, where = NULL) {
 #' @rdname br_add
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_sub <- function(x, y) {
-  invisible(.Call(br_sub_, x, y))
+br_sub <- function(x, y, where = NULL) {
+  invisible(.Call(br_sub_, x, y, where))
 }
 
 
@@ -40,25 +40,16 @@ br_sub <- function(x, y) {
 #' @rdname br_add
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_mul <- function(x, y) {
-  invisible(.Call(br_mul_, x, y))
+br_mul <- function(x, y, where = NULL) {
+  invisible(.Call(br_mul_, x, y, where))
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' @rdname br_add
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_div <- function(x, y) {
-  invisible(.Call(br_div_, x, y))
-}
-
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname br_add
-#' @export
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_pow <- function(x, y) {
-  invisible(.Call(br_pow_, x, y))
+br_div <- function(x, y, where = NULL) {
+  invisible(.Call(br_div_, x, y, where))
 }
 
 
@@ -66,8 +57,8 @@ br_pow <- function(x, y) {
 #' @rdname br_add
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_eq <- function(x, y) {
-  invisible(.Call(br_eq_, x, y))
+br_pow <- function(x, y, where = NULL) {
+  invisible(.Call(br_pow_, x, y, where))
 }
 
 
@@ -75,8 +66,8 @@ br_eq <- function(x, y) {
 #' @rdname br_add
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_ne <- function(x, y) {
-  invisible(.Call(br_ne_, x, y))
+br_eq <- function(x, y, where = NULL) {
+  invisible(.Call(br_eq_, x, y, where))
 }
 
 
@@ -84,8 +75,8 @@ br_ne <- function(x, y) {
 #' @rdname br_add
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_lt <- function(x, y) {
-  invisible(.Call(br_lt_, x, y))
+br_ne <- function(x, y, where = NULL) {
+  invisible(.Call(br_ne_, x, y, where))
 }
 
 
@@ -93,8 +84,8 @@ br_lt <- function(x, y) {
 #' @rdname br_add
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_le <- function(x, y) {
-  invisible(.Call(br_le_, x, y))
+br_lt <- function(x, y, where = NULL) {
+  invisible(.Call(br_lt_, x, y, where))
 }
 
 
@@ -102,8 +93,8 @@ br_le <- function(x, y) {
 #' @rdname br_add
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_gt <- function(x, y) {
-  invisible(.Call(br_gt_, x, y))
+br_le <- function(x, y, where = NULL) {
+  invisible(.Call(br_le_, x, y, where))
 }
 
 
@@ -111,8 +102,8 @@ br_gt <- function(x, y) {
 #' @rdname br_add
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_ge <- function(x, y) {
-  invisible(.Call(br_ge_, x, y))
+br_gt <- function(x, y, where = NULL) {
+  invisible(.Call(br_gt_, x, y, where))
 }
 
 
@@ -120,8 +111,8 @@ br_ge <- function(x, y) {
 #' @rdname br_add
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_and <- function(x, y) {
-  invisible(.Call(br_and_, x, y))
+br_ge <- function(x, y, where = NULL) {
+  invisible(.Call(br_ge_, x, y, where))
 }
 
 
@@ -129,8 +120,8 @@ br_and <- function(x, y) {
 #' @rdname br_add
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_or <- function(x, y) {
-  invisible(.Call(br_or_, x, y))
+br_and <- function(x, y, where = NULL) {
+  invisible(.Call(br_and_, x, y, where))
 }
 
 
@@ -138,8 +129,8 @@ br_or <- function(x, y) {
 #' @rdname br_add
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_rem <- function(x, y) {
-  invisible(.Call(br_rem_, x, y))
+br_or <- function(x, y, where = NULL) {
+  invisible(.Call(br_or_, x, y, where))
 }
 
 
@@ -147,8 +138,8 @@ br_rem <- function(x, y) {
 #' @rdname br_add
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_idiv <- function(x, y) {
-  invisible(.Call(br_idiv_, x, y))
+br_rem <- function(x, y, where = NULL) {
+  invisible(.Call(br_rem_, x, y, where))
 }
 
 
@@ -156,8 +147,8 @@ br_idiv <- function(x, y) {
 #' @rdname br_add
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_max <- function(x, y) {
-  invisible(.Call(br_max_, x, y))
+br_idiv <- function(x, y, where = NULL) {
+  invisible(.Call(br_idiv_, x, y, where))
 }
 
 
@@ -165,8 +156,17 @@ br_max <- function(x, y) {
 #' @rdname br_add
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_min <- function(x, y) {
-  invisible(.Call(br_min_, x, y))
+br_max <- function(x, y, where = NULL) {
+  invisible(.Call(br_max_, x, y, where))
+}
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#' @rdname br_add
+#' @export
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+br_min <- function(x, y, where = NULL) {
+  invisible(.Call(br_min_, x, y, where))
 }
 
 
