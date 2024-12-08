@@ -75,7 +75,7 @@ SEXP br_##nm##_where_(SEXP x_, int *idx, int idx_len) {        \
 }                                                              \
                                                                \
                                                                \
-SEXP br_##nm##_(SEXP x_, SEXP where_) {                        \
+SEXP br_##nm##_(SEXP x_, SEXP where_, SEXP idx_) {                        \
   if (!Rf_isNull(where_)) {                                    \
     int idx_len = 0;                                           \
     int *idx = lgl_to_idx(where_, &idx_len);                   \

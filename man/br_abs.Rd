@@ -37,65 +37,65 @@
 \alias{br_cummin}
 \title{Math operations taking only a single input vector}
 \usage{
-br_abs(x, where = NULL)
+br_abs(x, where = NULL, idx = NULL)
 
-br_sqrt(x, where = NULL)
+br_sqrt(x, where = NULL, idx = NULL)
 
-br_floor(x, where = NULL)
+br_floor(x, where = NULL, idx = NULL)
 
-br_ceil(x, where = NULL)
+br_ceil(x, where = NULL, idx = NULL)
 
-br_trunc(x, where = NULL)
+br_trunc(x, where = NULL, idx = NULL)
 
 br_round(x, digits)
 
-br_exp(x, where = NULL)
+br_exp(x, where = NULL, idx = NULL)
 
-br_log(x, where = NULL)
+br_log(x, where = NULL, idx = NULL)
 
-br_log2(x, where = NULL)
+br_log2(x, where = NULL, idx = NULL)
 
-br_log10(x, where = NULL)
+br_log10(x, where = NULL, idx = NULL)
 
-br_cos(x, where = NULL)
+br_cos(x, where = NULL, idx = NULL)
 
-br_sin(x, where = NULL)
+br_sin(x, where = NULL, idx = NULL)
 
-br_tan(x, where = NULL)
+br_tan(x, where = NULL, idx = NULL)
 
-br_not(x, where = NULL)
+br_not(x, where = NULL, idx = NULL)
 
-br_expm1(x, where = NULL)
+br_expm1(x, where = NULL, idx = NULL)
 
-br_log1p(x, where = NULL)
+br_log1p(x, where = NULL, idx = NULL)
 
-br_acos(x, where = NULL)
+br_acos(x, where = NULL, idx = NULL)
 
-br_asin(x, where = NULL)
+br_asin(x, where = NULL, idx = NULL)
 
-br_atan(x, where = NULL)
+br_atan(x, where = NULL, idx = NULL)
 
-br_acosh(x, where = NULL)
+br_acosh(x, where = NULL, idx = NULL)
 
-br_asinh(x, where = NULL)
+br_asinh(x, where = NULL, idx = NULL)
 
-br_atanh(x, where = NULL)
+br_atanh(x, where = NULL, idx = NULL)
 
-br_cosh(x, where = NULL)
+br_cosh(x, where = NULL, idx = NULL)
 
-br_sinh(x, where = NULL)
+br_sinh(x, where = NULL, idx = NULL)
 
-br_tanh(x, where = NULL)
+br_tanh(x, where = NULL, idx = NULL)
 
-br_cospi(x, where = NULL)
+br_cospi(x, where = NULL, idx = NULL)
 
-br_sinpi(x, where = NULL)
+br_sinpi(x, where = NULL, idx = NULL)
 
-br_tanpi(x, where = NULL)
+br_tanpi(x, where = NULL, idx = NULL)
 
-br_sign(x, where = NULL)
+br_sign(x, where = NULL, idx = NULL)
 
-br_is_na(x, where = NULL)
+br_is_na(x, where = NULL, idx = NULL)
 
 br_cumsum(x)
 
@@ -113,6 +113,8 @@ contain the result of the calculation}
 all non-zero values treated as TRUE. Default: NULL.
 This value indicates if the operation should be performed for the 
 corresponding element in \code{x}.}
+
+\item{idx}{vector of indices}
 
 \item{digits}{number of decimal places}
 }
