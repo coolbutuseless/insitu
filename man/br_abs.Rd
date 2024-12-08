@@ -9,6 +9,8 @@
 \alias{br_round}
 \alias{br_exp}
 \alias{br_log}
+\alias{br_log2}
+\alias{br_log10}
 \alias{br_cos}
 \alias{br_sin}
 \alias{br_tan}
@@ -28,13 +30,11 @@
 \alias{br_sinpi}
 \alias{br_tanpi}
 \alias{br_sign}
+\alias{br_is_na}
 \alias{br_cumsum}
 \alias{br_cumprod}
 \alias{br_cummax}
 \alias{br_cummin}
-\alias{br_log2}
-\alias{br_log10}
-\alias{br_is_na}
 \title{Math operations taking only a single input vector}
 \usage{
 br_abs(x, where = NULL)
@@ -52,6 +52,10 @@ br_round(x, digits)
 br_exp(x, where = NULL)
 
 br_log(x, where = NULL)
+
+br_log2(x, where = NULL)
+
+br_log10(x, where = NULL)
 
 br_cos(x, where = NULL)
 
@@ -91,19 +95,15 @@ br_tanpi(x, where = NULL)
 
 br_sign(x, where = NULL)
 
-br_cumsum(x, where = NULL)
-
-br_cumprod(x, where = NULL)
-
-br_cummax(x, where = NULL)
-
-br_cummin(x, where = NULL)
-
-br_log2(x, where = NULL)
-
-br_log10(x, where = NULL)
-
 br_is_na(x, where = NULL)
+
+br_cumsum(x)
+
+br_cumprod(x)
+
+br_cummax(x)
+
+br_cummin(x)
 }
 \arguments{
 \item{x}{numeric vector. This vector will be modified by-reference to 

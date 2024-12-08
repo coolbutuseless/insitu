@@ -58,13 +58,16 @@ extern SEXP br_cospi_(SEXP x_, SEXP where_);
 extern SEXP br_sinpi_(SEXP x_, SEXP where_);
 extern SEXP br_tanpi_(SEXP x_, SEXP where_);
 extern SEXP br_sign_ (SEXP x_, SEXP where_);
+extern SEXP br_is_na_(SEXP x_, SEXP where_);
 
-extern SEXP br_cumsum_ (SEXP x_, SEXP where_);
-extern SEXP br_cumprod_(SEXP x_, SEXP where_);
-extern SEXP br_cummax_ (SEXP x_, SEXP where_);
-extern SEXP br_cummin_ (SEXP x_, SEXP where_);
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Cumulative Ops
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+extern SEXP br_cumsum_ (SEXP x_);
+extern SEXP br_cumprod_(SEXP x_);
+extern SEXP br_cummax_ (SEXP x_);
+extern SEXP br_cummin_ (SEXP x_);
 
-extern SEXP br_is_na_  (SEXP x_, SEXP where_);
 extern SEXP br_round_(SEXP x_, SEXP digits_);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -184,13 +187,13 @@ static const R_CallMethodDef CEntries[] = {
   {"br_sinpi_", (DL_FUNC) &br_sinpi_, 2},
   {"br_tanpi_", (DL_FUNC) &br_tanpi_, 2},
   {"br_sign_" , (DL_FUNC) &br_sign_ , 2},
+  {"br_is_na_", (DL_FUNC) &br_is_na_, 2},
   
-  {"br_cumsum_"  , (DL_FUNC) &br_cumsum_  , 2},
-  {"br_cumprod_" , (DL_FUNC) &br_cumprod_ , 2},
-  {"br_cummax_"  , (DL_FUNC) &br_cummax_  , 2},
-  {"br_cummin_"  , (DL_FUNC) &br_cummin_  , 2},
+  {"br_cumsum_"  , (DL_FUNC) &br_cumsum_  , 1},
+  {"br_cumprod_" , (DL_FUNC) &br_cumprod_ , 1},
+  {"br_cummax_"  , (DL_FUNC) &br_cummax_  , 1},
+  {"br_cummin_"  , (DL_FUNC) &br_cummin_  , 1},
   
-  {"br_is_na_"  , (DL_FUNC) &br_is_na_    , 2},
   
   
   {"br_round_", (DL_FUNC) &br_round_, 2},
