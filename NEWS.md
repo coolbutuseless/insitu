@@ -1,6 +1,8 @@
 
-# insitu 0.1.3.9012
+# insitu 0.1.3.9013
 
+* [9013] `where` and `idx` for conditional unary ops. Initial attempt at
+         conditional binary ops
 * [9012] 'where' conditional for unary ops
 * [9011]3D transformation matrices
 * [9010] Reintroduce specialised methods for `asq` and `bsq` in matrix multiplication

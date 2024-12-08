@@ -25,31 +25,31 @@
 #' x
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_abs   <- function(x, where = NULL, idx = NULL) { invisible(.Call(br_abs_  , x, where, idx)) }
+br_abs   <- function(x, idx = NULL, where = NULL) { invisible(.Call(br_abs_  , x, idx, where)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_sqrt  <- function(x, where = NULL, idx = NULL) { invisible(.Call(br_sqrt_ , x, where, idx)) }
+br_sqrt  <- function(x, idx = NULL, where = NULL) { invisible(.Call(br_sqrt_ , x, idx, where)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_floor <- function(x, where = NULL, idx = NULL) { invisible(.Call(br_floor_, x, where, idx)) }
+br_floor <- function(x, idx = NULL, where = NULL) { invisible(.Call(br_floor_, x, idx, where)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_ceil  <- function(x, where = NULL, idx = NULL) { invisible(.Call(br_ceil_ , x, where, idx)) }
+br_ceil  <- function(x, idx = NULL, where = NULL) { invisible(.Call(br_ceil_ , x, idx, where)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_trunc <- function(x, where = NULL, idx = NULL) { invisible(.Call(br_trunc_, x, where, idx)) }
+br_trunc <- function(x, idx = NULL, where = NULL) { invisible(.Call(br_trunc_, x, idx, where)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' @rdname br_abs
@@ -61,145 +61,145 @@ br_round <- function(x, digits) { invisible(.Call(br_round_, x, digits)) }
 #' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_exp   <- function(x, where = NULL, idx = NULL) { invisible(.Call(br_exp_  , x, where, idx)) }
+br_exp   <- function(x, idx = NULL, where = NULL) { invisible(.Call(br_exp_  , x, idx, where)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_log   <- function(x, where = NULL, idx = NULL) { invisible(.Call(br_log_  , x, where, idx)) }
+br_log   <- function(x, idx = NULL, where = NULL) { invisible(.Call(br_log_  , x, idx, where)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_log2  <- function(x, where = NULL, idx = NULL) { invisible(.Call(br_log2_ , x, where, idx)) }
+br_log2  <- function(x, idx = NULL, where = NULL) { invisible(.Call(br_log2_ , x, idx, where)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_log10 <- function(x, where = NULL, idx = NULL) { invisible(.Call(br_log10_, x, where, idx)) }
+br_log10 <- function(x, idx = NULL, where = NULL) { invisible(.Call(br_log10_, x, idx, where)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_cos   <- function(x, where = NULL, idx = NULL) { invisible(.Call(br_cos_  , x, where, idx)) }
+br_cos   <- function(x, idx = NULL, where = NULL) { invisible(.Call(br_cos_  , x, idx, where)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_sin   <- function(x, where = NULL, idx = NULL) { invisible(.Call(br_sin_  , x, where, idx)) }
+br_sin   <- function(x, idx = NULL, where = NULL) { invisible(.Call(br_sin_  , x, idx, where)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_tan   <- function(x, where = NULL, idx = NULL) { invisible(.Call(br_tan_  , x, where, idx)) }
+br_tan   <- function(x, idx = NULL, where = NULL) { invisible(.Call(br_tan_  , x, idx, where)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_not   <- function(x, where = NULL, idx = NULL) { invisible(.Call(br_not_  , x, where, idx)) }
+br_not   <- function(x, idx = NULL, where = NULL) { invisible(.Call(br_not_  , x, idx, where)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_expm1 <- function(x, where = NULL, idx = NULL) { invisible(.Call(br_expm1_, x, where, idx)) }
+br_expm1 <- function(x, idx = NULL, where = NULL) { invisible(.Call(br_expm1_, x, idx, where)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_log1p <- function(x, where = NULL, idx = NULL) { invisible(.Call(br_log1p_, x, where, idx)) }
+br_log1p <- function(x, idx = NULL, where = NULL) { invisible(.Call(br_log1p_, x, idx, where)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_acos  <- function(x, where = NULL, idx = NULL) { invisible(.Call(br_acos_ , x, where, idx)) }
+br_acos  <- function(x, idx = NULL, where = NULL) { invisible(.Call(br_acos_ , x, idx, where)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_asin  <- function(x, where = NULL, idx = NULL) { invisible(.Call(br_asin_ , x, where, idx)) }
+br_asin  <- function(x, idx = NULL, where = NULL) { invisible(.Call(br_asin_ , x, idx, where)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_atan  <- function(x, where = NULL, idx = NULL) { invisible(.Call(br_atan_ , x, where, idx)) }
+br_atan  <- function(x, idx = NULL, where = NULL) { invisible(.Call(br_atan_ , x, idx, where)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_acosh <- function(x, where = NULL, idx = NULL) { invisible(.Call(br_acosh_, x, where, idx)) }
+br_acosh <- function(x, idx = NULL, where = NULL) { invisible(.Call(br_acosh_, x, idx, where)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_asinh <- function(x, where = NULL, idx = NULL) { invisible(.Call(br_asinh_, x, where, idx)) }
+br_asinh <- function(x, idx = NULL, where = NULL) { invisible(.Call(br_asinh_, x, idx, where)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_atanh <- function(x, where = NULL, idx = NULL) { invisible(.Call(br_atanh_, x, where, idx)) }
+br_atanh <- function(x, idx = NULL, where = NULL) { invisible(.Call(br_atanh_, x, idx, where)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_cosh  <- function(x, where = NULL, idx = NULL) { invisible(.Call(br_cosh_ , x, where, idx)) }
+br_cosh  <- function(x, idx = NULL, where = NULL) { invisible(.Call(br_cosh_ , x, idx, where)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_sinh  <- function(x, where = NULL, idx = NULL) { invisible(.Call(br_sinh_ , x, where, idx)) }
+br_sinh  <- function(x, idx = NULL, where = NULL) { invisible(.Call(br_sinh_ , x, idx, where)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_tanh  <- function(x, where = NULL, idx = NULL) { invisible(.Call(br_tanh_ , x, where, idx)) }
+br_tanh  <- function(x, idx = NULL, where = NULL) { invisible(.Call(br_tanh_ , x, idx, where)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_cospi  <- function(x, where = NULL, idx = NULL) { invisible(.Call(br_cospi_ , x, where, idx)) }
+br_cospi  <- function(x, idx = NULL, where = NULL) { invisible(.Call(br_cospi_ , x, idx, where)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_sinpi  <- function(x, where = NULL, idx = NULL) { invisible(.Call(br_sinpi_ , x, where, idx)) }
+br_sinpi  <- function(x, idx = NULL, where = NULL) { invisible(.Call(br_sinpi_ , x, idx, where)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_tanpi  <- function(x, where = NULL, idx = NULL) { invisible(.Call(br_tanpi_ , x, where, idx)) }
+br_tanpi  <- function(x, idx = NULL, where = NULL) { invisible(.Call(br_tanpi_ , x, idx, where)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_sign   <- function(x, where = NULL, idx = NULL) { invisible(.Call(br_sign_  , x, where, idx)) }
+br_sign   <- function(x, idx = NULL, where = NULL) { invisible(.Call(br_sign_  , x, idx, where)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' @rdname br_abs
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_is_na <- function(x, where = NULL, idx = NULL) { invisible(.Call(br_is_na_, x, where, idx)) }
+br_is_na <- function(x, idx = NULL, where = NULL) { invisible(.Call(br_is_na_, x, idx, where)) }
 
 
 

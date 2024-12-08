@@ -30,35 +30,35 @@ extern SEXP fnmsub_(SEXP a_, SEXP b_, SEXP c_);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Unary
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-extern SEXP br_abs_  (SEXP x_, SEXP where_, SEXP idx_);
-extern SEXP br_sqrt_ (SEXP x_, SEXP where_, SEXP idx_);
-extern SEXP br_floor_(SEXP x_, SEXP where_, SEXP idx_);
-extern SEXP br_ceil_ (SEXP x_, SEXP where_, SEXP idx_);
-extern SEXP br_trunc_(SEXP x_, SEXP where_, SEXP idx_);
-extern SEXP br_exp_  (SEXP x_, SEXP where_, SEXP idx_);
-extern SEXP br_log_  (SEXP x_, SEXP where_, SEXP idx_);
-extern SEXP br_log2_ (SEXP x_, SEXP where_, SEXP idx_);
-extern SEXP br_log10_(SEXP x_, SEXP where_, SEXP idx_);
-extern SEXP br_cos_  (SEXP x_, SEXP where_, SEXP idx_);
-extern SEXP br_sin_  (SEXP x_, SEXP where_, SEXP idx_);
-extern SEXP br_tan_  (SEXP x_, SEXP where_, SEXP idx_);
-extern SEXP br_not_  (SEXP x_, SEXP where_, SEXP idx_);
-extern SEXP br_expm1_(SEXP x_, SEXP where_, SEXP idx_);
-extern SEXP br_log1p_(SEXP x_, SEXP where_, SEXP idx_);
-extern SEXP br_acos_ (SEXP x_, SEXP where_, SEXP idx_);
-extern SEXP br_asin_ (SEXP x_, SEXP where_, SEXP idx_);
-extern SEXP br_atan_ (SEXP x_, SEXP where_, SEXP idx_);
-extern SEXP br_acosh_(SEXP x_, SEXP where_, SEXP idx_);
-extern SEXP br_asinh_(SEXP x_, SEXP where_, SEXP idx_);
-extern SEXP br_atanh_(SEXP x_, SEXP where_, SEXP idx_);
-extern SEXP br_cosh_ (SEXP x_, SEXP where_, SEXP idx_);
-extern SEXP br_sinh_ (SEXP x_, SEXP where_, SEXP idx_);
-extern SEXP br_tanh_ (SEXP x_, SEXP where_, SEXP idx_);
-extern SEXP br_cospi_(SEXP x_, SEXP where_, SEXP idx_);
-extern SEXP br_sinpi_(SEXP x_, SEXP where_, SEXP idx_);
-extern SEXP br_tanpi_(SEXP x_, SEXP where_, SEXP idx_);
-extern SEXP br_sign_ (SEXP x_, SEXP where_, SEXP idx_);
-extern SEXP br_is_na_(SEXP x_, SEXP where_, SEXP idx_);
+extern SEXP br_abs_  (SEXP x_, SEXP idx_, SEXP where_);
+extern SEXP br_sqrt_ (SEXP x_, SEXP idx_, SEXP where_);
+extern SEXP br_floor_(SEXP x_, SEXP idx_, SEXP where_);
+extern SEXP br_ceil_ (SEXP x_, SEXP idx_, SEXP where_);
+extern SEXP br_trunc_(SEXP x_, SEXP idx_, SEXP where_);
+extern SEXP br_exp_  (SEXP x_, SEXP idx_, SEXP where_);
+extern SEXP br_log_  (SEXP x_, SEXP idx_, SEXP where_);
+extern SEXP br_log2_ (SEXP x_, SEXP idx_, SEXP where_);
+extern SEXP br_log10_(SEXP x_, SEXP idx_, SEXP where_);
+extern SEXP br_cos_  (SEXP x_, SEXP idx_, SEXP where_);
+extern SEXP br_sin_  (SEXP x_, SEXP idx_, SEXP where_);
+extern SEXP br_tan_  (SEXP x_, SEXP idx_, SEXP where_);
+extern SEXP br_not_  (SEXP x_, SEXP idx_, SEXP where_);
+extern SEXP br_expm1_(SEXP x_, SEXP idx_, SEXP where_);
+extern SEXP br_log1p_(SEXP x_, SEXP idx_, SEXP where_);
+extern SEXP br_acos_ (SEXP x_, SEXP idx_, SEXP where_);
+extern SEXP br_asin_ (SEXP x_, SEXP idx_, SEXP where_);
+extern SEXP br_atan_ (SEXP x_, SEXP idx_, SEXP where_);
+extern SEXP br_acosh_(SEXP x_, SEXP idx_, SEXP where_);
+extern SEXP br_asinh_(SEXP x_, SEXP idx_, SEXP where_);
+extern SEXP br_atanh_(SEXP x_, SEXP idx_, SEXP where_);
+extern SEXP br_cosh_ (SEXP x_, SEXP idx_, SEXP where_);
+extern SEXP br_sinh_ (SEXP x_, SEXP idx_, SEXP where_);
+extern SEXP br_tanh_ (SEXP x_, SEXP idx_, SEXP where_);
+extern SEXP br_cospi_(SEXP x_, SEXP idx_, SEXP where_);
+extern SEXP br_sinpi_(SEXP x_, SEXP idx_, SEXP where_);
+extern SEXP br_tanpi_(SEXP x_, SEXP idx_, SEXP where_);
+extern SEXP br_sign_ (SEXP x_, SEXP idx_, SEXP where_);
+extern SEXP br_is_na_(SEXP x_, SEXP idx_, SEXP where_);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Cumulative Ops
