@@ -19,23 +19,23 @@
 
 #define UNROLL 4
 
-SEXP br_abs_where_(SEXP x_, int *idx, int idx_len) {
+SEXP br_sqrt_where_(SEXP x_, int *idx, int idx_len) {
   double *x = REAL(x_);
   
   for (int j = 0; j < idx_len; ++j) {
     int i = idx[j];
-    x[i] = fabs(x[i]);
+    x[i] = sqrt(x[i]);
   }
 
   return x_;
 }
 
 
-SEXP br_abs_(SEXP x_, SEXP where_) {
+SEXP br_sqrt_(SEXP x_, SEXP where_) {
   if (!Rf_isNull(where_)) {         
     int idx_len = 0;
     int *idx = lgl_to_idx(where_, &idx_len);
-    SEXP res_ = br_abs_where_(x_, idx, idx_len);
+    SEXP res_ = br_sqrt_where_(x_, idx, idx_len);
     free(idx);
     return res_;
   }                                      
@@ -44,13 +44,13 @@ SEXP br_abs_(SEXP x_, SEXP where_) {
   
   int i = 0;
   for (; i < Rf_length(x_) - (UNROLL - 1); i += UNROLL) {
-    x[i + 0] = fabs(x[i + 0]);
-    x[i + 1] = fabs(x[i + 1]);
-    x[i + 2] = fabs(x[i + 2]);
-    x[i + 3] = fabs(x[i + 3]);
+    x[i + 0] = sqrt(x[i + 0]);
+    x[i + 1] = sqrt(x[i + 1]);
+    x[i + 2] = sqrt(x[i + 2]);
+    x[i + 3] = sqrt(x[i + 3]);
   }
   for (; i< Rf_length(x_); ++i) {
-    x[i] = fabs(x[i]);
+    x[i] = sqrt(x[i]);
   }
   
   return x_;
@@ -103,8 +103,8 @@ SEXP br_##nm##_(SEXP x_, SEXP where_) {                                        \
 }           
 
 
-// INSUNARYOP(abs  ,  fabs(*x))
-INSUNARYOP(sqrt ,  sqrt(*x))
+INSUNARYOP(abs  ,  fabs(*x))
+// INSUNARYOP(sqrt ,  sqrt(*x))
 INSUNARYOP(floor, floor(*x))
 INSUNARYOP(ceil ,  ceil(*x))
 INSUNARYOP(trunc, trunc(*x))

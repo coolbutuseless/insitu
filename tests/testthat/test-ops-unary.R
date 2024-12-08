@@ -1,25 +1,25 @@
 
 
 
-test_that("by-reference abs works", {
+test_that("by-reference sqrt works", {
   
-  x <- as.numeric(seq(-5, 5))
-  br_abs(x)
+  x <- as.numeric(seq(0, 5))
+  br_sqrt(x)
   expect_equal(
     x,
-    c(5, 4, 3, 2, 1, 0, 1, 2, 3, 4, 5)
+    sqrt(0:5)
   )
 })
 
 
 
-test_that("by-reference abs works with 'where'", {
+test_that("by-reference sqrt works with 'where'", {
   
-  x <- as.numeric(seq(-5, 5))
-  where <- c(1, 1, 0,0,0,0,0,0,0,0,0)
-  br_abs(x, where)
+  x <- as.numeric(seq(0, 5))
+  where <- c(0, 0, 0, 0, 0, 1)
+  br_sqrt(x, where)
   expect_equal(
     x,
-    c(5, 4, -3, -2, -1, 0, 1, 2, 3, 4, 5)
+    c(0, 1, 2, 3, 4, sqrt(5))
   )
 })
