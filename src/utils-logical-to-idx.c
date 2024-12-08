@@ -80,7 +80,7 @@ int *ridx_to_idx(SEXP idx_, int ref_len) {
         free(idx);
         Rprintf("Index out of range [1, %i]: %i", ref_len, val);
       }
-      idx[i] = ptr[i];
+      idx[i] = val - 1;
     }
   } else if (TYPEOF(idx_) == REALSXP) {
     double *ptr = REAL(idx_);
@@ -90,7 +90,7 @@ int *ridx_to_idx(SEXP idx_, int ref_len) {
         free(idx);
         Rprintf("Index out of range [1, %i]: %i", ref_len, val);
       }
-      idx[i] = val;
+      idx[i] = val - 1;
     }
   } else {
     free(idx);
