@@ -30,35 +30,35 @@ extern SEXP fnmsub_(SEXP a_, SEXP b_, SEXP c_);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Unary
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-extern SEXP br_abs_  (SEXP x_, SEXP idx_, SEXP where_);
-extern SEXP br_sqrt_ (SEXP x_, SEXP idx_, SEXP where_);
-extern SEXP br_floor_(SEXP x_, SEXP idx_, SEXP where_);
-extern SEXP br_ceil_ (SEXP x_, SEXP idx_, SEXP where_);
-extern SEXP br_trunc_(SEXP x_, SEXP idx_, SEXP where_);
-extern SEXP br_exp_  (SEXP x_, SEXP idx_, SEXP where_);
-extern SEXP br_log_  (SEXP x_, SEXP idx_, SEXP where_);
-extern SEXP br_log2_ (SEXP x_, SEXP idx_, SEXP where_);
-extern SEXP br_log10_(SEXP x_, SEXP idx_, SEXP where_);
-extern SEXP br_cos_  (SEXP x_, SEXP idx_, SEXP where_);
-extern SEXP br_sin_  (SEXP x_, SEXP idx_, SEXP where_);
-extern SEXP br_tan_  (SEXP x_, SEXP idx_, SEXP where_);
-extern SEXP br_not_  (SEXP x_, SEXP idx_, SEXP where_);
-extern SEXP br_expm1_(SEXP x_, SEXP idx_, SEXP where_);
-extern SEXP br_log1p_(SEXP x_, SEXP idx_, SEXP where_);
-extern SEXP br_acos_ (SEXP x_, SEXP idx_, SEXP where_);
-extern SEXP br_asin_ (SEXP x_, SEXP idx_, SEXP where_);
-extern SEXP br_atan_ (SEXP x_, SEXP idx_, SEXP where_);
-extern SEXP br_acosh_(SEXP x_, SEXP idx_, SEXP where_);
-extern SEXP br_asinh_(SEXP x_, SEXP idx_, SEXP where_);
-extern SEXP br_atanh_(SEXP x_, SEXP idx_, SEXP where_);
-extern SEXP br_cosh_ (SEXP x_, SEXP idx_, SEXP where_);
-extern SEXP br_sinh_ (SEXP x_, SEXP idx_, SEXP where_);
-extern SEXP br_tanh_ (SEXP x_, SEXP idx_, SEXP where_);
-extern SEXP br_cospi_(SEXP x_, SEXP idx_, SEXP where_);
-extern SEXP br_sinpi_(SEXP x_, SEXP idx_, SEXP where_);
-extern SEXP br_tanpi_(SEXP x_, SEXP idx_, SEXP where_);
-extern SEXP br_sign_ (SEXP x_, SEXP idx_, SEXP where_);
-extern SEXP br_is_na_(SEXP x_, SEXP idx_, SEXP where_);
+extern SEXP br_abs_  (SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
+extern SEXP br_sqrt_ (SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
+extern SEXP br_floor_(SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
+extern SEXP br_ceil_ (SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
+extern SEXP br_trunc_(SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
+extern SEXP br_exp_  (SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
+extern SEXP br_log_  (SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
+extern SEXP br_log2_ (SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
+extern SEXP br_log10_(SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
+extern SEXP br_cos_  (SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
+extern SEXP br_sin_  (SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
+extern SEXP br_tan_  (SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
+extern SEXP br_not_  (SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
+extern SEXP br_expm1_(SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
+extern SEXP br_log1p_(SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
+extern SEXP br_acos_ (SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
+extern SEXP br_asin_ (SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
+extern SEXP br_atan_ (SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
+extern SEXP br_acosh_(SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
+extern SEXP br_asinh_(SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
+extern SEXP br_atanh_(SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
+extern SEXP br_cosh_ (SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
+extern SEXP br_sinh_ (SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
+extern SEXP br_tanh_ (SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
+extern SEXP br_cospi_(SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
+extern SEXP br_sinpi_(SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
+extern SEXP br_tanpi_(SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
+extern SEXP br_sign_ (SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
+extern SEXP br_is_na_(SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Cumulative Ops
@@ -159,35 +159,35 @@ static const R_CallMethodDef CEntries[] = {
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Unary
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  {"br_abs_"  , (DL_FUNC) &br_abs_  , 3},
-  {"br_sqrt_" , (DL_FUNC) &br_sqrt_ , 3},
-  {"br_floor_", (DL_FUNC) &br_floor_, 3},
-  {"br_ceil_" , (DL_FUNC) &br_ceil_ , 3},
-  {"br_trunc_", (DL_FUNC) &br_trunc_, 3},
-  {"br_exp_"  , (DL_FUNC) &br_exp_  , 3},
-  {"br_log_"  , (DL_FUNC) &br_log_  , 3},
-  {"br_log2_" , (DL_FUNC) &br_log2_ , 3},
-  {"br_log10_", (DL_FUNC) &br_log10_, 3},
-  {"br_cos_"  , (DL_FUNC) &br_cos_  , 3},
-  {"br_sin_"  , (DL_FUNC) &br_sin_  , 3},
-  {"br_tan_"  , (DL_FUNC) &br_tan_  , 3},
-  {"br_not_"  , (DL_FUNC) &br_not_  , 3},
-  {"br_expm1_", (DL_FUNC) &br_expm1_, 3},
-  {"br_log1p_", (DL_FUNC) &br_log1p_, 3},
-  {"br_acos_" , (DL_FUNC) &br_acos_ , 3},
-  {"br_asin_" , (DL_FUNC) &br_asin_ , 3},
-  {"br_atan_" , (DL_FUNC) &br_atan_ , 3},
-  {"br_acosh_", (DL_FUNC) &br_acosh_, 3},
-  {"br_asinh_", (DL_FUNC) &br_asinh_, 3},
-  {"br_atanh_", (DL_FUNC) &br_atanh_, 3},
-  {"br_cosh_" , (DL_FUNC) &br_cosh_ , 3},
-  {"br_sinh_" , (DL_FUNC) &br_sinh_ , 3},
-  {"br_tanh_" , (DL_FUNC) &br_tanh_ , 3},
-  {"br_cospi_", (DL_FUNC) &br_cospi_, 3},
-  {"br_sinpi_", (DL_FUNC) &br_sinpi_, 3},
-  {"br_tanpi_", (DL_FUNC) &br_tanpi_, 3},
-  {"br_sign_" , (DL_FUNC) &br_sign_ , 3},
-  {"br_is_na_", (DL_FUNC) &br_is_na_, 3},
+  {"br_abs_"  , (DL_FUNC) &br_abs_  , 4},
+  {"br_sqrt_" , (DL_FUNC) &br_sqrt_ , 4},
+  {"br_floor_", (DL_FUNC) &br_floor_, 4},
+  {"br_ceil_" , (DL_FUNC) &br_ceil_ , 4},
+  {"br_trunc_", (DL_FUNC) &br_trunc_, 4},
+  {"br_exp_"  , (DL_FUNC) &br_exp_  , 4},
+  {"br_log_"  , (DL_FUNC) &br_log_  , 4},
+  {"br_log2_" , (DL_FUNC) &br_log2_ , 4},
+  {"br_log10_", (DL_FUNC) &br_log10_, 4},
+  {"br_cos_"  , (DL_FUNC) &br_cos_  , 4},
+  {"br_sin_"  , (DL_FUNC) &br_sin_  , 4},
+  {"br_tan_"  , (DL_FUNC) &br_tan_  , 4},
+  {"br_not_"  , (DL_FUNC) &br_not_  , 4},
+  {"br_expm1_", (DL_FUNC) &br_expm1_, 4},
+  {"br_log1p_", (DL_FUNC) &br_log1p_, 4},
+  {"br_acos_" , (DL_FUNC) &br_acos_ , 4},
+  {"br_asin_" , (DL_FUNC) &br_asin_ , 4},
+  {"br_atan_" , (DL_FUNC) &br_atan_ , 4},
+  {"br_acosh_", (DL_FUNC) &br_acosh_, 4},
+  {"br_asinh_", (DL_FUNC) &br_asinh_, 4},
+  {"br_atanh_", (DL_FUNC) &br_atanh_, 4},
+  {"br_cosh_" , (DL_FUNC) &br_cosh_ , 4},
+  {"br_sinh_" , (DL_FUNC) &br_sinh_ , 4},
+  {"br_tanh_" , (DL_FUNC) &br_tanh_ , 4},
+  {"br_cospi_", (DL_FUNC) &br_cospi_, 4},
+  {"br_sinpi_", (DL_FUNC) &br_sinpi_, 4},
+  {"br_tanpi_", (DL_FUNC) &br_tanpi_, 4},
+  {"br_sign_" , (DL_FUNC) &br_sign_ , 4},
+  {"br_is_na_", (DL_FUNC) &br_is_na_, 4},
   
   {"br_cumsum_"  , (DL_FUNC) &br_cumsum_  , 1},
   {"br_cumprod_" , (DL_FUNC) &br_cumprod_ , 1},

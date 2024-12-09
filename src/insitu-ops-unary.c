@@ -61,63 +61,69 @@
 
 
 
-#define INSUNARYOP(nm, unaryop)                                                 \
-void br_##nm##_where_(double *x, int *idx, int idx_len) {                       \
-                                                                                \
-  for (int j = 0; j < idx_len; ++j) {                                           \
-    int i = idx[j];                                                             \
-    x[i] = unaryop(0);                                                          \
-  }                                                                             \
-                                                                                \
-}                                                                               \
-                                                                                \
-                                                                                \
-SEXP br_##nm##_(SEXP x_, SEXP idx_, SEXP where_) {                              \
-                                                                                \
-  if (!Rf_isNull(where_)) {                                                     \
-    if (Rf_length(where_) == Rf_length(x_)) {                                   \
-      int idx_len = 0;                                                          \
-      int *idx = lgl_to_idx(where_, &idx_len);                                  \
-      br_##nm##_where_(REAL(x_), idx, idx_len);                                 \
-      free(idx);                                                                \
-      return x_;                                                                \
-    } else if (Rf_isMatrix(x_) && Rf_length(where_) == Rf_nrows(x_)) {          \
-      int nrow = Rf_nrows(x_);                                                  \
-      int ncol = Rf_ncols(x_);                                                  \
-                                                                                \
-      int idx_len = 0;                                                          \
-      int *idx = lgl_to_idx(where_, &idx_len);                                  \
-      for (int i = 0; i < ncol; ++i) {                                          \
-        br_##nm##_where_(REAL(x_) + i * nrow, idx, idx_len);                    \
-      }                                                                         \
-      free(idx);                                                                \
-      return x_;                                                                \
-    }                                                                           \
-    Rf_error("'where' must be same length as 'x': %.0f != %.0f",                \
-             (double)Rf_length(where_), (double)Rf_length(x_));                 \
-  }                                                                             \
-                                                                                \
-  if (!Rf_isNull(idx_)) {                                                       \
-    int *idx = ridx_to_idx(idx_, Rf_length(x_));                                \
-    br_##nm##_where_(REAL(x_), idx, Rf_length(idx_));                           \
-    free(idx);                                                                  \
-    return x_;                                                                  \
-  }                                                                             \
-                                                                                \
-  double *x = REAL(x_);                                                         \
-                                                                                \
-  int i = 0;                                                                    \
-  for (; i < Rf_length(x_) - (UNROLL - 1); i += UNROLL) {                       \
-    x[i + 0] = unaryop(0);                                                      \
-    x[i + 1] = unaryop(1);                                                      \
-    x[i + 2] = unaryop(2);                                                      \
-    x[i + 3] = unaryop(3);                                                      \
-  }                                                                             \
-  for (; i< Rf_length(x_); ++i) {                                               \
-    x[i] = unaryop(0);                                                          \
-  }                                                                             \
-                                                                                \
-  return x_;                                                                    \
+#define INSUNARYOP(nm, unaryop)                                                    \
+void br_##nm##_where_(double *x, int *idx, int idx_len) {                          \
+                                                                                   \
+  for (int j = 0; j < idx_len; ++j) {                                              \
+    int i = idx[j];                                                                \
+    x[i] = unaryop(0);                                                             \
+  }                                                                                \
+                                                                                   \
+}                                                                                  \
+                                                                                   \
+                                                                                   \
+SEXP br_##nm##_(SEXP x_, SEXP idx_, SEXP where_, SEXP cols_) {                                 \
+                                                                                   \
+  if (!Rf_isNull(where_)) {                                                        \
+    if (Rf_length(where_) == Rf_length(x_)) {                                      \
+      int idx_len = 0;                                                             \
+      int *idx = lgl_to_idx(where_, &idx_len);                                     \
+      br_##nm##_where_(REAL(x_), idx, idx_len);                                    \
+      free(idx);                                                                   \
+      return x_;                                                                   \
+    } else if (Rf_isMatrix(x_) && Rf_length(where_) == Rf_nrows(x_)) {             \
+      int nrow = Rf_nrows(x_);                                                     \
+      int ncol = Rf_ncols(x_);                                                     \
+                                                                                   \
+      int idx_len = 0;                                                             \
+      int *idx = lgl_to_idx(where_, &idx_len);                                     \
+      for (int i = 0; i < ncol; ++i) {                                             \
+        br_##nm##_where_(REAL(x_) + i * nrow, idx, idx_len);                       \
+      }                                                                            \
+      free(idx);                                                                   \
+      return x_;                                                                   \
+    }                                                                              \
+                                                                                   \
+    if (Rf_isMatrix(x_)) {                                                         \
+      Rf_error("'where' (%.0f) must be same length as 'x' (%.0f) or nrow(x) (%i)", \
+               (double)Rf_length(where_), (double)Rf_length(x_), Rf_nrows(x_));    \
+    } else {                                                                       \
+      Rf_error("'where' must be same length as 'x': %.0f != %.0f",                 \
+               (double)Rf_length(where_), (double)Rf_length(x_));                  \
+    }                                                                              \
+  }                                                                                \
+                                                                                   \
+  if (!Rf_isNull(idx_)) {                                                          \
+    int *idx = ridx_to_idx(idx_, Rf_length(x_));                                   \
+    br_##nm##_where_(REAL(x_), idx, Rf_length(idx_));                              \
+    free(idx);                                                                     \
+    return x_;                                                                     \
+  }                                                                                \
+                                                                                   \
+  double *x = REAL(x_);                                                            \
+                                                                                   \
+  int i = 0;                                                                       \
+  for (; i < Rf_length(x_) - (UNROLL - 1); i += UNROLL) {                          \
+    x[i + 0] = unaryop(0);                                                         \
+    x[i + 1] = unaryop(1);                                                         \
+    x[i + 2] = unaryop(2);                                                         \
+    x[i + 3] = unaryop(3);                                                         \
+  }                                                                                \
+  for (; i< Rf_length(x_); ++i) {                                                  \
+    x[i] = unaryop(0);                                                             \
+  }                                                                                \
+                                                                                   \
+  return x_;                                                                       \
 }           
 
 
