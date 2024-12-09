@@ -65,10 +65,7 @@ extern SEXP ybr_sqrt_ (SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Cumulative Ops
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-extern SEXP br_cumsum_ (SEXP x_);
-extern SEXP br_cumprod_(SEXP x_);
-extern SEXP br_cummax_ (SEXP x_);
-extern SEXP br_cummin_ (SEXP x_);
+extern SEXP br_cumulative_(SEXP op_, SEXP x_);
 
 extern SEXP br_round_(SEXP x_, SEXP digits_);
 
@@ -193,11 +190,7 @@ static const R_CallMethodDef CEntries[] = {
   
   {"ybr_sqrt_" , (DL_FUNC) &ybr_sqrt_ , 4},
   
-  
-  {"br_cumsum_"  , (DL_FUNC) &br_cumsum_  , 1},
-  {"br_cumprod_" , (DL_FUNC) &br_cumprod_ , 1},
-  {"br_cummax_"  , (DL_FUNC) &br_cummax_  , 1},
-  {"br_cummin_"  , (DL_FUNC) &br_cummin_  , 1},
+  {"br_cumulative_", (DL_FUNC) &br_cumulative_, 2},
   
   
   

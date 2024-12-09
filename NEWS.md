@@ -1,6 +1,7 @@
 
-# insitu 0.1.3.9014
+# insitu 0.1.3.9015
 
+* [9015] Global dispatch for unary cumulative ops using array of func pointers
 * [9014] Support for matrix arg to unary ops
 * [9013] `where` and `idx` for conditional unary ops. Initial attempt at
          conditional binary ops
