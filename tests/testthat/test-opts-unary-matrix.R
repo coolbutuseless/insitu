@@ -52,7 +52,7 @@ test_that("matrix unary sqrt with 'where' of incorrect length fails", {
   
   expect_error(
     br_sqrt(A0, where = c(F, F, F, T)),
-    "same length"
+    "Length mismatch"
   )
 })
 

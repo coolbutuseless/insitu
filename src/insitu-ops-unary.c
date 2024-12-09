@@ -189,7 +189,7 @@ SEXP br_##nm##_(SEXP x_, SEXP idx_, SEXP where_, SEXP cols_) {                  
 
 
 INSUNARYOP(abs  ,  OP_ABS)
-INSUNARYOP(sqrt ,  OP_SQRT)
+// INSUNARYOP(sqrt ,  OP_SQRT)
 INSUNARYOP(floor,  OP_FLOOR)
 INSUNARYOP(ceil ,  OP_CEIL)
 INSUNARYOP(trunc,  OP_TRUNC)
