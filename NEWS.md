@@ -1,7 +1,7 @@
 
 # insitu 0.1.3.9014
 
-* [9014] Support for matrix argumments to unarty ops
+* [9014] Support for matrix arg to unary ops
 * [9013] `where` and `idx` for conditional unary ops. Initial attempt at
          conditional binary ops
 * [9012] 'where' conditional for unary ops
