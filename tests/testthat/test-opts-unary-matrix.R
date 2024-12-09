@@ -85,18 +85,18 @@ test_that("matrix unary sqrt with length(where) == nrow(matrix) works", {
 
 
 
-# test_that("matrix unary sqrt with length(where) == nrow(matrix) and col_idx works", {
-#   A0 <- matrix(as.numeric(1:6), 2, 3)
-#   A1 <- duplicate(A0)
-#   
-#   br_sqrt(A1, where = c(F, T), cols = 1:2)
-#   
-#   A0[2] <- sqrt(A0[2])
-#   A0[4] <- sqrt(A0[4])
-#   
-#   expect_identical(
-#     A1,
-#     A0
-#   )
-# })
+test_that("matrix unary sqrt with length(where) == nrow(matrix) and col_idx works", {
+  A0 <- matrix(as.numeric(1:6), 2, 3)
+  A1 <- duplicate(A0)
+  
+  br_sqrt(A1, where = c(F, T), cols = 1:2)
+  
+  A0[2] <- sqrt(A0[2])
+  A0[4] <- sqrt(A0[4])
+  
+  expect_identical(
+    A1,
+    A0
+  )
+})
 

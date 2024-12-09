@@ -72,7 +72,7 @@ void br_##nm##_where_(double *x, int *idx, int idx_len) {                       
 }                                                                                  \
                                                                                    \
                                                                                    \
-SEXP br_##nm##_(SEXP x_, SEXP idx_, SEXP where_, SEXP cols_) {                                 \
+SEXP br_##nm##_(SEXP x_, SEXP idx_, SEXP where_, SEXP cols_) {                     \
                                                                                    \
   if (!Rf_isNull(where_)) {                                                        \
     if (Rf_length(where_) == Rf_length(x_)) {                                      \
@@ -87,8 +87,16 @@ SEXP br_##nm##_(SEXP x_, SEXP idx_, SEXP where_, SEXP cols_) {                  
                                                                                    \
       int idx_len = 0;                                                             \
       int *idx = lgl_to_idx(where_, &idx_len);                                     \
-      for (int i = 0; i < ncol; ++i) {                                             \
-        br_##nm##_where_(REAL(x_) + i * nrow, idx, idx_len);                       \
+      if (Rf_isNull(cols_)) {                                                      \
+        for (int i = 0; i < ncol; ++i) {                                           \
+          br_##nm##_where_(REAL(x_) + i * nrow, idx, idx_len);                     \
+        }                                                                          \
+      } else {                                                                     \
+        int *cols = ridx_to_idx(cols_, Rf_ncols(x_));                              \
+        for (int j = 0; j < Rf_length(cols_); ++j) {                               \
+          int i = cols[j];                                                         \
+          br_##nm##_where_(REAL(x_) + i * nrow, idx, idx_len);                     \
+        }                                                                          \
       }                                                                            \
       free(idx);                                                                   \
       return x_;                                                                   \
