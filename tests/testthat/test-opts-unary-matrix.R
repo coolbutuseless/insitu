@@ -13,20 +13,20 @@ test_that("matrix unary sqrt works", {
 
 
 
-test_that("matrix unary sqrt with idx works", {
-  A0 <- matrix(as.numeric(1:6), 3, 2)
-  A1 <- duplicate(A0)
-  
-  br_sqrt(A1, idx = c(1, 6))
-  
-  A0[1] <- sqrt(A0[1])
-  A0[6] <- sqrt(A0[6])
-  
-  expect_identical(
-    A1,
-    A0
-  )
-})
+# test_that("matrix unary sqrt with idx works", {
+#   A0 <- matrix(as.numeric(1:6), 3, 2)
+#   A1 <- duplicate(A0)
+#   
+#   br_sqrt(A1, idx = c(1, 6))
+#   
+#   A0[1] <- sqrt(A0[1])
+#   A0[6] <- sqrt(A0[6])
+#   
+#   expect_identical(
+#     A1,
+#     A0
+#   )
+# })
 
 
 
@@ -83,8 +83,6 @@ test_that("matrix unary sqrt with length(where) == nrow(matrix) works", {
 })
 
 
-
-
 test_that("matrix unary sqrt with length(where) == nrow(matrix) and col_idx works", {
   A0 <- matrix(as.numeric(1:6), 2, 3)
   A1 <- duplicate(A0)
@@ -93,6 +91,24 @@ test_that("matrix unary sqrt with length(where) == nrow(matrix) and col_idx work
   
   A0[2] <- sqrt(A0[2])
   A0[4] <- sqrt(A0[4])
+  
+  expect_identical(
+    A1,
+    A0
+  )
+})
+
+
+
+
+test_that("matrix unary sqrt with 'idx' and 'cols' works", {
+  A0 <- matrix(as.numeric(1:6), 2, 3)
+  A1 <- duplicate(A0)
+  
+  br_sqrt(A1, idx = c(1), cols = c(1, 3))
+  
+  A0[1] <- sqrt(A0[1])
+  A0[5] <- sqrt(A0[5])
   
   expect_identical(
     A1,

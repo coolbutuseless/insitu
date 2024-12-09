@@ -1,7 +1,7 @@
 Package: insitu
 Type: Package
 Title: By-Reference Routines for Numeric Vectors
-Version: 0.1.3.9013
+Version: 0.1.3.9014
 Authors@R: c(
     person("Mike", "Cheng", role = c("aut", "cre", 'cph'), email = "mikefc@coolbutuseless.com")
     )
