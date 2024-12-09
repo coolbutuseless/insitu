@@ -18,45 +18,128 @@
 // * cumsum, cumprod, cummax, cummin
 
 #define UNROLL 4
+#define OP_SQRT(offset)   sqrt(x[i + (offset)])
 
-// #define OP_SQRT(offset) sqrt(x[i + (offset)])
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // 
-// SEXP br_sqrt_where_(SEXP x_, int *idx, int idx_len) {
-//   double *x = REAL(x_);
-//   
-//   for (int j = 0; j < idx_len; ++j) {
-//     int i = idx[j];
-//     x[i] = OP_SQRT(0);
-//   }
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void ybr_sqrt_byidx(double *x, int *idx, int idx_len) {
+
+  for (int j = 0; j < idx_len; ++j) {
+    int i = idx[j];
+    x[i] = OP_SQRT(0);
+  }
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // 
-//   return x_;
-// }
-// 
-// 
-// SEXP br_sqrt_(SEXP x_, SEXP where_) {
-//   if (!Rf_isNull(where_)) {         
-//     int idx_len = 0;
-//     int *idx = lgl_to_idx(where_, &idx_len);
-//     SEXP res_ = br_sqrt_where_(x_, idx, idx_len);
-//     free(idx);
-//     return res_;
-//   }                                      
-//   
-//   double *x = REAL(x_);
-//   
-//   int i = 0;
-//   for (; i < Rf_length(x_) - (UNROLL - 1); i += UNROLL) {
-//     x[i + 0] = OP_SQRT(0);
-//     x[i + 1] = OP_SQRT(1);
-//     x[i + 2] = OP_SQRT(2);
-//     x[i + 3] = OP_SQRT(3);
-//   }
-//   for (; i< Rf_length(x_); ++i) {
-//     x[i] = sqrt(x[i]);
-//   }
-//   
-//   return x_;
-// }
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void ybr_sqrt_full(double *x, int len) {
+
+  int i = 0;
+  for (; i < len - (UNROLL - 1); i += UNROLL) {
+    x[i + 0] = OP_SQRT(0);
+    x[i + 1] = OP_SQRT(1);
+    x[i + 2] = OP_SQRT(2);
+    x[i + 3] = OP_SQRT(3);
+  }
+  for (; i < len; ++i) {
+    x[i] = OP_SQRT(0);
+  }
+}
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Main R interface to 'sqrt()'
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SEXP ybr_sqrt_(SEXP x_, SEXP idx_, SEXP where_, SEXP cols_) {                       
+  
+  if (!Rf_isNull(where_)) {                                                         
+    if (Rf_length(where_) == Rf_length(x_)) {                                       
+      int idx_len = 0;                                                              
+      int *idx = lgl_to_idx(where_, &idx_len);                                      
+      ybr_sqrt_byidx(REAL(x_), idx, idx_len);                                       
+      free(idx);                                                                    
+      return x_;                                                                    
+    } else if (Rf_isMatrix(x_) && Rf_length(where_) == Rf_nrows(x_)) {              
+      int nrow = Rf_nrows(x_);                                                      
+      int ncol = Rf_ncols(x_);                                                      
+      
+      int idx_len = 0;                                                              
+      int *idx = lgl_to_idx(where_, &idx_len);                                      
+      if (Rf_isNull(cols_)) {                                                       
+        for (int i = 0; i < ncol; ++i) {                                            
+          ybr_sqrt_byidx(REAL(x_) + i * nrow, idx, idx_len);                        
+        }                                                                           
+      } else {                                                                      
+        int *cols = ridx_to_idx(cols_, Rf_ncols(x_));                               
+        for (int j = 0; j < Rf_length(cols_); ++j) {                                
+          int i = cols[j];                                                          
+          ybr_sqrt_byidx(REAL(x_) + i * nrow, idx, idx_len);                        
+        }                                                                           
+        free(cols);                                                                 
+      }                                                                             
+      free(idx);                                                                    
+      return x_;                                                                    
+    }                                                                               
+    
+    if (Rf_isMatrix(x_)) {                                                          
+      Rf_error("'where' (%.0f) must be same length as 'x' (%.0f) or nrow(x) (%i)",  
+               (double)Rf_length(where_), (double)Rf_length(x_), Rf_nrows(x_));     
+    } else {                                                                        
+      Rf_error("'where' must be same length as 'x': %.0f != %.0f",                  
+               (double)Rf_length(where_), (double)Rf_length(x_));                   
+    }                                                                               
+  }                                                                                 
+  
+  if (!Rf_isNull(idx_)) {                                                           
+    if (Rf_isMatrix(x_)) {                                                          
+      int *idx = ridx_to_idx(idx_, Rf_nrows(x_));                                   
+      if (Rf_isNull(cols_)) {                                                       
+        /* Broadcast all */                                                         
+        for (int i = 0; i < Rf_ncols(x_); ++i) {                                    
+          ybr_sqrt_byidx(REAL(x_), idx, Rf_length(idx_));                           
+        }                                                                           
+      } else {                                                                      
+        /* 'cols' contains indices*/                                                
+        int *cols = ridx_to_idx(cols_, Rf_ncols(x_));                               
+        int nrow = Rf_nrows(x_);                                                    
+        for (int j = 0; j < Rf_length(cols_); ++j) {                                
+          int i = cols[j];                                                          
+          ybr_sqrt_byidx(REAL(x_) + i * nrow, idx, Rf_length(idx_));                
+        }                                                                           
+        free(cols);                                                                 
+      }                                                                             
+      free(idx);                                                                    
+      
+    } else {                                                                        
+      int *idx = ridx_to_idx(idx_, Rf_length(x_));                                  
+      ybr_sqrt_byidx(REAL(x_), idx, Rf_length(idx_));                               
+      free(idx);                                                                    
+    }                                                                               
+    return x_;                                                                      
+  }                                                                                 
+  
+  ybr_sqrt_full(REAL(x_), (int)Rf_length(x_));
+  
+  return x_;                                                                        
+}           
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -99,11 +182,10 @@ UNARYOPBYIDX(nm, unaryop)                                        \
 UNARYOPFULL(nm, unaryop) 
 
 
-#define OP_SQRT(offset)   sqrt(x[i + (offset)])
 
 
 
-UNARYOP(sqrtx ,  OP_SQRT)
+UNARYOP(xsqrt ,  OP_SQRT)
 
 
 
