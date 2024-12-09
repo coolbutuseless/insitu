@@ -82,7 +82,16 @@ SEXP br_##nm##_(SEXP x_, SEXP idx_, SEXP where_) {                              
       free(idx);                                                                \
       return x_;                                                                \
     } else if (Rf_isMatrix(x_) && Rf_length(where_) == Rf_nrows(x_)) {          \
-      Rf_error("Matrix broadcast not done yet");                                \
+      int nrow = Rf_nrows(x_);                                                  \
+      int ncol = Rf_ncols(x_);                                                  \
+                                                                                \
+      int idx_len = 0;                                                          \
+      int *idx = lgl_to_idx(where_, &idx_len);                                  \
+      for (int i = 0; i < ncol; ++i) {                                          \
+        br_##nm##_where_(REAL(x_) + i * nrow, idx, idx_len);                    \
+      }                                                                         \
+      free(idx);                                                                \
+      return x_;                                                                \
     }                                                                           \
     Rf_error("'where' must be same length as 'x': %.0f != %.0f",                \
              (double)Rf_length(where_), (double)Rf_length(x_));                 \

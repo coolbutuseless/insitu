@@ -67,10 +67,6 @@ test_that("matrix unary sqrt with 'idx' out-of-bounds fails", {
 })
 
 
-
-
-
-
 test_that("matrix unary sqrt with length(where) == nrow(matrix) works", {
   A0 <- matrix(as.numeric(1:6), 3, 2)
   A1 <- duplicate(A0)
