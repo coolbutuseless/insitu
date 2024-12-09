@@ -75,6 +75,10 @@ void br_##nm##_where_(double *x, int *idx, int idx_len) {                \
 SEXP br_##nm##_(SEXP x_, SEXP idx_, SEXP where_) {                       \
                                                                          \
   if (!Rf_isNull(where_)) {                                              \
+    if (Rf_length(where_) != Rf_length(x_)) {                            \
+      Rf_error("'where' must be same length as 'x': %.0f != %.0f",       \
+      (double)Rf_length(where_), (double)Rf_length(x_));                 \
+    }                                                                    \
     int idx_len = 0;                                                     \
     int *idx = lgl_to_idx(where_, &idx_len);                             \
     br_##nm##_where_(REAL(x_), idx, idx_len);                            \
