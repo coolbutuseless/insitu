@@ -19,30 +19,57 @@
 
 #define UNROLL 4
 
-  
-  
-  // INSITU Cumulative Op
-#define INSCUMOP(nm, unaryop)                                                    \
-  SEXP br_##nm##_(SEXP x_) {                                                     \
-    double *x = REAL(x_);                                                        \
-                                                                                 \
-    int i = 1;                                                                   \
-    for (; i < Rf_length(x_) - (UNROLL - 1); i += UNROLL) {                      \
-      *x = unaryop; ++x;                                                         \
-      *x = unaryop; ++x;                                                         \
-      *x = unaryop; ++x;                                                         \
-      *x = unaryop; ++x;                                                         \
-    }                                                                            \
-    for (; i< Rf_length(x_); ++i) {                                              \
-      *x = unaryop; ++x;                                                         \
-    }                                                                            \
-                                                                                 \
-    return x_;                                                                   \
-  }           
 
-INSCUMOP(cumsum ,  *x + *(x - 1))
-INSCUMOP(cumprod,  *x * *(x - 1))
-INSCUMOP(cummax ,  *x > *(x - 1) ? *x : *(x - 1))
-INSCUMOP(cummin ,  *x < *(x - 1) ? *x : *(x - 1))
-  
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// MACRO: Create a unary func that performs the operation over 'len' values
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#define CUMULATIVEOPFULL(nm, unaryop)                                  \
+static inline void br_##nm##_full(double *x, int len) {                \
+  int i = 1;                                                           \
+  for (; i < len - (UNROLL - 1); i += UNROLL) {                        \
+    x[i + 0] = unaryop(0);                                             \
+    x[i + 1] = unaryop(1);                                             \
+    x[i + 2] = unaryop(2);                                             \
+    x[i + 3] = unaryop(3);                                             \
+  }                                                                    \
+  for (; i< len; ++i) {                                                \
+    x[i] = unaryop(0);                                                 \
+  }                                                                    \
+}                                                                      \
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// MACRO: Dispatch function for cumulative op
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#define CUMULATIVEOPFUNC(nm, unaryop)                                                    \
+SEXP br_##nm##_(SEXP x_) {                                                               \
+                                                                                         \
+  br_##nm##_full(REAL(x_), (int)Rf_length(x_));                                          \
+                                                                                         \
+  return x_;                                                                             \
+}           
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// MACRO: Create 'full' cumulative op as well as dispatch FUNC
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#define CUMULATIVEOP(nm, unaryop)                              \
+CUMULATIVEOPFULL(nm, unaryop)                                  \
+CUMULATIVEOPFUNC(nm, unaryop)
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Define the operations on each element (starting from element 1)
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#define OP_CUMSUM(offset)  x[i + (offset)] + x[i + (offset) - 1]
+#define OP_CUMPROD(offset) x[i + (offset)] * x[i + (offset) - 1]
+#define OP_CUMMAX(offset)  x[i + (offset)] > x[i + (offset) - 1] ? x[i + (offset)] : x[i + (offset) - 1];
+#define OP_CUMMIN(offset)  x[i + (offset)] < x[i + (offset) - 1] ? x[i + (offset)] : x[i + (offset) - 1];
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Create the functions
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CUMULATIVEOP(cumsum ,  OP_CUMSUM)
+CUMULATIVEOP(cumprod,  OP_CUMPROD)
+CUMULATIVEOP(cummax ,  OP_CUMMAX)
+CUMULATIVEOP(cummin ,  OP_CUMMIN)
 
