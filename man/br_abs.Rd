@@ -31,10 +31,6 @@
 \alias{br_tanpi}
 \alias{br_sign}
 \alias{br_is_na}
-\alias{br_cumsum}
-\alias{br_cumprod}
-\alias{br_cummax}
-\alias{br_cummin}
 \title{Math operations taking only a single input vector}
 \usage{
 br_abs(x, idx = NULL, where = NULL, cols = NULL)
@@ -96,14 +92,6 @@ br_tanpi(x, idx = NULL, where = NULL, cols = NULL)
 br_sign(x, idx = NULL, where = NULL, cols = NULL)
 
 br_is_na(x, idx = NULL, where = NULL, cols = NULL)
-
-br_cumsum(x)
-
-br_cumprod(x)
-
-br_cummax(x)
-
-br_cummin(x)
 }
 \arguments{
 \item{x}{numeric vector. This vector will be modified by-reference to 

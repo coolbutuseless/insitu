@@ -25,7 +25,7 @@
 // MACRO: Create a unary func that performs the operation over 'len' values
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #define CUMULATIVEOPFULL(nm, unaryop)                                  \
-static inline void br_##nm##_full(double *x, int len) {                \
+void br_##nm##_full(double *x, int len) {                \
   int i = 1;                                                           \
   for (; i < len - (UNROLL - 1); i += UNROLL) {                        \
     x[i + 0] = unaryop(0);                                             \
@@ -72,4 +72,29 @@ CUMULATIVEOP(cumsum ,  OP_CUMSUM)
 CUMULATIVEOP(cumprod,  OP_CUMPROD)
 CUMULATIVEOP(cummax ,  OP_CUMMAX)
 CUMULATIVEOP(cummin ,  OP_CUMMIN)
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Array of functions
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void (*cumulativefunc[4]) (double *x, int len) = {
+  br_cumsum_full, br_cumprod_full, br_cummax_full, br_cummin_full
+};
+  
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Global dispatch for cumulative ops
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SEXP br_cumulative_(SEXP op_, SEXP x_) {
+
+  int op = Rf_asInteger(op_);
+  if (op < 0 || op > 3) Rf_error("'op' out of range [0, 3]");
+  
+  void (*func) (double *x, int len) = cumulativefunc[op];
+
+  func(REAL(x_), (int)Rf_length(x_));
+  
+  return x_;
+}
+
 
