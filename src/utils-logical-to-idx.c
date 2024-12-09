@@ -78,7 +78,7 @@ int *ridx_to_idx(SEXP idx_, int ref_len) {
       int val = ptr[i];
       if (val < 1 || val > ref_len) {
         free(idx);
-        Rprintf("Index out of range [1, %i]: %i", ref_len, val);
+        Rf_error("Index out-of-bounds [1, %i]: %i", ref_len, val);
       }
       idx[i] = val - 1;
     }
@@ -88,7 +88,7 @@ int *ridx_to_idx(SEXP idx_, int ref_len) {
       int val = (int)round(ptr[i]);
       if (val < 1 || val > ref_len) {
         free(idx);
-        Rprintf("Index out of range [1, %i]: %i", ref_len, val);
+        Rf_error("Index out-of-bounds [1, %i]: %i", ref_len, val);
       }
       idx[i] = val - 1;
     }

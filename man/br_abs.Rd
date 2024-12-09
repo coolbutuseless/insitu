@@ -37,65 +37,65 @@
 \alias{br_cummin}
 \title{Math operations taking only a single input vector}
 \usage{
-br_abs(x, idx = NULL, where = NULL)
+br_abs(x, idx = NULL, where = NULL, cols = NULL)
 
-br_sqrt(x, idx = NULL, where = NULL)
+br_sqrt(x, idx = NULL, where = NULL, cols = NULL)
 
-br_floor(x, idx = NULL, where = NULL)
+br_floor(x, idx = NULL, where = NULL, cols = NULL)
 
-br_ceil(x, idx = NULL, where = NULL)
+br_ceil(x, idx = NULL, where = NULL, cols = NULL)
 
-br_trunc(x, idx = NULL, where = NULL)
+br_trunc(x, idx = NULL, where = NULL, cols = NULL)
 
 br_round(x, digits)
 
-br_exp(x, idx = NULL, where = NULL)
+br_exp(x, idx = NULL, where = NULL, cols = NULL)
 
-br_log(x, idx = NULL, where = NULL)
+br_log(x, idx = NULL, where = NULL, cols = NULL)
 
-br_log2(x, idx = NULL, where = NULL)
+br_log2(x, idx = NULL, where = NULL, cols = NULL)
 
-br_log10(x, idx = NULL, where = NULL)
+br_log10(x, idx = NULL, where = NULL, cols = NULL)
 
-br_cos(x, idx = NULL, where = NULL)
+br_cos(x, idx = NULL, where = NULL, cols = NULL)
 
-br_sin(x, idx = NULL, where = NULL)
+br_sin(x, idx = NULL, where = NULL, cols = NULL)
 
-br_tan(x, idx = NULL, where = NULL)
+br_tan(x, idx = NULL, where = NULL, cols = NULL)
 
-br_not(x, idx = NULL, where = NULL)
+br_not(x, idx = NULL, where = NULL, cols = NULL)
 
-br_expm1(x, idx = NULL, where = NULL)
+br_expm1(x, idx = NULL, where = NULL, cols = NULL)
 
-br_log1p(x, idx = NULL, where = NULL)
+br_log1p(x, idx = NULL, where = NULL, cols = NULL)
 
-br_acos(x, idx = NULL, where = NULL)
+br_acos(x, idx = NULL, where = NULL, cols = NULL)
 
-br_asin(x, idx = NULL, where = NULL)
+br_asin(x, idx = NULL, where = NULL, cols = NULL)
 
-br_atan(x, idx = NULL, where = NULL)
+br_atan(x, idx = NULL, where = NULL, cols = NULL)
 
-br_acosh(x, idx = NULL, where = NULL)
+br_acosh(x, idx = NULL, where = NULL, cols = NULL)
 
-br_asinh(x, idx = NULL, where = NULL)
+br_asinh(x, idx = NULL, where = NULL, cols = NULL)
 
-br_atanh(x, idx = NULL, where = NULL)
+br_atanh(x, idx = NULL, where = NULL, cols = NULL)
 
-br_cosh(x, idx = NULL, where = NULL)
+br_cosh(x, idx = NULL, where = NULL, cols = NULL)
 
-br_sinh(x, idx = NULL, where = NULL)
+br_sinh(x, idx = NULL, where = NULL, cols = NULL)
 
-br_tanh(x, idx = NULL, where = NULL)
+br_tanh(x, idx = NULL, where = NULL, cols = NULL)
 
-br_cospi(x, idx = NULL, where = NULL)
+br_cospi(x, idx = NULL, where = NULL, cols = NULL)
 
-br_sinpi(x, idx = NULL, where = NULL)
+br_sinpi(x, idx = NULL, where = NULL, cols = NULL)
 
-br_tanpi(x, idx = NULL, where = NULL)
+br_tanpi(x, idx = NULL, where = NULL, cols = NULL)
 
-br_sign(x, idx = NULL, where = NULL)
+br_sign(x, idx = NULL, where = NULL, cols = NULL)
 
-br_is_na(x, idx = NULL, where = NULL)
+br_is_na(x, idx = NULL, where = NULL, cols = NULL)
 
 br_cumsum(x)
 
@@ -115,6 +115,9 @@ contain the result of the calculation}
 all non-zero values treated as TRUE. Default: NULL.
 This value indicates if the operation should be performed for the 
 corresponding element in \code{x}.}
+
+\item{cols}{which matrix columns should this apply to?  Argument only valid
+if \code{x} is a matrix}
 
 \item{digits}{number of decimal places}
 }
