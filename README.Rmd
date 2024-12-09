@@ -409,26 +409,41 @@ x
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Benchmark
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-N <- 10000
+N <- 100000
 x <- as.numeric(seq(-N, N))
 t <- duplicate(x)            # <----------  Pre-allocate 't'     
 
 suppressWarnings({
   bm <- bench::mark(
-    
+    ifelse = ifelse(x > 0, sqrt(x), x),
+    simple = {
+      idx <- x > 0
+      x[idx] = sqrt(x[idx])
+    },
     insitu = {
       br_copy(t, x)         # clone x
-      br_gt(t, 0)           # test where x > 0
+      br_gt(t, 0L)           # test where x > 0
       br_sqrt(x, where = t) # perform sqrt(x) where x > 0
     },
-    ifelse = ifelse(x > 0, sqrt(x), x),
     check = FALSE,
-    relative = TRUE
+    relative = FALSE
   )[, 1:5]
 })
 
 
 knitr::kable(bm)
 ```
+
+
+```{r eval=FALSE, echo=FALSE}
+x <- numeric(100000)
+bench::mark(
+  # ybr_sqrt(x), 
+  br_exp(x), 
+  exp(x),
+  check = FALSE
+)
+```
+
 
 

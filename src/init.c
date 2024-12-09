@@ -60,6 +60,8 @@ extern SEXP br_tanpi_(SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
 extern SEXP br_sign_ (SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
 extern SEXP br_is_na_(SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
 
+extern SEXP ybr_sqrt_ (SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Cumulative Ops
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -188,6 +190,9 @@ static const R_CallMethodDef CEntries[] = {
   {"br_tanpi_", (DL_FUNC) &br_tanpi_, 4},
   {"br_sign_" , (DL_FUNC) &br_sign_ , 4},
   {"br_is_na_", (DL_FUNC) &br_is_na_, 4},
+  
+  {"ybr_sqrt_" , (DL_FUNC) &ybr_sqrt_ , 4},
+  
   
   {"br_cumsum_"  , (DL_FUNC) &br_cumsum_  , 1},
   {"br_cumprod_" , (DL_FUNC) &br_cumprod_ , 1},
