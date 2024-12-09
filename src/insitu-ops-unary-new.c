@@ -23,7 +23,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void ybr_sqrt_byidx(double *x, int *idx, int idx_len) {
+static inline void ybr_sqrt_byidx(double *x, int *idx, int idx_len) {
 
   for (int j = 0; j < idx_len; ++j) {
     int i = idx[j];
@@ -34,7 +34,7 @@ void ybr_sqrt_byidx(double *x, int *idx, int idx_len) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void ybr_sqrt_full(double *x, int len) {
+static inline void ybr_sqrt_full(double *x, int len) {
 
   int i = 0;
   for (; i < len - (UNROLL - 1); i += UNROLL) {
