@@ -164,8 +164,10 @@ test_that("add M + S with 'where' works with 'cols'", {
   s <- c(1)
   
   # Since 'cols' is specified, 'where' must be within-column index
+  expect_warning(
   expect_error(
     br_add(M, s, where = c(T, F, F,  F, T, T), cols = 2)
+  )
   )
   
   br_add(M, s, where = c(T, T, F), cols = 2)
@@ -305,8 +307,10 @@ test_that("add M + S with 'where' works with 'cols' = NA", {
   s <- c(1)
   
   # Since 'cols' is specified, 'where' must be within-column index
+  expect_warning(
   expect_error(
     br_add(M, s, where = c(T, F, F,  F, T, T), cols = 2)
+  )
   )
   
   br_add(M, s, where = c(T, T, F), cols = NA)

@@ -104,17 +104,22 @@ int *ridx_to_idx(SEXP idx_, int ref_len) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Convert 'idx' or 'where' to an integer index
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-int *location_to_idx(SEXP idx_, SEXP where_, int *idx_len, int ref_len) {
+int *location_to_idx(SEXP idx_, SEXP where_, int *idx_len, int ref_len, int *status) {
   int *idx = NULL;
+  *status = 0;
   
   if (!Rf_isNull(idx_)) {
     idx = ridx_to_idx(idx_, ref_len);
     *idx_len = Rf_length(idx_);
+    *status = 0;
   } else if (!Rf_isNull(where_)) {
     if (Rf_length(where_) != ref_len) {
-      Rf_error("'where' (%i) does not match ref length [%i]", Rf_length(where_), ref_len);
+      *status = 1;
+      Rf_warning("location_to_idx() length(where) = %i does not match ref length %i", Rf_length(where_), ref_len);
+    } else {
+      idx = lgl_to_idx(where_, idx_len);
+      *status = 0;
     }
-    idx = lgl_to_idx(where_, idx_len);
   }
   
   return idx;

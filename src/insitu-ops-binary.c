@@ -233,7 +233,11 @@ SEXP br_op_binary_(SEXP op_, SEXP x_, SEXP y_, SEXP idx_, SEXP where_, SEXP cols
       Rf_warning("'cols' is set, but 'x' is not a matrix. Ignoring 'cols'");
     }
     int idx_len = 0;
-    int *idx = location_to_idx(idx_, where_, &idx_len, xlen);
+    int status = 0;
+    int *idx = location_to_idx(idx_, where_, &idx_len, xlen, &status);
+    if (status != 0) {
+      Rf_error("location_to_idx() failed");
+    }
     int res = binfunc(REAL(x_), REAL(y_), xlen, ylen, idx, idx_len);
     free(idx);
     if (res != 0) {
@@ -248,7 +252,11 @@ SEXP br_op_binary_(SEXP op_, SEXP x_, SEXP y_, SEXP idx_, SEXP where_, SEXP cols
   if (Rf_isNull(cols_) && ylen == Rf_nrows(x_)) {
     // No cols specified, but 'y' is sized for "by column" 
     int idx_len = 0;
-    int *idx = location_to_idx(idx_, where_, &idx_len, Rf_nrows(x_));
+    int status = 0;
+    int *idx = location_to_idx(idx_, where_, &idx_len, Rf_nrows(x_), &status);
+    if (status != 0) {
+      Rf_error("location_to_idx() failed");
+    }
     int res = 0;
     
     for (int col = 0; col < Rf_ncols(x_); ++col) {
@@ -302,7 +310,12 @@ SEXP br_op_binary_(SEXP op_, SEXP x_, SEXP y_, SEXP idx_, SEXP where_, SEXP cols
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
   int idx_len = 0;
-  int *idx = location_to_idx(idx_, where_, &idx_len, Rf_nrows(x_));
+  int status = 0;
+  int *idx = location_to_idx(idx_, where_, &idx_len, Rf_nrows(x_), &status);
+  if (status != 0) {
+    free(cols);
+    Rf_error("location_to_idx() failed");
+  }
   
   int res = 0;
   
