@@ -37,23 +37,9 @@ extern SEXP br_round_(SEXP x_, SEXP digits_);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Binary
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-extern SEXP br_add_  (SEXP x_, SEXP y_, SEXP where_);
-extern SEXP br_sub_  (SEXP x_, SEXP y_, SEXP where_);
-extern SEXP br_mul_  (SEXP x_, SEXP y_, SEXP where_);
-extern SEXP br_div_  (SEXP x_, SEXP y_, SEXP where_);
-extern SEXP br_pow_  (SEXP x_, SEXP y_, SEXP where_);
-extern SEXP br_eq_   (SEXP x_, SEXP y_, SEXP where_);
-extern SEXP br_ne_   (SEXP x_, SEXP y_, SEXP where_);
-extern SEXP br_lt_   (SEXP x_, SEXP y_, SEXP where_);
-extern SEXP br_le_   (SEXP x_, SEXP y_, SEXP where_);
-extern SEXP br_gt_   (SEXP x_, SEXP y_, SEXP where_);
-extern SEXP br_ge_   (SEXP x_, SEXP y_, SEXP where_);
-extern SEXP br_and_  (SEXP x_, SEXP y_, SEXP where_);
-extern SEXP br_or_   (SEXP x_, SEXP y_, SEXP where_);
-extern SEXP br_rem_  (SEXP x_, SEXP y_, SEXP where_);
-extern SEXP br_idiv_ (SEXP x_, SEXP y_, SEXP where_);
-extern SEXP br_max_  (SEXP x_, SEXP y_, SEXP where_);
-extern SEXP br_min_  (SEXP x_, SEXP y_, SEXP where_);
+extern SEXP xbr_binary_(SEXP op_, SEXP x_, SEXP y_, SEXP idx_, SEXP where_, SEXP cols_);
+
+
 
 extern SEXP set_seed_random64_(void);
 
@@ -130,23 +116,11 @@ static const R_CallMethodDef CEntries[] = {
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Binary
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  {"br_add_"  , (DL_FUNC) &br_add_  , 3},
-  {"br_sub_"  , (DL_FUNC) &br_sub_  , 3},
-  {"br_mul_"  , (DL_FUNC) &br_mul_  , 3},
-  {"br_div_"  , (DL_FUNC) &br_div_  , 3},
-  {"br_pow_"  , (DL_FUNC) &br_pow_  , 3},
-  {"br_eq_"   , (DL_FUNC) &br_eq_   , 3},
-  {"br_ne_"   , (DL_FUNC) &br_ne_   , 3},
-  {"br_lt_"   , (DL_FUNC) &br_lt_   , 3},
-  {"br_le_"   , (DL_FUNC) &br_le_   , 3},
-  {"br_gt_"   , (DL_FUNC) &br_gt_   , 3},
-  {"br_ge_"   , (DL_FUNC) &br_ge_   , 3},
-  {"br_and_"  , (DL_FUNC) &br_and_  , 3},
-  {"br_or_"   , (DL_FUNC) &br_or_   , 3},
-  {"br_rem_"  , (DL_FUNC) &br_rem_  , 3},
-  {"br_idiv_" , (DL_FUNC) &br_idiv_ , 3},
-  {"br_max_"  , (DL_FUNC) &br_max_  , 3},
-  {"br_min_"  , (DL_FUNC) &br_min_  , 3},
+  {"xbr_binary_"  , (DL_FUNC) &xbr_binary_  , 6},
+  
+  
+  
+  
 
   {"set_seed_random64_"     , (DL_FUNC) &set_seed_random64_     , 0},
   

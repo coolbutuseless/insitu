@@ -20,39 +20,39 @@
 \alias{br_min}
 \title{Math operations taking two arguments}
 \usage{
-br_add(x, y, where = NULL)
+br_add(x, y, idx = NULL, where = NULL, cols = NULL)
 
-br_sub(x, y, where = NULL)
+br_sub(x, y, idx = NULL, where = NULL, cols = NULL)
 
-br_mul(x, y, where = NULL)
+br_mul(x, y, idx = NULL, where = NULL, cols = NULL)
 
-br_div(x, y, where = NULL)
+br_div(x, y, idx = NULL, where = NULL, cols = NULL)
 
-br_pow(x, y, where = NULL)
+br_pow(x, y, idx = NULL, where = NULL, cols = NULL)
 
-br_eq(x, y, where = NULL)
+br_eq(x, y, idx = NULL, where = NULL, cols = NULL)
 
-br_ne(x, y, where = NULL)
+br_ne(x, y, idx = NULL, where = NULL, cols = NULL)
 
-br_lt(x, y, where = NULL)
+br_lt(x, y, idx = NULL, where = NULL, cols = NULL)
 
-br_le(x, y, where = NULL)
+br_le(x, y, idx = NULL, where = NULL, cols = NULL)
 
-br_gt(x, y, where = NULL)
+br_gt(x, y, idx = NULL, where = NULL, cols = NULL)
 
-br_ge(x, y, where = NULL)
+br_ge(x, y, idx = NULL, where = NULL, cols = NULL)
 
-br_and(x, y, where = NULL)
+br_and(x, y, idx = NULL, where = NULL, cols = NULL)
 
-br_or(x, y, where = NULL)
+br_or(x, y, idx = NULL, where = NULL, cols = NULL)
 
-br_rem(x, y, where = NULL)
+br_rem(x, y, idx = NULL, where = NULL, cols = NULL)
 
-br_idiv(x, y, where = NULL)
+br_idiv(x, y, idx = NULL, where = NULL, cols = NULL)
 
-br_max(x, y, where = NULL)
+br_max(x, y, idx = NULL, where = NULL, cols = NULL)
 
-br_min(x, y, where = NULL)
+br_min(x, y, idx = NULL, where = NULL, cols = NULL)
 }
 \arguments{
 \item{x}{numeric vector. This vector will be modified by-reference to 
@@ -61,10 +61,14 @@ contain the result of the calculation}
 \item{y}{Either scalar numeric value or numeric vector of the same 
 length as \code{x}.}
 
+\item{idx}{idx}
+
 \item{where}{logical vector stored as floating point values. 0 = FALSE, 
 all non-zero values treated as TRUE. Default: NULL.
 This value indicates if the operation should be performed for the 
 corresponding element in \code{x}.}
+
+\item{cols}{columns}
 }
 \value{
 \code{x} argument is modified by-reference and returned invisibly

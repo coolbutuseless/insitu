@@ -187,13 +187,13 @@ conv_vec <- function(x,y) {
 conv_vec_byref <- function(x,y) {
   nx <- length(x)
   ny <- length(y)
-  sy <- seq_along(y) - 1L
-  z  <- numeric(nx + ny - 1)
+  sy <- seq(0L, length(y) - 1L)
+  z  <- numeric(nx + ny - 1L)
   ty <- alloc_along(y) # allocate temporary working space
   tz <- alloc_along(y) # allocate temp working space
   for(i in seq(length = nx)) {
     br_copy(ty, y)                         # ty <- y
-    br_copy(tz, z, n = ny, xi = 1, yi = i) # tz <- z[i + seq(ny) - 1L]
+    br_copy(tz, z, n = ny, xi = 1L, yi = i) # tz <- z[i + seq(ny) - 1L]
     br_fmadd(ty, x[[i]], tz)               # ty <- ty * x[[i]] + tz
     br_copy(z, ty, n = ny, xi = i)         # z[i + seq(ny) - 1L] <- tv
   }
@@ -227,10 +227,10 @@ knitr::kable(bm)
 
 | expression           |     min |  median |   itr/sec | mem_alloc |
 |:---------------------|--------:|--------:|----------:|----------:|
-| conv_nested(x, y)    | 60.57ms | 61.17ms |  16.35111 |    88.5KB |
-| conv_vec(x, y)       |  10.3ms | 11.07ms |  91.44587 |    34.6MB |
-| conv_fft(x, y)       |  3.58ms |  3.65ms | 272.41117 |     380KB |
-| conv_vec_byref(x, y) |  2.86ms |  2.98ms | 329.13535 |   115.9KB |
+| conv_nested(x, y)    | 60.74ms | 61.02ms |  16.38018 |    88.5KB |
+| conv_vec(x, y)       | 10.32ms | 10.95ms |  90.06816 |    34.6MB |
+| conv_fft(x, y)       |  3.59ms |  3.69ms | 269.20004 |     380KB |
+| conv_vec_byref(x, y) |  2.86ms |  3.04ms | 323.75833 |   108.3KB |
 
 ## Matrix-matrix multiplication
 
@@ -267,8 +267,8 @@ bench::mark(
     #> # A tibble: 2 × 6
     #>   expression                   min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>              <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 br_mat_mat_mul(C, A, B)    148ms    148ms      6.74    7.87KB     0   
-    #> 2 A %*% B                    150ms    150ms      6.66    7.63MB     2.22
+    #> 1 br_mat_mat_mul(C, A, B)    150ms    152ms      6.58    7.87KB     0   
+    #> 2 A %*% B                    150ms    154ms      6.52    7.63MB     2.17
 
 Note in the above benchmark that `br_mat_ma_mul()` only allocates
 several **kilobytes** of R memory, while `A %*% B` allocates several
@@ -297,8 +297,8 @@ bench::mark(
     #> # A tibble: 2 × 6
     #>   expression                    min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>               <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 br_mat_mat_mul_bsq(A, B)   74.5ms   75.4ms      13.3    4.86KB     0   
-    #> 2 A %*% B                    74.5ms   74.9ms      13.3    3.81MB     2.22
+    #> 1 br_mat_mat_mul_bsq(A, B)   73.9ms   75.2ms      13.3    4.86KB     0   
+    #> 2 A %*% B                    74.7ms     75ms      13.3    3.81MB     2.22
 
 ## Matrix transforms
 
@@ -415,8 +415,8 @@ suppressWarnings({
 knitr::kable(bm)
 ```
 
-| expression |     min |  median |   itr/sec | mem_alloc |
-|:-----------|--------:|--------:|----------:|----------:|
-| ifelse     |   2.1ms |   2.6ms |  389.4994 |   13.74MB |
-| simple     | 651.4µs | 792.7µs | 1271.4168 |    5.34MB |
-| insitu     | 875.8µs |   891µs | 1112.6559 |        0B |
+| expression |      min |   median |   itr/sec | mem_alloc |
+|:-----------|---------:|---------:|----------:|----------:|
+| ifelse     |   2.04ms |   2.59ms |  386.8873 |   13.74MB |
+| simple     | 651.53µs |  800.4µs | 1253.0991 |    5.34MB |
+| insitu     | 876.29µs | 896.65µs | 1099.5882 |        0B |
