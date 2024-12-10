@@ -20,161 +20,36 @@
 #define UNROLL 4
 
 
-#define OP_SQRT(offset)   sqrt(x[i + (offset)])
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-static inline void ybr_sqrt_byidx(double *x, int *idx, int idx_len) {
-
-  for (int j = 0; j < idx_len; ++j) {
-    int i = idx[j];
-    x[i] = OP_SQRT(0);
-  }
-}
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-static inline void ybr_sqrt_full(double *x, int len) {
-
-  int i = 0;
-  for (; i < len - (UNROLL - 1); i += UNROLL) {
-    x[i + 0] = OP_SQRT(0);
-    x[i + 1] = OP_SQRT(1);
-    x[i + 2] = OP_SQRT(2);
-    x[i + 3] = OP_SQRT(3);
-  }
-  for (; i < len; ++i) {
-    x[i] = OP_SQRT(0);
-  }
-}
-
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Main R interface to 'sqrt()'
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SEXP ybr_sqrt_(SEXP x_, SEXP idx_, SEXP where_, SEXP cols_) {
-
-  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // Basic case. Matrix and vector both treated like matrix
-  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  if (Rf_isNull(idx_) && Rf_isNull(where_) && Rf_isNull(cols_)) {
-    ybr_sqrt_full(REAL(x_), (int)Rf_length(x_));
-    return x_;
-  }
-
-  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // If 'cols' specified, must be a matrix
-  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  if (!Rf_isNull(cols_)) {
-    if (!Rf_isMatrix(x_)) Rf_error("Specified 'cols' by 'x' is not a matrix");
-    int *cols = ridx_to_idx(cols_, Rf_ncols(x_));
-    if (!Rf_isNull(idx_)) {
-      int *idx = ridx_to_idx(idx_, Rf_nrows(x_));
-      for (int i = 0; i < Rf_length(cols_); ++i) {
-        ybr_sqrt_byidx(REAL(x_) + cols[i] * Rf_nrows(x_), idx, Rf_length(idx_));
-      }
-      free(idx);
-    } else if (!Rf_isNull(where_)) {
-      int idx_len = 0;
-      int *idx = lgl_to_idx(where_, &idx_len);
-      for (int i = 0; i < Rf_length(cols_); ++i) {
-        ybr_sqrt_byidx(REAL(x_) + cols[i] * Rf_nrows(x_), idx, idx_len);
-      }
-      free(idx);
-    } else {
-      for (int i = 0; i < Rf_length(cols_); ++i) {
-        ybr_sqrt_full(REAL(x_) + cols[i] * Rf_nrows(x_), Rf_nrows(x_));
-      }
-    }
-
-    free(cols);
-    return x_;
-  }
-
-
-  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // Matrix where 'cols' has not been set. Just deal with 'where' and 'idx'
-  // and apply to all columns
-  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  if (Rf_isMatrix(x_)) {
-    if (!Rf_isNull(idx_)) {
-      int *idx = ridx_to_idx(idx_, Rf_nrows(x_));
-      for (int col = 0; col < Rf_ncols(x_); ++col) {
-        ybr_sqrt_byidx(REAL(x_) + col * Rf_nrows(x_), idx, Rf_length(idx_));
-      }
-      free(idx);
-    } else if (!Rf_isNull(where_)) {
-      if (Rf_length(where_) == Rf_nrows(x_)) {
-        // Apply 'where' column-wise
-        int idx_len = 0;
-        int *idx = lgl_to_idx(where_, &idx_len);
-        for (int col = 0; col < Rf_ncols(x_); ++col) {
-          ybr_sqrt_byidx(REAL(x_) + col * Rf_nrows(x_), idx, idx_len);
-        }
-        free(idx);
-      } else if (Rf_length(where_) == Rf_length(x_)) {
-        // Treat 'where' as global
-        int idx_len = 0;
-        int *idx = lgl_to_idx(where_, &idx_len);
-        ybr_sqrt_byidx(REAL(x_), idx, idx_len);
-        free(idx);
-      } else {
-        Rf_error("Length mismatch: len(where) [%.0f] != len(x) [%.0f] or nrow(x) [%i]",
-                (double)Rf_length(where_), (double)Rf_length(x_),
-                Rf_nrows(x_));
-      }
-    } else {
-      Rf_error("Error. Code 8876. Should never happen!");
-    }
-
-    return x_;
-  }
-
-  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // If here, 'x' will only be treated as vector with either 'idx' or 'where' set
-  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  if (!Rf_isNull(idx_)) {
-    int *idx = ridx_to_idx(idx_, Rf_length(x_));
-    ybr_sqrt_byidx(REAL(x_), idx, Rf_length(idx_));
-    free(idx);
-    return x_;
-  } else if (!Rf_isNull(where_)) {
-    if (Rf_length(where_) == Rf_length(x_)) {
-      int idx_len = 0;
-      int *idx = lgl_to_idx(where_, &idx_len);
-      ybr_sqrt_byidx(REAL(x_), idx, idx_len);
-      free(idx);
-      return x_;
-    } else {
-      Rf_error("Length mismatch: len(where) [%.0f] != len(x) [%.0f] ",
-               (double)Rf_length(where_), (double)Rf_length(x_));
-    }
-  } else {
-    Rf_error("Error. Code 8877. Should never happen!");
-  }
-
-
-  Rf_error("Error. Code 8878. Should never happen!");
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// #define OP_SQRT(offset)   sqrt(x[i + (offset)])
+// 
+// //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// //
+// //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// void ybr_sqrt_byidx(double *x, int *idx, int idx_len) {
+// 
+//   for (int j = 0; j < idx_len; ++j) {
+//     int i = idx[j];
+//     x[i] = OP_SQRT(0);
+//   }
+// }
+// 
+// //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// //
+// //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// void ybr_sqrt_full(double *x, int len) {
+// 
+//   int i = 0;
+//   for (; i < len - (UNROLL - 1); i += UNROLL) {
+//     x[i + 0] = OP_SQRT(0);
+//     x[i + 1] = OP_SQRT(1);
+//     x[i + 2] = OP_SQRT(2);
+//     x[i + 3] = OP_SQRT(3);
+//   }
+//   for (; i < len; ++i) {
+//     x[i] = OP_SQRT(0);
+//   }
+// }
+// 
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -209,116 +84,17 @@ static inline void br_##nm##_full(double *x, int len) {          \
 }                                                                 \
 
 
-#define UNARYOPFUNC(nm, unaryop)                                                      \
-SEXP br_##nm##_(SEXP x_, SEXP idx_, SEXP where_, SEXP cols_) {                       \
-                                                                                      \
-  /* Basic case. Matrix and vector both treated like matrix */                        \
-  if (Rf_isNull(idx_) && Rf_isNull(where_) && Rf_isNull(cols_)) {                     \
-    br_##nm##_full(REAL(x_), (int)Rf_length(x_));                                    \
-    return x_;                                                                        \
-  }                                                                                   \
-                                                                                      \
-  /* If 'cols' specified, must be a matrix */                                         \
-  if (!Rf_isNull(cols_)) {                                                            \
-    if (!Rf_isMatrix(x_)) Rf_error("Specified 'cols' by 'x' is not a matrix");        \
-    int *cols = ridx_to_idx(cols_, Rf_ncols(x_));                                     \
-    if (!Rf_isNull(idx_)) {                                                           \
-      int *idx = ridx_to_idx(idx_, Rf_nrows(x_));                                     \
-      for (int i = 0; i < Rf_length(cols_); ++i) {                                    \
-        br_##nm##_byidx(REAL(x_) + cols[i] * Rf_nrows(x_), idx, Rf_length(idx_));    \
-      }                                                                               \
-      free(idx);                                                                      \
-    } else if (!Rf_isNull(where_)) {                                                  \
-      int idx_len = 0;                                                                \
-      int *idx = lgl_to_idx(where_, &idx_len);                                        \
-      for (int i = 0; i < Rf_length(cols_); ++i) {                                    \
-        br_##nm##_byidx(REAL(x_) + cols[i] * Rf_nrows(x_), idx, idx_len);            \
-      }                                                                               \
-      free(idx);                                                                      \
-    } else {                                                                          \
-      for (int i = 0; i < Rf_length(cols_); ++i) {                                    \
-        br_##nm##_full(REAL(x_) + cols[i] * Rf_nrows(x_), Rf_nrows(x_));             \
-      }                                                                               \
-    }                                                                                 \
-                                                                                      \
-    free(cols);                                                                       \
-    return x_;                                                                        \
-  }                                                                                   \
-                                                                                      \
-                                                                                      \
-  /* Matrix where 'cols' has not been set. Just deal with 'where' and 'idx'           \
-   and apply to all columns */                                                        \
-  if (Rf_isMatrix(x_)) {                                                              \
-    if (!Rf_isNull(idx_)) {                                                           \
-      int *idx = ridx_to_idx(idx_, Rf_nrows(x_));                                     \
-      for (int col = 0; col < Rf_ncols(x_); ++col) {                                  \
-        br_##nm##_byidx(REAL(x_) + col * Rf_nrows(x_), idx, Rf_length(idx_));        \
-      }                                                                               \
-      free(idx);                                                                      \
-    } else if (!Rf_isNull(where_)) {                                                  \
-      if (Rf_length(where_) == Rf_nrows(x_)) {                                        \
-        /* Apply 'where' column-wise */                                               \
-        int idx_len = 0;                                                              \
-        int *idx = lgl_to_idx(where_, &idx_len);                                      \
-        for (int col = 0; col < Rf_ncols(x_); ++col) {                                \
-          br_##nm##_byidx(REAL(x_) + col * Rf_nrows(x_), idx, idx_len);              \
-        }                                                                             \
-        free(idx);                                                                    \
-      } else if (Rf_length(where_) == Rf_length(x_)) {                                \
-        /* Treat 'where' as global */                                                 \
-        int idx_len = 0;                                                              \
-        int *idx = lgl_to_idx(where_, &idx_len);                                      \
-        br_##nm##_byidx(REAL(x_), idx, idx_len);                                     \
-        free(idx);                                                                    \
-      } else {                                                                        \
-        Rf_error("Length mismatch: len(where) [%.0f] != len(x) [%.0f] or nrow(x) [%i]",\
-                 (double)Rf_length(where_), (double)Rf_length(x_),                    \
-                 Rf_nrows(x_));                                                       \
-      }                                                                               \
-    } else {                                                                          \
-      Rf_error("Error. Code 8876. Should never happen!");                             \
-    }                                                                                 \
-                                                                                      \
-    return x_;                                                                        \
-  }                                                                                   \
-                                                                                      \
-  /* If here, 'x' will only be treated as vector with either 'idx' or 'where' set */  \
-  if (!Rf_isNull(idx_)) {                                                             \
-    int *idx = ridx_to_idx(idx_, Rf_length(x_));                                      \
-    br_##nm##_byidx(REAL(x_), idx, Rf_length(idx_));                                 \
-    free(idx);                                                                        \
-    return x_;                                                                        \
-  } else if (!Rf_isNull(where_)) {                                                    \
-    if (Rf_length(where_) == Rf_length(x_)) {                                         \
-      int idx_len = 0;                                                                \
-      int *idx = lgl_to_idx(where_, &idx_len);                                        \
-      br_##nm##_byidx(REAL(x_), idx, idx_len);                                       \
-      free(idx);                                                                      \
-      return x_;                                                                      \
-    } else {                                                                          \
-      Rf_error("Length mismatch: len(where) [%.0f] != len(x) [%.0f] ",                 \
-               (double)Rf_length(where_), (double)Rf_length(x_));                     \
-    }                                                                                 \
-  } else {                                                                            \
-    Rf_error("Error. Code 8877. Should never happen!");                               \
-  }                                                                                   \
-                                                                                      \
-                                                                                      \
-  Rf_error("Error. Code 8878. Should never happen!");                                 \
-}    
-
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // MACRO: Create a set of unary funcs
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #define UNARYOP(nm, unaryop)       \
 UNARYOPBYIDX(nm, unaryop)          \
 UNARYOPFULL(nm, unaryop)           \
-UNARYOPFUNC(nm, unaryop)
 
 
-
-
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Define core of each unary operation
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #define OP_ABS(offset)    fabs(x[i + (offset)])
 #define OP_SQRT(offset)   sqrt(x[i + (offset)])
 #define OP_FLOOR(offset) floor(x[i + (offset)])
@@ -350,6 +126,9 @@ UNARYOPFUNC(nm, unaryop)
 #define OP_IS_NA(offset) (double)isnan(x[i + (offset)])
 
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Create unary functions
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 UNARYOP(abs  ,  OP_ABS)
 UNARYOP(sqrt ,  OP_SQRT)
 UNARYOP(floor,  OP_FLOOR)
@@ -381,6 +160,193 @@ UNARYOP(tanpi,  OP_TANPI)
 UNARYOP(is_na,  OP_IS_NA)
 
 
+  
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Array of unary functions performed by index
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void (*unaryfunc_byidx[29]) (double *x, int *idx, int idx_len) = {
+  br_abs_byidx  , //  0
+  br_sqrt_byidx , //  1
+  br_floor_byidx, //  2
+  br_ceil_byidx , //  3
+  br_trunc_byidx, //  4
+  br_exp_byidx  , //  5
+  br_log_byidx  , //  6
+  br_log2_byidx , //  7
+  br_log10_byidx, //  8
+  br_cos_byidx  , //  9
+  br_sin_byidx  , // 10
+  br_tan_byidx  , // 11
+  br_not_byidx  , // 12
+  br_expm1_byidx, // 13
+  br_log1p_byidx, // 14
+  br_acos_byidx , // 15
+  br_asin_byidx , // 16
+  br_atan_byidx , // 17
+  br_acosh_byidx, // 18
+  br_asinh_byidx, // 19
+  br_atanh_byidx, // 20
+  br_cosh_byidx , // 21
+  br_sinh_byidx , // 22
+  br_tanh_byidx , // 23
+  br_sign_byidx , // 24
+  br_cospi_byidx, // 25
+  br_sinpi_byidx, // 26
+  br_tanpi_byidx, // 27
+  br_is_na_byidx  // 28
+};
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Array of unary functions over full vector
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void (*unaryfunc_full[29]) (double *x, int len) = {
+  br_abs_full  ,  //  0
+  br_sqrt_full ,  //  1
+  br_floor_full,  //  2
+  br_ceil_full ,  //  3
+  br_trunc_full,  //  4
+  br_exp_full  ,  //  5
+  br_log_full  ,  //  6
+  br_log2_full ,  //  7
+  br_log10_full,  //  8
+  br_cos_full  ,  //  9
+  br_sin_full  ,  // 10
+  br_tan_full  ,  // 11
+  br_not_full  ,  // 12
+  br_expm1_full,  // 13
+  br_log1p_full,  // 14
+  br_acos_full ,  // 15
+  br_asin_full ,  // 16
+  br_atan_full ,  // 17
+  br_acosh_full,  // 18
+  br_asinh_full,  // 19
+  br_atanh_full,  // 20
+  br_cosh_full ,  // 21
+  br_sinh_full ,  // 22
+  br_tanh_full ,  // 23
+  br_sign_full ,  // 24
+  br_cospi_full,  // 25
+  br_sinpi_full,  // 26
+  br_tanpi_full,  // 27
+  br_is_na_full   // 28
+};
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Main R dispatch for unary ops
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SEXP br_unary_(SEXP op_, SEXP x_, SEXP idx_, SEXP where_, SEXP cols_) {
+  
+  int op = Rf_asInteger(op_);
+  if (op < 0 || op >= 29) Rf_error("'op' out of range [0, 28]");
+  
+  void (*unary_byidx) (double *x, int *idx, int idx_len) = unaryfunc_byidx[op];
+  void (*unary_full ) (double *x, int len)               = unaryfunc_full [op];
+  
+  
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Basic case. Matrix and vector both treated like matrix
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  if (Rf_isNull(idx_) && Rf_isNull(where_) && Rf_isNull(cols_)) {
+    unary_full(REAL(x_), (int)Rf_length(x_));
+    return x_;
+  }
+  
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // If 'cols' specified, must be a matrix
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  if (!Rf_isNull(cols_)) {
+    if (!Rf_isMatrix(x_)) Rf_error("Specified 'cols' by 'x' is not a matrix");
+    int *cols = ridx_to_idx(cols_, Rf_ncols(x_));
+    if (!Rf_isNull(idx_)) {
+      int *idx = ridx_to_idx(idx_, Rf_nrows(x_));
+      for (int i = 0; i < Rf_length(cols_); ++i) {
+        unary_byidx(REAL(x_) + cols[i] * Rf_nrows(x_), idx, Rf_length(idx_));
+      }
+      free(idx);
+    } else if (!Rf_isNull(where_)) {
+      int idx_len = 0;
+      int *idx = lgl_to_idx(where_, &idx_len);
+      for (int i = 0; i < Rf_length(cols_); ++i) {
+        unary_byidx(REAL(x_) + cols[i] * Rf_nrows(x_), idx, idx_len);
+      }
+      free(idx);
+    } else {
+      // no 'idx' or 'where' .  Apply to full column
+      for (int i = 0; i < Rf_length(cols_); ++i) {
+        unary_full(REAL(x_) + cols[i] * Rf_nrows(x_), Rf_nrows(x_));
+      }
+    }
+    
+    free(cols);
+    return x_;
+  }
+  
+  
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Matrix where 'cols' has not been set. Just deal with 'where' and 'idx'
+  // and apply to all columns
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  if (Rf_isMatrix(x_)) {
+    if (!Rf_isNull(idx_)) {
+      int *idx = ridx_to_idx(idx_, Rf_nrows(x_));
+      for (int col = 0; col < Rf_ncols(x_); ++col) {
+        unary_byidx(REAL(x_) + col * Rf_nrows(x_), idx, Rf_length(idx_));
+      }
+      free(idx);
+    } else if (!Rf_isNull(where_)) {
+      if (Rf_length(where_) == Rf_nrows(x_)) {
+        // Apply 'where' column-wise
+        int idx_len = 0;
+        int *idx = lgl_to_idx(where_, &idx_len);
+        for (int col = 0; col < Rf_ncols(x_); ++col) {
+          unary_byidx(REAL(x_) + col * Rf_nrows(x_), idx, idx_len);
+        }
+        free(idx);
+      } else if (Rf_length(where_) == Rf_length(x_)) {
+        // Treat 'where' as global
+        int idx_len = 0;
+        int *idx = lgl_to_idx(where_, &idx_len);
+        unary_byidx(REAL(x_), idx, idx_len);
+        free(idx);
+      } else {
+        Rf_error("Length mismatch: len(where) [%.0f] != len(x) [%.0f] or nrow(x) [%i]",
+                 (double)Rf_length(where_), (double)Rf_length(x_),
+                 Rf_nrows(x_));
+      }
+    } else {
+      Rf_error("Error. Code 8876. Should never happen!");
+    }
+    
+    return x_;
+  }
+  
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // If here, 'x' will only be treated as vector with either 'idx' or 'where' set
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  if (!Rf_isNull(idx_)) {
+    int *idx = ridx_to_idx(idx_, Rf_length(x_));
+    unary_byidx(REAL(x_), idx, Rf_length(idx_));
+    free(idx);
+    return x_;
+  } else if (!Rf_isNull(where_)) {
+    if (Rf_length(where_) == Rf_length(x_)) {
+      int idx_len = 0;
+      int *idx = lgl_to_idx(where_, &idx_len);
+      unary_byidx(REAL(x_), idx, idx_len);
+      free(idx);
+      return x_;
+    } else {
+      Rf_error("Length mismatch: len(where) [%.0f] != len(x) [%.0f] ",
+               (double)Rf_length(where_), (double)Rf_length(x_));
+    }
+  } else {
+    Rf_error("Error. Code 8877. Should never happen!");
+  }
+  
+  
+  Rf_error("Error. Code 8878. Should never happen!");
+}
 
 
 

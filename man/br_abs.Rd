@@ -6,7 +6,6 @@
 \alias{br_floor}
 \alias{br_ceil}
 \alias{br_trunc}
-\alias{br_round}
 \alias{br_exp}
 \alias{br_log}
 \alias{br_log2}
@@ -42,8 +41,6 @@ br_floor(x, idx = NULL, where = NULL, cols = NULL)
 br_ceil(x, idx = NULL, where = NULL, cols = NULL)
 
 br_trunc(x, idx = NULL, where = NULL, cols = NULL)
-
-br_round(x, digits)
 
 br_exp(x, idx = NULL, where = NULL, cols = NULL)
 
@@ -106,8 +103,6 @@ corresponding element in \code{x}.}
 
 \item{cols}{which matrix columns should this apply to?  Argument only valid
 if \code{x} is a matrix}
-
-\item{digits}{number of decimal places}
 }
 \value{
 \code{x} argument is modified by-reference and returned invisibly
