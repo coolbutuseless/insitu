@@ -118,13 +118,13 @@ SEXP br_mat_hypot2_(SEXP d_, SEXP mat_) {
   
   int i = 0;
   for (; i < nrow - (UNROLL - 1); i += UNROLL) {
-    *d++ = hypot(*x++, *y++);  
-    *d++ = hypot(*x++, *y++);  
-    *d++ = hypot(*x++, *y++);  
-    *d++ = hypot(*x++, *y++);  
+    d[i + 0] = hypot(x[i + 0], y[i + 0]);  
+    d[i + 1] = hypot(x[i + 1], y[i + 1]);  
+    d[i + 2] = hypot(x[i + 2], y[i + 2]);  
+    d[i + 3] = hypot(x[i + 3], y[i + 3]);  
   }
   for (; i < nrow; ++i) {
-    *d++ = hypot(*x++, *y++);  
+    d[i + 0] = hypot(x[i + 0], y[i + 0]);  
   }
   
   return d_;
@@ -158,13 +158,14 @@ SEXP br_mat_hypot3_(SEXP d_, SEXP mat_) {
   
   int i = 0;
   for (; i < nrow - (UNROLL - 1); i += UNROLL) {
-    *d++ = sqrt(*x * *x + *y * *y + *z * *z); ++x; ++y; ++z; 
-    *d++ = sqrt(*x * *x + *y * *y + *z * *z); ++x; ++y; ++z; 
-    *d++ = sqrt(*x * *x + *y * *y + *z * *z); ++x; ++y; ++z; 
-    *d++ = sqrt(*x * *x + *y * *y + *z * *z); ++x; ++y; ++z; 
+    d[i + 0] = sqrt(x[i + 0] * x[i + 0] + y[i + 0] * y[i + 0] + z[i + 0] * z[i + 0]);
+    d[i + 1] = sqrt(x[i + 1] * x[i + 1] + y[i + 1] * y[i + 1] + z[i + 1] * z[i + 1]);
+    d[i + 2] = sqrt(x[i + 2] * x[i + 2] + y[i + 2] * y[i + 2] + z[i + 2] * z[i + 2]);
+    d[i + 3] = sqrt(x[i + 3] * x[i + 3] + y[i + 3] * y[i + 3] + z[i + 3] * z[i + 3]);
+    // *d++ = sqrt(*x * *x + *y * *y + *z * *z); ++x; ++y; ++z; 
   }
   for (; i < nrow; ++i) {
-    *d++ = sqrt(*x * *x + *y * *y + *z * *z); ++x; ++y; ++z; 
+    d[i + 0] = sqrt(x[i + 0] * x[i + 0] + y[i + 0] * y[i + 0] + z[i + 0] * z[i + 0]);
   }
   
   return d_;
@@ -192,10 +193,9 @@ SEXP br_normalise2_(SEXP mat_) {
   double *y = x + nrow;
   
   for (int i = 0; i < nrow; ++i) {
-    double len = hypot(*x, *y); 
-    *x /= len;
-    *y /= len;
-    ++x; ++y; 
+    double len = hypot(x[i], y[i]); 
+    x[i] /= len;
+    y[i] /= len;
   }
   
   return mat_;
@@ -223,11 +223,10 @@ SEXP br_normalise3_(SEXP mat_) {
   double *z = y + nrow;
   
   for (int i = 0; i < nrow; ++i) {
-    double len = sqrt(*x * *x + *y * *y + *z * *z); 
-    *x /= len;
-    *y /= len;
-    *z /= len;
-    ++x; ++y; ++z; 
+    double len = sqrt(x[i] * x[i] + y[i] * y[i] + z[i] * z[i]); 
+    x[i] /= len;
+    y[i] /= len;
+    z[i] /= len;
   }
   
   return mat_;
