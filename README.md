@@ -39,7 +39,6 @@ number of garbage collection operations is also reduced.
 | `br_sort(x)` | Sort the elements of a vector |
 | `br_copy(x, y, n, xi, yi)` | copy ‘n’ elements from ‘y’ into ‘x’ starting at ‘xi’ and ‘yi’ |
 | `br_fill_seq(x, from, to, step)` | Fill vector with a sequence |
-| `br_copy_if(x, y, lgl)` | copy ‘y’ into ‘x’ where `lgl != 0` |
 | `br_abs()`, `br_sqrt()`,`br_floor()`,`br_ceil()`, `br_trunc()`, `br_round()`, `br_exp()`, `br_log()`, `br_cos()`, `br_sin()`, `br_tan()`, `br_not()`, `br_expm1()`, `br_log1p()`, `br_acos()`,`br_asin()`, `br_atan()`,`br_acosh()`,`br_asinh()`,`br_atanh()`,`br_cosh()`, `br_sinh()`,`br_tanh()`, `br_sign()`, `br_cospi()`, `br_sinpi()`, `br_tanpi()`, `br_cumsum()`, `br_cumprod()`, `br_cummax()`, `br_cummin()`, `br_log2()`, `br_log10()`, `br_is_na()` | Standard single argument math operations |
 | `br_add()`, `br_sub()`, `br_mul()`, `br_div()`, `br_eq()`, `br_ne()`, `br_lt()`, `br_le()`, `br_gt()`, `br_ge()`, `br_and()`, `br_or()`, `br_rem()`, `br_idiv()`, `br_max()`, `br_min()`, `br_mat_hypot()` | Standard two-argument math operations |
 
@@ -225,12 +224,12 @@ bm <- bench::mark(
 knitr::kable(bm)
 ```
 
-| expression           |     min |  median |   itr/sec | mem_alloc |
-|:---------------------|--------:|--------:|----------:|----------:|
-| conv_nested(x, y)    |  60.8ms | 60.96ms |  16.33545 |    88.5KB |
-| conv_vec(x, y)       | 10.34ms | 11.19ms |  88.78308 |    34.6MB |
-| conv_fft(x, y)       |   3.6ms |  3.67ms | 271.59228 |     380KB |
-| conv_vec_byref(x, y) |  2.85ms |  3.01ms | 325.57567 |   108.3KB |
+| expression           |    min |  median |   itr/sec | mem_alloc |
+|:---------------------|-------:|--------:|----------:|----------:|
+| conv_nested(x, y)    | 60.8ms | 61.13ms |  16.31836 |    88.5KB |
+| conv_vec(x, y)       | 10.2ms | 11.09ms |  89.83377 |    34.6MB |
+| conv_fft(x, y)       |  3.6ms |  3.66ms | 272.15134 |     380KB |
+| conv_vec_byref(x, y) |  2.9ms |  3.05ms | 323.58100 |   108.3KB |
 
 ## Matrix-matrix multiplication
 
@@ -267,8 +266,8 @@ bench::mark(
     #> # A tibble: 2 × 6
     #>   expression                   min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>              <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 br_mat_mat_mul(C, A, B)    148ms    149ms      6.73    7.87KB     0   
-    #> 2 A %*% B                    150ms    150ms      6.67    7.63MB     2.22
+    #> 1 br_mat_mat_mul(C, A, B)    149ms    149ms      6.69    7.87KB     0   
+    #> 2 A %*% B                    150ms    154ms      6.54    7.63MB     2.18
 
 Note in the above benchmark that `br_mat_ma_mul()` only allocates
 several **kilobytes** of R memory, while `A %*% B` allocates several
@@ -297,8 +296,8 @@ bench::mark(
     #> # A tibble: 2 × 6
     #>   expression                    min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>               <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 br_mat_mat_mul_bsq(A, B)   74.1ms   75.1ms      13.3    4.86KB     0   
-    #> 2 A %*% B                    74.8ms   74.9ms      13.3    3.81MB     2.22
+    #> 1 br_mat_mat_mul_bsq(A, B)   74.7ms   75.6ms      13.2    4.86KB     0   
+    #> 2 A %*% B                    74.8ms   75.2ms      13.3    3.81MB     2.22
 
 ## Matrix transforms
 
@@ -417,6 +416,6 @@ knitr::kable(bm)
 
 | expression |      min |   median |   itr/sec | mem_alloc |
 |:-----------|---------:|---------:|----------:|----------:|
-| ifelse     |   2.18ms |   2.56ms |  387.3703 |   13.74MB |
-| simple     | 653.62µs | 802.55µs | 1248.6209 |    5.34MB |
-| insitu     | 843.99µs | 859.24µs | 1148.5297 |        0B |
+| ifelse     |   2.29ms |   2.62ms |  379.2194 |   13.74MB |
+| simple     | 652.31µs | 804.91µs | 1246.0348 |    5.34MB |
+| insitu     | 844.31µs | 861.04µs | 1144.5985 |        0B |

@@ -37,31 +37,3 @@ br_copy <- function(x, y, n = NULL, xi = 1L, yi = 1L) {
   invisible(.Call(br_copy_, x, y, n, xi, yi))
 }
 
-
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' Copy all or part of one vector into another
-#' 
-#' @inheritParams br_copy
-#' @param where numeric vector the same length as \code{x} containing logical
-#'        values where 0 indicates false, and all non-zero values
-#'        indicate true
-#'        
-#' @return \code{x} argument is modified by-reference and returned invisibly
-#' @examples
-#' x <- c(-1, 0, 1)
-#' 
-#' # Where is x < 0?
-#' xneg <- duplicate(x)
-#' br_lt(xneg, 0) #  xneg <- (xneg < 0)
-#' xneg
-#' 
-#' br_copy_if(x, -99, xneg)
-#' x
-#' 
-#' @export
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_copy_if <- function(x, y, where) {
-  invisible(.Call(br_copy_if_, x, y, where))
-}
-

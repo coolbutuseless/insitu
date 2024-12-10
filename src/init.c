@@ -17,7 +17,6 @@ extern SEXP br_rev_(SEXP x_);
 extern SEXP br_runif_(SEXP x_, SEXP min_, SEXP max_);
 
 extern SEXP br_copy_(SEXP x_, SEXP y_, SEXP n_, SEXP xi_, SEXP yi_);
-extern SEXP br_copy_if_(SEXP x_, SEXP y_, SEXP lgl_);
 
 extern SEXP br_fill_seq_(SEXP x_, SEXP from_, SEXP to_, SEXP step_);
 
@@ -95,7 +94,6 @@ static const R_CallMethodDef CEntries[] = {
   {"br_runif_"  , (DL_FUNC) &br_runif_   , 3},
   
   {"br_copy_"    , (DL_FUNC) &br_copy_    , 5},
-  {"br_copy_if_" , (DL_FUNC) &br_copy_if_ , 3},
   
   {"br_fill_seq_", (DL_FUNC) &br_fill_seq_, 4},
   

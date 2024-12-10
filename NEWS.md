@@ -1,6 +1,8 @@
 
-# insitu 0.1.3.9015
+# insitu 0.1.3.9016
 
+* [9016] `br_copy_if()` replaced with binaryop `br_assign()`
+* [9016] `br_zero()` refactored to become a standard unaryop
 * [9015] Global dispatch for unary/binary ops using array of func pointers
 * [9014] Support for matrix arg to unary ops
 * [9013] `where` and `idx` for conditional unary ops. Initial attempt at

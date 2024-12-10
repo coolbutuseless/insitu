@@ -162,46 +162,50 @@ int xbr_##nm##_c(double *x, double *y, int xlen, int ylen, int *idx, int idx_len
 #define OP_MAX_VS(OFF)    MAX(x[i + (OFF)], y[0])
 #define OP_MIN_VV(OFF)    MIN(x[i + (OFF)], y[i + (OFF)])
 #define OP_MIN_VS(OFF)    MIN(x[i + (OFF)], y[0])
+#define OP_ASSIGN_VV(OFF)  y[i + (OFF)]
+#define OP_ASSIGN_VS(OFF)  y[0]
 
 
-BINARYOP(add , OP_ADD_VV , OP_ADD_VS )
-BINARYOP(sub , OP_SUB_VV , OP_SUB_VS )
-BINARYOP(mul , OP_MUL_VV , OP_MUL_VS )
-BINARYOP(div , OP_DIV_VV , OP_DIV_VS )
-BINARYOP(pow , OP_POW_VV , OP_POW_VS )
-BINARYOP(eq  , OP_EQ_VV  , OP_EQ_VS  )
-BINARYOP(ne  , OP_NE_VV  , OP_NE_VS  )
-BINARYOP(lt  , OP_LT_VV  , OP_LT_VS  )
-BINARYOP(le  , OP_LE_VV  , OP_LE_VS  )
-BINARYOP(gt  , OP_GT_VV  , OP_GT_VS  )
-BINARYOP(ge  , OP_GE_VV  , OP_GE_VS  )
-BINARYOP(and , OP_AND_VV , OP_AND_VS )
-BINARYOP(or  , OP_OR_VV  , OP_OR_VS  )
-BINARYOP(rem , OP_REM_VV , OP_REM_VS )
-BINARYOP(idiv, OP_IDIV_VV, OP_IDIV_VS)
-BINARYOP(max , OP_MAX_VV , OP_MAX_VS )
-BINARYOP(min , OP_MIN_VV , OP_MIN_VS )
+BINARYOP(add   , OP_ADD_VV    , OP_ADD_VS    )
+BINARYOP(sub   , OP_SUB_VV    , OP_SUB_VS    )
+BINARYOP(mul   , OP_MUL_VV    , OP_MUL_VS    )
+BINARYOP(div   , OP_DIV_VV    , OP_DIV_VS    )
+BINARYOP(pow   , OP_POW_VV    , OP_POW_VS    )
+BINARYOP(eq    , OP_EQ_VV     , OP_EQ_VS     )
+BINARYOP(ne    , OP_NE_VV     , OP_NE_VS     )
+BINARYOP(lt    , OP_LT_VV     , OP_LT_VS     )
+BINARYOP(le    , OP_LE_VV     , OP_LE_VS     )
+BINARYOP(gt    , OP_GT_VV     , OP_GT_VS     )
+BINARYOP(ge    , OP_GE_VV     , OP_GE_VS     )
+BINARYOP(and   , OP_AND_VV    , OP_AND_VS    )
+BINARYOP(or    , OP_OR_VV     , OP_OR_VS     )
+BINARYOP(rem   , OP_REM_VV    , OP_REM_VS    )
+BINARYOP(idiv  , OP_IDIV_VV   , OP_IDIV_VS   )
+BINARYOP(max   , OP_MAX_VV    , OP_MAX_VS    )
+BINARYOP(min   , OP_MIN_VV    , OP_MIN_VS    )
+BINARYOP(assign, OP_ASSIGN_VV , OP_ASSIGN_VS )
 
 
 
-int (*binaryfunc[17]) (double *x, double *y, int xlen, int ylen, int *idx, int idx_len) = {
-  xbr_add_c , //  0 
-  xbr_sub_c , //  1
-  xbr_mul_c , //  2
-  xbr_div_c , //  3
-  xbr_pow_c , //  4
-  xbr_eq_c  , //  5
-  xbr_ne_c  , //  6
-  xbr_lt_c  , //  7
-  xbr_le_c  , //  8
-  xbr_gt_c  , //  9
-  xbr_ge_c  , // 10
-  xbr_and_c , // 11
-  xbr_or_c  , // 12
-  xbr_rem_c , // 13
-  xbr_idiv_c, // 14
-  xbr_max_c , // 15
-  xbr_min_c   // 16
+int (*binaryfunc[18]) (double *x, double *y, int xlen, int ylen, int *idx, int idx_len) = {
+  xbr_add_c   , //  0 
+  xbr_sub_c   , //  1
+  xbr_mul_c   , //  2
+  xbr_div_c   , //  3
+  xbr_pow_c   , //  4
+  xbr_eq_c    , //  5
+  xbr_ne_c    , //  6
+  xbr_lt_c    , //  7
+  xbr_le_c    , //  8
+  xbr_gt_c    , //  9
+  xbr_ge_c    , // 10
+  xbr_and_c   , // 11
+  xbr_or_c    , // 12
+  xbr_rem_c   , // 13
+  xbr_idiv_c  , // 14
+  xbr_max_c   , // 15
+  xbr_min_c   , // 16
+  xbr_assign_c  // 17
 };
 
 
@@ -214,8 +218,8 @@ SEXP br_op_binary_(SEXP op_, SEXP x_, SEXP y_, SEXP idx_, SEXP where_, SEXP cols
   int ylen = (int)Rf_length(y_);
 
   int op = Rf_asInteger(op_);
-  if (op < 0 || op >= 17) {
-    Rf_error("'op' must be in range [0, 16] got %i", op);
+  if (op < 0 || op >= 18) {
+    Rf_error("'op' must be in range [0, 17] got %i", op);
   }
   int (*binfunc) (double *x, double *y, int xlen, int ylen, int *idx, int idx_len) = 
     binaryfunc[op];
