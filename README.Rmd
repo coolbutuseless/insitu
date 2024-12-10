@@ -422,7 +422,7 @@ suppressWarnings({
     },
     insitu = {
       br_copy(t, x)         # clone x
-      br_gt(t, 0L)           # test where x > 0
+      br_gt(t, 0)           # test where x > 0
       br_sqrt(x, where = t) # perform sqrt(x) where x > 0
     },
     check = FALSE,
