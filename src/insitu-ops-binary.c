@@ -208,7 +208,7 @@ int (*binaryfunc[17]) (double *x, double *y, int xlen, int ylen, int *idx, int i
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SEXP xbr_binary_(SEXP op_, SEXP x_, SEXP y_, SEXP idx_, SEXP where_, SEXP cols_) {
+SEXP br_op_binary_(SEXP op_, SEXP x_, SEXP y_, SEXP idx_, SEXP where_, SEXP cols_) {
   
   int xlen = (int)Rf_length(x_);
   int ylen = (int)Rf_length(y_);

@@ -34,23 +34,6 @@ alloc_along <- function(x) {
 }
 
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' Fill with zeros
-#' 
-#' @inheritParams br_fmadd
-#' 
-#' @return \code{x} argument is modified by-reference and returned invisibly
-#' @examples
-#' x <- as.numeric(1:10)
-#' br_zero(x)
-#' x
-#' @export
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_zero <- function(x) {
-  invisible(.Call(br_zero_, x))
-}
-
-
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' Allocate empty matrix of the given dimensions.

@@ -124,6 +124,7 @@ UNARYOPFULL(nm, unaryop)           \
 #define OP_SINPI(offset)   sin(x[i + (offset)] * M_PI)
 #define OP_TANPI(offset)   tan(x[i + (offset)] * M_PI)
 #define OP_IS_NA(offset) (double)isnan(x[i + (offset)])
+#define OP_ZERO(offset)  0.0
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -158,13 +159,14 @@ UNARYOP(cospi,  OP_COSPI)
 UNARYOP(sinpi,  OP_SINPI)
 UNARYOP(tanpi,  OP_TANPI)
 UNARYOP(is_na,  OP_IS_NA)
+UNARYOP(zero ,  OP_ZERO)
 
 
   
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Array of unary functions performed by index
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void (*unaryfunc_byidx[29]) (double *x, int *idx, int idx_len) = {
+void (*unaryfunc_byidx[30]) (double *x, int *idx, int idx_len) = {
   br_abs_byidx  , //  0
   br_sqrt_byidx , //  1
   br_floor_byidx, //  2
@@ -193,13 +195,14 @@ void (*unaryfunc_byidx[29]) (double *x, int *idx, int idx_len) = {
   br_cospi_byidx, // 25
   br_sinpi_byidx, // 26
   br_tanpi_byidx, // 27
-  br_is_na_byidx  // 28
+  br_is_na_byidx, // 28
+  br_zero_byidx   // 29
 };
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Array of unary functions over full vector
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void (*unaryfunc_full[29]) (double *x, int len) = {
+void (*unaryfunc_full[30]) (double *x, int len) = {
   br_abs_full  ,  //  0
   br_sqrt_full ,  //  1
   br_floor_full,  //  2
@@ -228,17 +231,18 @@ void (*unaryfunc_full[29]) (double *x, int len) = {
   br_cospi_full,  // 25
   br_sinpi_full,  // 26
   br_tanpi_full,  // 27
-  br_is_na_full   // 28
+  br_is_na_full,  // 28
+  br_zero_full    // 29
 };
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Main R dispatch for unary ops
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SEXP br_unary_(SEXP op_, SEXP x_, SEXP idx_, SEXP where_, SEXP cols_) {
+SEXP br_op_unary_(SEXP op_, SEXP x_, SEXP idx_, SEXP where_, SEXP cols_) {
   
   int op = Rf_asInteger(op_);
-  if (op < 0 || op >= 29) Rf_error("'op' out of range [0, 28]");
+  if (op < 0 || op >= 30) Rf_error("'op' out of range [0, 29]");
   
   void (*unary_byidx) (double *x, int *idx, int idx_len) = unaryfunc_byidx[op];
   void (*unary_full ) (double *x, int len)               = unaryfunc_full [op];

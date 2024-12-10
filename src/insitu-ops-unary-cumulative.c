@@ -69,7 +69,7 @@ void (*cumulativefunc[4]) (double *x, int len) = {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Global dispatch for cumulative ops
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SEXP br_cumulative_(SEXP op_, SEXP x_) {
+SEXP br_op_unary_cumulative_(SEXP op_, SEXP x_) {
 
   int op = Rf_asInteger(op_);
   if (op < 0 || op > 3) Rf_error("'op' out of range [0, 3]");

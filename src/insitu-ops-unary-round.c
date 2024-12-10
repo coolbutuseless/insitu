@@ -10,7 +10,7 @@
 #include <unistd.h>
 
 
-SEXP br_round_(SEXP x_, SEXP digits_) {
+SEXP br_op_unary_round_(SEXP x_, SEXP digits_) {
   double *x = REAL(x_);
   int digits = Rf_asInteger(digits_);
   

@@ -19,25 +19,25 @@
 #' x
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_cumsum  <- function(x) { invisible(.Call(br_cumulative_, 0L, x)) }
+br_cumsum  <- function(x) { invisible(.Call(br_op_unary_cumulative_, 0L, x)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' @rdname br_cumsum
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_cumprod <- function(x) { invisible(.Call(br_cumulative_, 1L, x)) }
+br_cumprod <- function(x) { invisible(.Call(br_op_unary_cumulative_, 1L, x)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' @rdname br_cumsum
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_cummax  <- function(x) { invisible(.Call(br_cumulative_, 2L, x)) }
+br_cummax  <- function(x) { invisible(.Call(br_op_unary_cumulative_, 2L, x)) }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' @rdname br_cumsum
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_cummin  <- function(x) { invisible(.Call(br_cumulative_, 3L, x)) }
+br_cummin  <- function(x) { invisible(.Call(br_op_unary_cumulative_, 3L, x)) }
 
 
 

@@ -10,7 +10,6 @@ extern SEXP duplicate_(SEXP x_);
 
 extern SEXP alloc_n_  (SEXP n_);
 extern SEXP alloc_along_(SEXP x_);
-extern SEXP br_zero_ (SEXP x_);
 
 extern SEXP br_sort_(SEXP x_, SEXP decreasing_);
 extern SEXP br_shuffle_(SEXP x_);
@@ -30,14 +29,14 @@ extern SEXP fnmsub_(SEXP a_, SEXP b_, SEXP c_);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Unary
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-extern SEXP br_unary_(SEXP op_, SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
-extern SEXP br_cumulative_(SEXP op_, SEXP x_);
-extern SEXP br_round_(SEXP x_, SEXP digits_);
+extern SEXP br_op_unary_(SEXP op_, SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
+extern SEXP br_op_unary_cumulative_(SEXP op_, SEXP x_);
+extern SEXP br_op_unary_round_(SEXP x_, SEXP digits_);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Binary
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-extern SEXP xbr_binary_(SEXP op_, SEXP x_, SEXP y_, SEXP idx_, SEXP where_, SEXP cols_);
+extern SEXP br_op_binary_(SEXP op_, SEXP x_, SEXP y_, SEXP idx_, SEXP where_, SEXP cols_);
 
 
 
@@ -89,7 +88,6 @@ static const R_CallMethodDef CEntries[] = {
   
   {"alloc_n_"    , (DL_FUNC) &alloc_n_     , 1},
   {"alloc_along_"  , (DL_FUNC) &alloc_along_   , 1},
-  {"br_zero_"   , (DL_FUNC) &br_zero_    , 1},
 
   {"br_sort_"   , (DL_FUNC) &br_sort_    , 2},
   {"br_shuffle_", (DL_FUNC) &br_shuffle_ , 1},
@@ -109,14 +107,14 @@ static const R_CallMethodDef CEntries[] = {
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Unary
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  {"br_unary_"     , (DL_FUNC) &br_unary_     , 5},
-  {"br_cumulative_", (DL_FUNC) &br_cumulative_, 2},
-  {"br_round_"     , (DL_FUNC) &br_round_     , 2},
+  {"br_op_unary_"     , (DL_FUNC) &br_op_unary_     , 5},
+  {"br_op_unary_cumulative_", (DL_FUNC) &br_op_unary_cumulative_, 2},
+  {"br_op_unary_round_"     , (DL_FUNC) &br_op_unary_round_     , 2},
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Binary
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  {"xbr_binary_"  , (DL_FUNC) &xbr_binary_  , 6},
+  {"br_op_binary_"  , (DL_FUNC) &br_op_binary_  , 6},
   
   
   

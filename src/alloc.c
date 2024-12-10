@@ -42,14 +42,3 @@ SEXP alloc_along_(SEXP x_) {
 SEXP alloc_matrix_(SEXP nrow_, SEXP ncol_) {
   return Rf_allocMatrix(REALSXP, Rf_asInteger(nrow_), Rf_asInteger(ncol_));
 }
-
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Zero out the contents of a numeric vector
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SEXP br_zero_(SEXP x_) {
-  double *x = REAL(x_);
-  memset(x, 0, (size_t)Rf_length(x_) * sizeof(double));
-  return x_;
-}
-

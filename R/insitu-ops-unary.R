@@ -27,7 +27,7 @@
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_abs   <- function(x, idx = NULL, where = NULL, cols = NULL) {  
-  invisible(.Call(br_unary_, 0L, x, idx, where, cols)) 
+  invisible(.Call(br_op_unary_, 0L, x, idx, where, cols)) 
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -35,7 +35,7 @@ br_abs   <- function(x, idx = NULL, where = NULL, cols = NULL) {
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_sqrt  <- function(x, idx = NULL, where = NULL, cols = NULL) {  
-  invisible(.Call(br_unary_, 1L, x, idx, where, cols)) 
+  invisible(.Call(br_op_unary_, 1L, x, idx, where, cols)) 
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -43,7 +43,7 @@ br_sqrt  <- function(x, idx = NULL, where = NULL, cols = NULL) {
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_floor <- function(x, idx = NULL, where = NULL, cols = NULL) {  
-  invisible(.Call(br_unary_, 2L, x, idx, where, cols)) 
+  invisible(.Call(br_op_unary_, 2L, x, idx, where, cols)) 
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -51,7 +51,7 @@ br_floor <- function(x, idx = NULL, where = NULL, cols = NULL) {
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_ceil  <- function(x, idx = NULL, where = NULL, cols = NULL) {  
-  invisible(.Call(br_unary_, 3L, x, idx, where, cols)) 
+  invisible(.Call(br_op_unary_, 3L, x, idx, where, cols)) 
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -59,7 +59,7 @@ br_ceil  <- function(x, idx = NULL, where = NULL, cols = NULL) {
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_trunc <- function(x, idx = NULL, where = NULL, cols = NULL) {  
-  invisible(.Call(br_unary_, 4L, x, idx, where, cols)) 
+  invisible(.Call(br_op_unary_, 4L, x, idx, where, cols)) 
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -67,7 +67,7 @@ br_trunc <- function(x, idx = NULL, where = NULL, cols = NULL) {
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_exp   <- function(x, idx = NULL, where = NULL, cols = NULL) {  
-  invisible(.Call(br_unary_, 5L, x, idx, where, cols)) 
+  invisible(.Call(br_op_unary_, 5L, x, idx, where, cols)) 
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -75,7 +75,7 @@ br_exp   <- function(x, idx = NULL, where = NULL, cols = NULL) {
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_log   <- function(x, idx = NULL, where = NULL, cols = NULL) {  
-  invisible(.Call(br_unary_, 6L, x, idx, where, cols)) 
+  invisible(.Call(br_op_unary_, 6L, x, idx, where, cols)) 
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -83,7 +83,7 @@ br_log   <- function(x, idx = NULL, where = NULL, cols = NULL) {
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_log2  <- function(x, idx = NULL, where = NULL, cols = NULL) {  
-  invisible(.Call(br_unary_, 7L, x, idx, where, cols)) 
+  invisible(.Call(br_op_unary_, 7L, x, idx, where, cols)) 
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -91,7 +91,7 @@ br_log2  <- function(x, idx = NULL, where = NULL, cols = NULL) {
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_log10 <- function(x, idx = NULL, where = NULL, cols = NULL) {  
-  invisible(.Call(br_unary_, 8L, x, idx, where, cols)) 
+  invisible(.Call(br_op_unary_, 8L, x, idx, where, cols)) 
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -99,7 +99,7 @@ br_log10 <- function(x, idx = NULL, where = NULL, cols = NULL) {
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_cos   <- function(x, idx = NULL, where = NULL, cols = NULL) {  
-  invisible(.Call(br_unary_, 9L, x, idx, where, cols)) 
+  invisible(.Call(br_op_unary_, 9L, x, idx, where, cols)) 
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -107,7 +107,7 @@ br_cos   <- function(x, idx = NULL, where = NULL, cols = NULL) {
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_sin   <- function(x, idx = NULL, where = NULL, cols = NULL) {  
-  invisible(.Call(br_unary_, 10L, x, idx, where, cols)) 
+  invisible(.Call(br_op_unary_, 10L, x, idx, where, cols)) 
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -115,7 +115,7 @@ br_sin   <- function(x, idx = NULL, where = NULL, cols = NULL) {
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_tan   <- function(x, idx = NULL, where = NULL, cols = NULL) {  
-  invisible(.Call(br_unary_, 11L, x, idx, where, cols)) 
+  invisible(.Call(br_op_unary_, 11L, x, idx, where, cols)) 
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -123,7 +123,7 @@ br_tan   <- function(x, idx = NULL, where = NULL, cols = NULL) {
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_not   <- function(x, idx = NULL, where = NULL, cols = NULL) {  
-  invisible(.Call(br_unary_, 12L, x, idx, where, cols)) 
+  invisible(.Call(br_op_unary_, 12L, x, idx, where, cols)) 
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -131,7 +131,7 @@ br_not   <- function(x, idx = NULL, where = NULL, cols = NULL) {
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_expm1 <- function(x, idx = NULL, where = NULL, cols = NULL) {  
-  invisible(.Call(br_unary_, 13L, x, idx, where, cols)) 
+  invisible(.Call(br_op_unary_, 13L, x, idx, where, cols)) 
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -139,7 +139,7 @@ br_expm1 <- function(x, idx = NULL, where = NULL, cols = NULL) {
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_log1p <- function(x, idx = NULL, where = NULL, cols = NULL) {  
-  invisible(.Call(br_unary_, 14L, x, idx, where, cols)) 
+  invisible(.Call(br_op_unary_, 14L, x, idx, where, cols)) 
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -147,7 +147,7 @@ br_log1p <- function(x, idx = NULL, where = NULL, cols = NULL) {
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_acos  <- function(x, idx = NULL, where = NULL, cols = NULL) {  
-  invisible(.Call(br_unary_, 15L, x, idx, where, cols)) 
+  invisible(.Call(br_op_unary_, 15L, x, idx, where, cols)) 
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -155,7 +155,7 @@ br_acos  <- function(x, idx = NULL, where = NULL, cols = NULL) {
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_asin  <- function(x, idx = NULL, where = NULL, cols = NULL) {  
-  invisible(.Call(br_unary_, 16L, x, idx, where, cols)) 
+  invisible(.Call(br_op_unary_, 16L, x, idx, where, cols)) 
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -163,7 +163,7 @@ br_asin  <- function(x, idx = NULL, where = NULL, cols = NULL) {
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_atan  <- function(x, idx = NULL, where = NULL, cols = NULL) {  
-  invisible(.Call(br_unary_, 17L, x, idx, where, cols)) 
+  invisible(.Call(br_op_unary_, 17L, x, idx, where, cols)) 
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -171,7 +171,7 @@ br_atan  <- function(x, idx = NULL, where = NULL, cols = NULL) {
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_acosh <- function(x, idx = NULL, where = NULL, cols = NULL) {  
-  invisible(.Call(br_unary_, 18L, x, idx, where, cols)) 
+  invisible(.Call(br_op_unary_, 18L, x, idx, where, cols)) 
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -179,7 +179,7 @@ br_acosh <- function(x, idx = NULL, where = NULL, cols = NULL) {
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_asinh <- function(x, idx = NULL, where = NULL, cols = NULL) {  
-  invisible(.Call(br_unary_, 19L, x, idx, where, cols)) 
+  invisible(.Call(br_op_unary_, 19L, x, idx, where, cols)) 
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -187,7 +187,7 @@ br_asinh <- function(x, idx = NULL, where = NULL, cols = NULL) {
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_atanh <- function(x, idx = NULL, where = NULL, cols = NULL) {  
-  invisible(.Call(br_unary_, 20L, x, idx, where, cols)) 
+  invisible(.Call(br_op_unary_, 20L, x, idx, where, cols)) 
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -195,7 +195,7 @@ br_atanh <- function(x, idx = NULL, where = NULL, cols = NULL) {
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_cosh  <- function(x, idx = NULL, where = NULL, cols = NULL) {  
-  invisible(.Call(br_unary_, 21L, x, idx, where, cols)) 
+  invisible(.Call(br_op_unary_, 21L, x, idx, where, cols)) 
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -203,7 +203,7 @@ br_cosh  <- function(x, idx = NULL, where = NULL, cols = NULL) {
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_sinh  <- function(x, idx = NULL, where = NULL, cols = NULL) {  
-  invisible(.Call(br_unary_, 22L, x, idx, where, cols)) 
+  invisible(.Call(br_op_unary_, 22L, x, idx, where, cols)) 
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -211,7 +211,7 @@ br_sinh  <- function(x, idx = NULL, where = NULL, cols = NULL) {
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_tanh  <- function(x, idx = NULL, where = NULL, cols = NULL) {  
-  invisible(.Call(br_unary_, 23L, x, idx, where, cols)) 
+  invisible(.Call(br_op_unary_, 23L, x, idx, where, cols)) 
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -219,7 +219,7 @@ br_tanh  <- function(x, idx = NULL, where = NULL, cols = NULL) {
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_cospi  <- function(x, idx = NULL, where = NULL, cols = NULL) {  
-  invisible(.Call(br_unary_, 24L, x, idx, where, cols)) 
+  invisible(.Call(br_op_unary_, 24L, x, idx, where, cols)) 
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -227,7 +227,7 @@ br_cospi  <- function(x, idx = NULL, where = NULL, cols = NULL) {
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_sinpi  <- function(x, idx = NULL, where = NULL, cols = NULL) {  
-  invisible(.Call(br_unary_, 25L, x, idx, where, cols)) 
+  invisible(.Call(br_op_unary_, 25L, x, idx, where, cols)) 
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -235,7 +235,7 @@ br_sinpi  <- function(x, idx = NULL, where = NULL, cols = NULL) {
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_tanpi  <- function(x, idx = NULL, where = NULL, cols = NULL) {  
-  invisible(.Call(br_unary_, 26L, x, idx, where, cols)) 
+  invisible(.Call(br_op_unary_, 26L, x, idx, where, cols)) 
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -243,7 +243,7 @@ br_tanpi  <- function(x, idx = NULL, where = NULL, cols = NULL) {
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_sign   <- function(x, idx = NULL, where = NULL, cols = NULL) { 
-  invisible(.Call(br_unary_, 27L, x, idx, where, cols)) 
+  invisible(.Call(br_op_unary_, 27L, x, idx, where, cols)) 
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -251,14 +251,27 @@ br_sign   <- function(x, idx = NULL, where = NULL, cols = NULL) {
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_is_na <- function(x, idx = NULL, where = NULL, cols = NULL) { 
-  invisible(.Call(br_unary_, 28L, x, idx, where, cols)) 
+  invisible(.Call(br_op_unary_, 28L, x, idx, where, cols)) 
 }
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#' @rdname br_abs
+#' @export
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+br_zero <- function(x, idx = NULL, where = NULL, cols = NULL) { 
+  invisible(.Call(br_op_unary_, 29L, x, idx, where, cols)) 
+}
+
+
+
+
+
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Not exported
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_unary <- function(op, x, idx = NULL, where = NULL, cols = NULL) { 
-  invisible(.Call(br_unary_, op, x, idx, where, cols)) 
+  invisible(.Call(br_op_unary_, op, x, idx, where, cols)) 
 }
 
 
@@ -276,7 +289,7 @@ br_unary <- function(op, x, idx = NULL, where = NULL, cols = NULL) {
 #' x
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_round <- function(x, digits) { invisible(.Call(br_round_, x, digits)) }
+br_round <- function(x, digits) { invisible(.Call(br_op_unary_round_, x, digits)) }
 
 
 

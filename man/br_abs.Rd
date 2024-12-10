@@ -30,6 +30,7 @@
 \alias{br_tanpi}
 \alias{br_sign}
 \alias{br_is_na}
+\alias{br_zero}
 \title{Math operations taking only a single input vector}
 \usage{
 br_abs(x, idx = NULL, where = NULL, cols = NULL)
@@ -89,6 +90,8 @@ br_tanpi(x, idx = NULL, where = NULL, cols = NULL)
 br_sign(x, idx = NULL, where = NULL, cols = NULL)
 
 br_is_na(x, idx = NULL, where = NULL, cols = NULL)
+
+br_zero(x, idx = NULL, where = NULL, cols = NULL)
 }
 \arguments{
 \item{x}{numeric vector. This vector will be modified by-reference to 
