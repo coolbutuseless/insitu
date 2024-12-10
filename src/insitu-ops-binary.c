@@ -304,37 +304,32 @@ SEXP br_op_binary_(SEXP op_, SEXP x_, SEXP y_, SEXP idx_, SEXP where_, SEXP cols
   int idx_len = 0;
   int *idx = location_to_idx(idx_, where_, &idx_len, Rf_nrows(x_));
   
+  int res = 0;
+  
   if (ylen == xlen) {
     // Treat y_ as a matrix of the same dimensions
     for (int i = 0; i < cols_len; i++) {
       int col = cols[i];
-      int res = binfunc(REAL(x_) + col * Rf_nrows(x_), 
+      res += binfunc(REAL(x_) + col * Rf_nrows(x_), 
                         REAL(y_) + col * Rf_nrows(x_), 
                         Rf_nrows(x_), Rf_nrows(x_), 
                         idx, idx_len);
-      if (res != 0) {
-        free(idx);
-        free(cols);
-        Rf_error("(has 'cols' MN) Failed on column: %i", col);
-      }
     }
   } else {
     for (int i = 0; i < cols_len; i++) {
       int col = cols[i];
-      int res = binfunc(REAL(x_) + col * Rf_nrows(x_), REAL(y_), 
+      res += binfunc(REAL(x_) + col * Rf_nrows(x_), REAL(y_), 
                         Rf_nrows(x_), ylen, 
                         idx, idx_len);
-      if (res != 0) {
-        free(idx);
-        free(cols);
-        Rf_error("(has 'cols' Mv) Failed on column: %i", col);
-      }
     }
   }
   
   free(idx);
   free(cols);
-    
+  
+  if (res != 0) {
+    Rf_error("br_op_binary_() Matrix op failed");
+  }
   
   return x_;
 }
