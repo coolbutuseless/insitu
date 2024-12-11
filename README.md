@@ -224,12 +224,12 @@ bm <- bench::mark(
 knitr::kable(bm)
 ```
 
-| expression           |    min |  median |   itr/sec | mem_alloc |
-|:---------------------|-------:|--------:|----------:|----------:|
-| conv_nested(x, y)    | 60.8ms | 61.13ms |  16.31836 |    88.5KB |
-| conv_vec(x, y)       | 10.2ms | 11.09ms |  89.83377 |    34.6MB |
-| conv_fft(x, y)       |  3.6ms |  3.66ms | 272.15134 |     380KB |
-| conv_vec_byref(x, y) |  2.9ms |  3.05ms | 323.58100 |   108.3KB |
+| expression           |     min |  median |   itr/sec | mem_alloc |
+|:---------------------|--------:|--------:|----------:|----------:|
+| conv_nested(x, y)    | 60.76ms | 61.17ms |  16.30687 |    88.5KB |
+| conv_vec(x, y)       | 10.17ms | 10.73ms |  92.85573 |    34.6MB |
+| conv_fft(x, y)       |  3.59ms |  3.67ms | 271.09028 |     380KB |
+| conv_vec_byref(x, y) |  2.87ms |  3.04ms | 322.65923 |   108.3KB |
 
 ## Matrix-matrix multiplication
 
@@ -266,8 +266,8 @@ bench::mark(
     #> # A tibble: 2 × 6
     #>   expression                   min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>              <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 br_mat_mat_mul(C, A, B)    149ms    149ms      6.69    7.87KB     0   
-    #> 2 A %*% B                    150ms    154ms      6.54    7.63MB     2.18
+    #> 1 br_mat_mat_mul(C, A, B)    149ms    150ms      6.66    7.87KB     0   
+    #> 2 A %*% B                    149ms    150ms      6.67    7.63MB     2.22
 
 Note in the above benchmark that `br_mat_ma_mul()` only allocates
 several **kilobytes** of R memory, while `A %*% B` allocates several
@@ -296,8 +296,8 @@ bench::mark(
     #> # A tibble: 2 × 6
     #>   expression                    min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>               <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 br_mat_mat_mul_bsq(A, B)   74.7ms   75.6ms      13.2    4.86KB     0   
-    #> 2 A %*% B                    74.8ms   75.2ms      13.3    3.81MB     2.22
+    #> 1 br_mat_mat_mul_bsq(A, B)   74.9ms   75.5ms      13.2    4.87KB     0   
+    #> 2 A %*% B                    73.6ms   74.8ms      13.4    3.81MB     2.23
 
 ## Matrix transforms
 
@@ -414,8 +414,8 @@ suppressWarnings({
 knitr::kable(bm)
 ```
 
-| expression |      min |   median |   itr/sec | mem_alloc |
-|:-----------|---------:|---------:|----------:|----------:|
-| ifelse     |   2.29ms |   2.62ms |  379.2194 |   13.74MB |
-| simple     | 652.31µs | 804.91µs | 1246.0348 |    5.34MB |
-| insitu     | 844.31µs | 861.04µs | 1144.5985 |        0B |
+| expression |      min |   median |  itr/sec | mem_alloc |
+|:-----------|---------:|---------:|---------:|----------:|
+| ifelse     |   2.19ms |   2.63ms |  377.963 |   13.74MB |
+| simple     | 651.78µs | 799.13µs | 1263.690 |    5.34MB |
+| insitu     | 820.66µs | 837.14µs | 1184.534 |        0B |

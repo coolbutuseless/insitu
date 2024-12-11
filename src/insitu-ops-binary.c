@@ -19,7 +19,7 @@
 // //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // // C calculation
 // //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// int xbr_add_manual(double *x, double *y, int xlen, int ylen, int *idx, int idx_len) {
+// int br_add_manual(double *x, double *y, int xlen, int ylen, int *idx, int idx_len) {
 //   if (ylen == 1) {
 //     /* op(vector, scalar) */
 //     if (idx == NULL) {
@@ -63,7 +63,7 @@
 //       }
 //     }
 //   } else {
-//     Rf_warning("xbr_add(): 1245 error x/y non-conformable %i/%i", xlen, ylen);
+//     Rf_warning("br_add(): 1245 error x/y non-conformable %i/%i", xlen, ylen);
 //     return 1;
 //   }
 //   
@@ -74,7 +74,7 @@
 
 
 #define BINARYOP(nm, op_vv, op_vs)                                                    \
-int xbr_##nm##_c(double *x, double *y, int xlen, int ylen, int *idx, int idx_len) {   \
+int br_##nm##_(double *x, double *y, int xlen, int ylen, int *idx, int idx_len) {   \
   if (ylen == 1) {                                                                    \
     /* op(vector, scalar) */                                                          \
     if (idx == NULL) {                                                                \
@@ -118,7 +118,7 @@ int xbr_##nm##_c(double *x, double *y, int xlen, int ylen, int *idx, int idx_len
       }                                                                               \
     }                                                                                 \
   } else {                                                                            \
-    Rf_warning("xbr_##nm##_c(): x/y non-conformable %i/%i", xlen, ylen);              \
+    Rf_warning("br_" #nm "_(): x/y non-conformable %i/%i", xlen, ylen);          \
     return 1;                                                                         \
   }                                                                                   \
                                                                                       \
@@ -188,24 +188,24 @@ BINARYOP(assign, OP_ASSIGN_VV , OP_ASSIGN_VS )
 #define NBINARYOPS 18
 
 int (*binaryfunc[NBINARYOPS]) (double *x, double *y, int xlen, int ylen, int *idx, int idx_len) = {
-  xbr_add_c   , //  0 
-  xbr_sub_c   , //  1
-  xbr_mul_c   , //  2
-  xbr_div_c   , //  3
-  xbr_pow_c   , //  4
-  xbr_eq_c    , //  5
-  xbr_ne_c    , //  6
-  xbr_lt_c    , //  7
-  xbr_le_c    , //  8
-  xbr_gt_c    , //  9
-  xbr_ge_c    , // 10
-  xbr_and_c   , // 11
-  xbr_or_c    , // 12
-  xbr_rem_c   , // 13
-  xbr_idiv_c  , // 14
-  xbr_max_c   , // 15
-  xbr_min_c   , // 16
-  xbr_assign_c  // 17
+  br_add_   , //  0 
+  br_sub_   , //  1
+  br_mul_   , //  2
+  br_div_   , //  3
+  br_pow_   , //  4
+  br_eq_    , //  5
+  br_ne_    , //  6
+  br_lt_    , //  7
+  br_le_    , //  8
+  br_gt_    , //  9
+  br_ge_    , // 10
+  br_and_   , // 11
+  br_or_    , // 12
+  br_rem_   , // 13
+  br_idiv_  , // 14
+  br_max_   , // 15
+  br_min_   , // 16
+  br_assign_  // 17
 };
 
 char *binary_names[NBINARYOPS] = {

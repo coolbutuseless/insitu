@@ -437,7 +437,6 @@ knitr::kable(bm)
 ```{r eval=FALSE, echo=FALSE}
 x <- numeric(100000)
 bench::mark(
-  # ybr_sqrt(x), 
   br_exp(x), 
   exp(x),
   check = FALSE
