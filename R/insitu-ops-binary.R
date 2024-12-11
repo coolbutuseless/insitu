@@ -180,3 +180,12 @@ br_assign <- function(x, y, idx = NULL, where = NULL, cols = NULL) {
   invisible(.Call(br_op_binary_, 17L, x, y, idx, where, cols))
 }
 
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#' @rdname br_add
+#' @export
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+br_distsq <- function(x, y, idx = NULL, where = NULL, cols = NULL) {
+  invisible(.Call(br_op_binary_, 18L, x, y, idx, where, cols))
+}
+

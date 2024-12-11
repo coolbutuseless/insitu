@@ -262,6 +262,14 @@ br_zero <- function(x, idx = NULL, where = NULL, cols = NULL) {
   invisible(.Call(br_op_unary_, 29L, x, idx, where, cols)) 
 }
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#' @rdname br_abs
+#' @export
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+br_pow2 <- function(x, idx = NULL, where = NULL, cols = NULL) { 
+  invisible(.Call(br_op_unary_, 30L, x, idx, where, cols)) 
+}
+
 
 
 

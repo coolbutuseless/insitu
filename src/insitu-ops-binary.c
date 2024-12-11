@@ -164,6 +164,8 @@ int br_##nm##_(double *x, double *y, int xlen, int ylen, int *idx, int idx_len) 
 #define OP_MIN_VS(OFF)    MIN(x[i + (OFF)], y[0])
 #define OP_ASSIGN_VV(OFF)  y[i + (OFF)]
 #define OP_ASSIGN_VS(OFF)  y[0]
+#define OP_DISTSQ_VV(OFF)  x[i + (OFF)] * x[i + (OFF)]  + y[i + (OFF)] * y[i + (OFF)]
+#define OP_DISTSQ_VS(OFF)  x[i + (OFF)] * x[i + (OFF)]  + y[0] * y[0]
 
 
 BINARYOP(add   , OP_ADD_VV    , OP_ADD_VS    )
@@ -184,8 +186,9 @@ BINARYOP(idiv  , OP_IDIV_VV   , OP_IDIV_VS   )
 BINARYOP(max   , OP_MAX_VV    , OP_MAX_VS    )
 BINARYOP(min   , OP_MIN_VV    , OP_MIN_VS    )
 BINARYOP(assign, OP_ASSIGN_VV , OP_ASSIGN_VS )
+BINARYOP(distsq, OP_DISTSQ_VV , OP_DISTSQ_VS )
 
-#define NBINARYOPS 18
+#define NBINARYOPS 19
 
 int (*binaryfunc[NBINARYOPS]) (double *x, double *y, int xlen, int ylen, int *idx, int idx_len) = {
   br_add_   , //  0 
@@ -205,7 +208,8 @@ int (*binaryfunc[NBINARYOPS]) (double *x, double *y, int xlen, int ylen, int *id
   br_idiv_  , // 14
   br_max_   , // 15
   br_min_   , // 16
-  br_assign_  // 17
+  br_assign_, // 17
+  br_distsq_  // 18
 };
 
 char *binary_names[NBINARYOPS] = {
@@ -226,7 +230,8 @@ char *binary_names[NBINARYOPS] = {
   "idiv"  ,
   "max"   ,
   "min"   ,
-  "assign"
+  "assign",
+  "distsq"
 };
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -125,6 +125,7 @@ UNARYOPFULL(nm, unaryop)           \
 #define OP_TANPI(offset)   tan(x[i + (offset)] * M_PI)
 #define OP_IS_NA(offset) (double)isnan(x[i + (offset)])
 #define OP_ZERO(offset)  0.0
+#define OP_POW2(offset)  x[i + (offset)] * x[i + (offset)]
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -160,13 +161,14 @@ UNARYOP(sinpi,  OP_SINPI)
 UNARYOP(tanpi,  OP_TANPI)
 UNARYOP(is_na,  OP_IS_NA)
 UNARYOP(zero ,  OP_ZERO)
+UNARYOP(pow2 ,  OP_ZERO)
 
 
   
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Array of unary functions performed by index
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#define NUNARYOPS 30
+#define NUNARYOPS 31
 
 void (*unaryfunc_byidx[NUNARYOPS]) (double *x, int *idx, int idx_len) = {
   br_abs_byidx  , //  0
@@ -198,7 +200,8 @@ void (*unaryfunc_byidx[NUNARYOPS]) (double *x, int *idx, int idx_len) = {
   br_sinpi_byidx, // 26
   br_tanpi_byidx, // 27
   br_is_na_byidx, // 28
-  br_zero_byidx   // 29
+  br_zero_byidx , // 29
+  br_pow2_byidx   // 30
 };
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -234,7 +237,8 @@ void (*unaryfunc_full[NUNARYOPS]) (double *x, int len) = {
   br_sinpi_full,  // 26
   br_tanpi_full,  // 27
   br_is_na_full,  // 28
-  br_zero_full    // 29
+  br_zero_full ,  // 29
+  br_pow2_full    // 30
 };
 
 char *opnames[NUNARYOPS] = {
@@ -267,7 +271,8 @@ char *opnames[NUNARYOPS] = {
   "sinpi",
   "tanpi",
   "is_na",
-  "zero" 
+  "zero" ,
+  "pow2"
 };
 
 
@@ -356,7 +361,12 @@ SEXP br_op_unary_(SEXP op_, SEXP x_, SEXP idx_, SEXP where_, SEXP cols_) {
       for (int col = 0; col < Rf_ncols(x_); ++col) {
         unary_byidx(REAL(x_) + col * Rf_nrows(x_), idx, Rf_length(idx_));
       }
-      free(idx);
+      // int *idx = ridx_to_idx(idx_, Rf_length(x_), &status);
+      // if (status != 0) {
+      //   Rf_error("[br_op_unary_('%s') Loc:6a] ridx_to_idx() failed.", opnames[op]);
+      // }
+      // unary_byidx(REAL(x_), idx, Rf_length(idx_));
+      // free(idx);
     } else if (!Rf_isNull(where_)) {
       if (Rf_length(where_) == Rf_nrows(x_)) {
         // Apply 'where' column-wise
