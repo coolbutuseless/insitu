@@ -296,7 +296,11 @@ SEXP br_op_binary_(SEXP op_, SEXP x_, SEXP y_, SEXP idx_, SEXP where_, SEXP cols
     }
     cols_len = Rf_ncols(x_);
   } else {
-    cols = ridx_to_idx(cols_, Rf_ncols(x_));
+    int status = 0;
+    cols = ridx_to_idx(cols_, Rf_ncols(x_), &status);
+    if (status != 0) {
+      Rf_error("ridx_to_idx() failed. #1312");
+    }
     if (cols == NULL) {
       Rf_error("Bad rdix_to_idx() call 1249");
     }
@@ -311,6 +315,7 @@ SEXP br_op_binary_(SEXP op_, SEXP x_, SEXP y_, SEXP idx_, SEXP where_, SEXP cols
   
   int idx_len = 0;
   int status = 0;
+  
   int *idx = location_to_idx(idx_, where_, &idx_len, Rf_nrows(x_), &status);
   if (status != 0) {
     free(cols);

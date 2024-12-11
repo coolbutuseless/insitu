@@ -17,8 +17,9 @@
 // @param lgl_ R vector. Logical, Integer and REAL accepted
 // @param *len Value returned to user. Number of indicies
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-int *lgl_to_idx(SEXP lgl_, int *len) {
+int *lgl_to_idx(SEXP lgl_, int *len, int *status) {
 
+  *status = 0;
   int *idx = NULL;
   *len = 0;
   
@@ -29,7 +30,9 @@ int *lgl_to_idx(SEXP lgl_, int *len) {
     } 
     idx = malloc(*len * sizeof(int));
     if (idx == NULL) {
-      Rf_error("lgl_to_idx(): Couldn't allocate 'idx'");
+      *status = 1;
+      Rf_warning("lgl_to_idx(): Couldn't allocate 'idx'");
+      return NULL;
     }
     int *pidx = idx;
     for (int i = 0; i < Rf_length(lgl_); ++i) {
@@ -44,7 +47,9 @@ int *lgl_to_idx(SEXP lgl_, int *len) {
     } 
     idx = malloc(*len * sizeof(int));
     if (idx == NULL) {
-      Rf_error("lgl_to_idx(): Couldn't allocate 'idx'");
+      *status = 1;
+      Rf_warning("lgl_to_idx(): Couldn't allocate 'idx'");
+      return NULL;
     }
     int *pidx = idx;
     for (int i = 0; i < Rf_length(lgl_); ++i) {
@@ -53,7 +58,9 @@ int *lgl_to_idx(SEXP lgl_, int *len) {
       }
     } 
   } else {
-    Rf_error("Index type not understood");
+    *status = 1;
+    idx = NULL;
+    Rf_warning("Index type not understood");
   }
   
   
@@ -65,7 +72,7 @@ int *lgl_to_idx(SEXP lgl_, int *len) {
 // Convert an R index to a C index. 
 // Check for outliers
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-int *ridx_to_idx(SEXP idx_, int ref_len) {
+int *ridx_to_idx(SEXP idx_, int ref_len, int *status) {
   
   int *idx = malloc(Rf_length(idx_) * sizeof(int));
   if (idx == NULL) {
@@ -77,24 +84,31 @@ int *ridx_to_idx(SEXP idx_, int ref_len) {
     for (int i = 0; i < Rf_length(idx_); ++i) {
       int val = ptr[i];
       if (val < 1 || val > ref_len) {
+        *status = 1;
+        Rf_warning("Index out-of-bounds [1, %i]: %i..", ref_len, val);
         free(idx);
-        Rf_error("Index out-of-bounds [1, %i]: %i", ref_len, val);
+        return NULL;
+      } else {
+        idx[i] = val - 1;
       }
-      idx[i] = val - 1;
     }
   } else if (TYPEOF(idx_) == REALSXP) {
     double *ptr = REAL(idx_);
     for (int i = 0; i < Rf_length(idx_); ++i) {
       int val = (int)round(ptr[i]);
       if (val < 1 || val > ref_len) {
+        *status = 1;
+        Rf_warning("Index out-of-bounds [1, %i]: %i", ref_len, val);
         free(idx);
-        Rf_error("Index out-of-bounds [1, %i]: %i", ref_len, val);
+        return NULL;
+      } else {
+        idx[i] = val - 1;
       }
-      idx[i] = val - 1;
     }
   } else {
+    *status = 1;
+    Rf_warning("index type not understood");
     free(idx);
-    Rf_error("index type not understood");
   }
   
   return idx;
@@ -109,16 +123,14 @@ int *location_to_idx(SEXP idx_, SEXP where_, int *idx_len, int ref_len, int *sta
   *status = 0;
   
   if (!Rf_isNull(idx_)) {
-    idx = ridx_to_idx(idx_, ref_len);
-    *idx_len = Rf_length(idx_);
-    *status = 0;
+    idx = ridx_to_idx(idx_, ref_len, status);
+    *idx_len = idx==NULL ? 0 : Rf_length(idx_);
   } else if (!Rf_isNull(where_)) {
     if (Rf_length(where_) != ref_len) {
       *status = 1;
       Rf_warning("location_to_idx() length(where) = %i does not match ref length %i", Rf_length(where_), ref_len);
     } else {
-      idx = lgl_to_idx(where_, idx_len);
-      *status = 0;
+      idx = lgl_to_idx(where_, idx_len, status);
     }
   }
   

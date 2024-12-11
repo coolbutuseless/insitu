@@ -60,9 +60,11 @@ test_that("matrix unary sqrt with 'where' of incorrect length fails", {
 test_that("matrix unary sqrt with 'idx' out-of-bounds fails", {
   A0 <- matrix(as.numeric(1:6), 3, 2)
   
-  expect_error(
-    br_sqrt(A0, idx = c(7)),
-    "out-of-bounds"
+  expect_error(  
+    expect_warning(
+      br_sqrt(A0, idx = c(7)),
+      "out-of-bounds"
+    )
   )
 })
 

@@ -261,16 +261,29 @@ SEXP br_op_unary_(SEXP op_, SEXP x_, SEXP idx_, SEXP where_, SEXP cols_) {
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   if (!Rf_isNull(cols_)) {
     if (!Rf_isMatrix(x_)) Rf_error("Specified 'cols' by 'x' is not a matrix");
-    int *cols = ridx_to_idx(cols_, Rf_ncols(x_));
+    int status = 0;
+    int *cols = ridx_to_idx(cols_, Rf_ncols(x_), &status);
+    if (status != 0) {
+      Rf_error("ridx_to_idx() failed. #1309");
+    }
     if (!Rf_isNull(idx_)) {
-      int *idx = ridx_to_idx(idx_, Rf_nrows(x_));
+      int status = 0;
+      int *idx = ridx_to_idx(idx_, Rf_nrows(x_), &status);
+      if (status != 0) {
+        free(cols);
+        Rf_error("ridx_to_idx() failed. #1310");
+      }
       for (int i = 0; i < Rf_length(cols_); ++i) {
         unary_byidx(REAL(x_) + cols[i] * Rf_nrows(x_), idx, Rf_length(idx_));
       }
       free(idx);
     } else if (!Rf_isNull(where_)) {
       int idx_len = 0;
-      int *idx = lgl_to_idx(where_, &idx_len);
+      int status = 0;
+      int *idx = lgl_to_idx(where_, &idx_len, &status);
+      if (status != 0) {
+        Rf_error("lgl_to_idx(). 2302");
+      }
       for (int i = 0; i < Rf_length(cols_); ++i) {
         unary_byidx(REAL(x_) + cols[i] * Rf_nrows(x_), idx, idx_len);
       }
@@ -288,12 +301,16 @@ SEXP br_op_unary_(SEXP op_, SEXP x_, SEXP idx_, SEXP where_, SEXP cols_) {
   
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // Matrix where 'cols' has not been set. Just deal with 'where' and 'idx'
-  // and apply to all columns
+  // Matrix where 'cols' has not been set. 
+  // Just deal with 'where' and 'idx' and apply to all columns
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   if (Rf_isMatrix(x_)) {
     if (!Rf_isNull(idx_)) {
-      int *idx = ridx_to_idx(idx_, Rf_nrows(x_));
+      int status = 0;
+      int *idx = ridx_to_idx(idx_, Rf_nrows(x_), &status);
+      if (status != 0) {
+        Rf_error("ridx_to_idx() failed. #1311");
+      }
       for (int col = 0; col < Rf_ncols(x_); ++col) {
         unary_byidx(REAL(x_) + col * Rf_nrows(x_), idx, Rf_length(idx_));
       }
@@ -302,7 +319,11 @@ SEXP br_op_unary_(SEXP op_, SEXP x_, SEXP idx_, SEXP where_, SEXP cols_) {
       if (Rf_length(where_) == Rf_nrows(x_)) {
         // Apply 'where' column-wise
         int idx_len = 0;
-        int *idx = lgl_to_idx(where_, &idx_len);
+        int status = 0;
+        int *idx = lgl_to_idx(where_, &idx_len, &status);
+        if (status != 0) {
+          Rf_error("lgl_to_idx(). 2303");
+        }
         for (int col = 0; col < Rf_ncols(x_); ++col) {
           unary_byidx(REAL(x_) + col * Rf_nrows(x_), idx, idx_len);
         }
@@ -310,7 +331,11 @@ SEXP br_op_unary_(SEXP op_, SEXP x_, SEXP idx_, SEXP where_, SEXP cols_) {
       } else if (Rf_length(where_) == Rf_length(x_)) {
         // Treat 'where' as global
         int idx_len = 0;
-        int *idx = lgl_to_idx(where_, &idx_len);
+        int status = 0;
+        int *idx = lgl_to_idx(where_, &idx_len, &status);
+        if (status != 0) {
+          Rf_error("lgl_to_idx(). 2304");
+        }
         unary_byidx(REAL(x_), idx, idx_len);
         free(idx);
       } else {
@@ -329,14 +354,22 @@ SEXP br_op_unary_(SEXP op_, SEXP x_, SEXP idx_, SEXP where_, SEXP cols_) {
   // If here, 'x' will only be treated as vector with either 'idx' or 'where' set
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   if (!Rf_isNull(idx_)) {
-    int *idx = ridx_to_idx(idx_, Rf_length(x_));
+    int status = 0;
+    int *idx = ridx_to_idx(idx_, Rf_length(x_), &status);
+    if (status != 0) {
+      Rf_error("ridx_to_idx() failed. #1312");
+    }
     unary_byidx(REAL(x_), idx, Rf_length(idx_));
     free(idx);
     return x_;
   } else if (!Rf_isNull(where_)) {
     if (Rf_length(where_) == Rf_length(x_)) {
       int idx_len = 0;
-      int *idx = lgl_to_idx(where_, &idx_len);
+      int status = 0;
+      int *idx = lgl_to_idx(where_, &idx_len, &status);
+      if (status != 0) {
+        Rf_error("lgl_to_idx(). 2305");
+      }
       unary_byidx(REAL(x_), idx, idx_len);
       free(idx);
       return x_;

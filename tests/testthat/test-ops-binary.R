@@ -147,7 +147,10 @@ test_that("add M + S with 'idx' works with 'cols'", {
 
   # Index must refer to within-column location
   expect_error(  
-    br_add(M, s, idx = c(1, 6), cols = 2)
+    expect_warning(
+      br_add(M, s, idx = c(1, 6), cols = 2),
+      "out-of-bounds"
+    )
   )
   
   br_add(M, s, idx = c(1, 3), cols = 2)
@@ -290,7 +293,10 @@ test_that("add M + S with 'idx' works with 'cols' = NA", {
   
   # Index must refer to within-column location
   expect_error(  
-    br_add(M, s, idx = c(1, 6), cols = 2)
+    expect_warning(
+      br_add(M, s, idx = c(1, 6), cols = 2),
+      "out-of-bounds"
+    )
   )
   
   br_add(M, s, idx = c(1, 3), cols = NA)
