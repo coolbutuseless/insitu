@@ -41,7 +41,7 @@ SEXP br_copy_(SEXP x_, SEXP y_, SEXP n_, SEXP xi_, SEXP yi_) {
   // Sanity Check
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   if (xi < 0 || yi < 0 || xi >= Rf_length(x_) || yi >= Rf_length(y_)) {
-    Rf_error("br_copy() index out of range:  x: %i/%.0f  y: %i/%.0f", 
+    Rf_error("br_copy_() index out of range:  x: %i/%.0f  y: %i/%.0f", 
           Rf_asInteger(xi_), (double)Rf_length(x_), Rf_asInteger(yi_), (double)Rf_length(y_));
   }
   
@@ -51,7 +51,7 @@ SEXP br_copy_(SEXP x_, SEXP y_, SEXP n_, SEXP xi_, SEXP yi_) {
   if (Rf_length(y_) == 1) {
     // Scalar y
     if (xi + n > Rf_length(x_)) {
-      Rf_error("br_copy() end of copy exceeds size:");
+      Rf_error("br_copy_() end of copy exceeds size:");
     }
     
     double y = Rf_asReal(y_);
@@ -62,7 +62,7 @@ SEXP br_copy_(SEXP x_, SEXP y_, SEXP n_, SEXP xi_, SEXP yi_) {
   } else {
     // Vector 'y'
     if (xi + n > Rf_length(x_) || yi + n > Rf_length(y_)) {
-      Rf_error("br_copy() end of copy exceeds size:");
+      Rf_error("br_copy_() end of copy exceeds size:");
     }
     
     memcpy(REAL(x_) + xi, REAL(y_) + yi, (size_t)n * sizeof(double));

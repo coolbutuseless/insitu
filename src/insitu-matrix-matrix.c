@@ -42,7 +42,7 @@ SEXP br_mat_mat_mul_full_(SEXP C_, SEXP A_, SEXP B_,
   // Confirm dimensions are conformable
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   if (!Rf_isMatrix(A_) || !Rf_isMatrix(B_) || !Rf_isMatrix(C_)) {
-    Rf_error("br_mat_mat_mul_(): A, B & C must all be matrices");
+    Rf_error("br_mat_mat_mul_full_(): A, B & C must all be matrices");
   }
   
   bool ta = Rf_asLogical(ta_);
@@ -52,14 +52,14 @@ SEXP br_mat_mat_mul_full_(SEXP C_, SEXP A_, SEXP B_,
   int kb = tb ? Rf_ncols(B_) : Rf_nrows(B_);
   
   if (ka != kb) {
-    Rf_error("A, B are non-conformable");
+    Rf_error("br_mat_mat_mul_full_(): A, B are non-conformable");
   }
   
   int asize = ta ? Rf_ncols(A_) : Rf_nrows(A_);
   int bsize = tb ? Rf_nrows(B_) : Rf_ncols(B_);
     
   if (Rf_nrows(C_) != asize || Rf_ncols(C_) != bsize) {
-    Rf_error("C not dimensioned for holding A * B");
+    Rf_error("br_mat_mat_mul_full_(): C not dimensioned for holding A * B");
   }  
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

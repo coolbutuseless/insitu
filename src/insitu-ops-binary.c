@@ -118,7 +118,7 @@ int xbr_##nm##_c(double *x, double *y, int xlen, int ylen, int *idx, int idx_len
       }                                                                               \
     }                                                                                 \
   } else {                                                                            \
-    Rf_warning("xbr_##nm##(): 1245 error x/y non-conformable %i/%i", xlen, ylen);     \
+    Rf_warning("xbr_##nm##_c(): x/y non-conformable %i/%i", xlen, ylen);              \
     return 1;                                                                         \
   }                                                                                   \
                                                                                       \
@@ -185,9 +185,9 @@ BINARYOP(max   , OP_MAX_VV    , OP_MAX_VS    )
 BINARYOP(min   , OP_MIN_VV    , OP_MIN_VS    )
 BINARYOP(assign, OP_ASSIGN_VV , OP_ASSIGN_VS )
 
+#define NBINARYOPS 18
 
-
-int (*binaryfunc[18]) (double *x, double *y, int xlen, int ylen, int *idx, int idx_len) = {
+int (*binaryfunc[NBINARYOPS]) (double *x, double *y, int xlen, int ylen, int *idx, int idx_len) = {
   xbr_add_c   , //  0 
   xbr_sub_c   , //  1
   xbr_mul_c   , //  2
@@ -208,6 +208,26 @@ int (*binaryfunc[18]) (double *x, double *y, int xlen, int ylen, int *idx, int i
   xbr_assign_c  // 17
 };
 
+char *binary_names[NBINARYOPS] = {
+  "add"   ,
+  "sub"   ,
+  "mul"   ,
+  "div"   ,
+  "pow"   ,
+  "eq"    ,
+  "ne"    ,
+  "lt"    ,
+  "le"    ,
+  "gt"    ,
+  "ge"    ,
+  "and"   ,
+  "or"    ,
+  "rem"   ,
+  "idiv"  ,
+  "max"   ,
+  "min"   ,
+  "assign"
+};
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -218,8 +238,11 @@ SEXP br_op_binary_(SEXP op_, SEXP x_, SEXP y_, SEXP idx_, SEXP where_, SEXP cols
   int ylen = (int)Rf_length(y_);
 
   int op = Rf_asInteger(op_);
-  if (op < 0 || op >= 18) {
-    Rf_error("'op' must be in range [0, 17] got %i", op);
+  if (op < 0 || op >= NBINARYOPS) {
+    Rf_error(
+      "[br_op_binary_('%s') Loc:1] 'op' %d out of range [0, %i]", 
+      binary_names[op], op, NBINARYOPS - 1
+    );
   }
   int (*binfunc) (double *x, double *y, int xlen, int ylen, int *idx, int idx_len) = 
     binaryfunc[op];
@@ -230,18 +253,24 @@ SEXP br_op_binary_(SEXP op_, SEXP x_, SEXP y_, SEXP idx_, SEXP where_, SEXP cols
   if (!Rf_isMatrix(x_) || (Rf_isNull(cols_) && ylen != Rf_nrows(x_))) {
     // Treat x_ as a vector. Ignore cols
     if (!Rf_isNull(cols_)) {
-      Rf_warning("'cols' is set, but 'x' is not a matrix. Ignoring 'cols'");
+      Rf_warning("br_op_binary_(%s): 'cols' is set, but 'x' is not a matrix. Ignoring 'cols'", binary_names[op]);
     }
     int idx_len = 0;
     int status = 0;
     int *idx = location_to_idx(idx_, where_, &idx_len, xlen, &status);
     if (status != 0) {
-      Rf_error("location_to_idx() failed");
+      Rf_error(
+        "[br_op_binary_('%s') Loc:2] location_to_idx() failed",
+        binary_names[op]
+      );
     }
     int res = binfunc(REAL(x_), REAL(y_), xlen, ylen, idx, idx_len);
     free(idx);
     if (res != 0) {
-      Rf_error("binfunc(): Failed");
+      Rf_error(
+        "[br_op_binary_('%s') Loc:3] Calculation failed",
+        binary_names[op]
+      );
     }
     return x_;
   }
@@ -255,7 +284,10 @@ SEXP br_op_binary_(SEXP op_, SEXP x_, SEXP y_, SEXP idx_, SEXP where_, SEXP cols
     int status = 0;
     int *idx = location_to_idx(idx_, where_, &idx_len, Rf_nrows(x_), &status);
     if (status != 0) {
-      Rf_error("location_to_idx() failed");
+      Rf_error(
+        "[br_op_binary_('%s') Loc:4] location_to_idx() failed",
+        binary_names[op]
+      );
     }
     int res = 0;
     
@@ -265,7 +297,10 @@ SEXP br_op_binary_(SEXP op_, SEXP x_, SEXP y_, SEXP idx_, SEXP where_, SEXP cols
                     idx, idx_len);
       if (res != 0) {
         free(idx);
-        Rf_error("Failed on column: %i", col);
+        Rf_error(
+          "[br_op_binary_('%s') Loc:5] Matrix-vector broadcast failed at column: %i",
+          binary_names[op], col
+        );
       }
     }
     free(idx);
@@ -276,7 +311,10 @@ SEXP br_op_binary_(SEXP op_, SEXP x_, SEXP y_, SEXP idx_, SEXP where_, SEXP cols
   // All cases for a matrix with cols==NULL should be handled before here.
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   if (Rf_isNull(cols_)) {
-    Rf_error("Sanity Check Error: 1247");
+    Rf_error(
+      "[br_op_binary_('%s') Loc:6] Sanity check failed",
+      binary_names[op]
+    );
   }
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -289,7 +327,10 @@ SEXP br_op_binary_(SEXP op_, SEXP x_, SEXP y_, SEXP idx_, SEXP where_, SEXP cols
     // Perform over all columns
     cols = malloc(Rf_ncols(x_) * sizeof(int));
     if (cols == NULL) {
-      Rf_error("Failed to allocate 'cols' 1248");
+      Rf_error(
+        "[br_op_binary_('%s') Loc:7] Failed to allocate 'cols'",
+        binary_names[op]
+      );
     }
     for (int i = 0; i < Rf_ncols(x_); ++i) {
       cols[i] = i;
@@ -299,10 +340,16 @@ SEXP br_op_binary_(SEXP op_, SEXP x_, SEXP y_, SEXP idx_, SEXP where_, SEXP cols
     int status = 0;
     cols = ridx_to_idx(cols_, Rf_ncols(x_), &status);
     if (status != 0) {
-      Rf_error("ridx_to_idx() failed. #1312");
+      Rf_error(
+        "[br_op_binary_('%s') Loc:8] ridx_to_idx() failed",
+        binary_names[op]
+      );
     }
     if (cols == NULL) {
-      Rf_error("Bad rdix_to_idx() call 1249");
+      Rf_error(
+        "[br_op_binary_('%s') Loc:9] No columns specified? ridx_to_idx() failed",
+        binary_names[op]
+      );
     }
     cols_len = Rf_length(cols_);
   }
@@ -319,7 +366,10 @@ SEXP br_op_binary_(SEXP op_, SEXP x_, SEXP y_, SEXP idx_, SEXP where_, SEXP cols
   int *idx = location_to_idx(idx_, where_, &idx_len, Rf_nrows(x_), &status);
   if (status != 0) {
     free(cols);
-    Rf_error("location_to_idx() failed");
+    Rf_error(
+      "[br_op_binary_('%s') Loc:10] location_to_idx() failed",
+      binary_names[op]
+    );
   }
   
   int res = 0;
@@ -346,7 +396,10 @@ SEXP br_op_binary_(SEXP op_, SEXP x_, SEXP y_, SEXP idx_, SEXP where_, SEXP cols
   free(cols);
   
   if (res != 0) {
-    Rf_error("br_op_binary_() Matrix op failed");
+    Rf_error(
+      "[br_op_binary_('%s') Loc:11] Matrix operation failed",
+      binary_names[op]
+    );
   }
   
   return x_;

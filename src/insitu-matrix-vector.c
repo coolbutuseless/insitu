@@ -28,7 +28,7 @@ SEXP br_mat_vec_mul_(SEXP y_, SEXP A_, SEXP x_,
   // Confirm dimensions
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   if (!Rf_isMatrix(A_)) {
-    Rf_error("br_mat_mat_mul_(): A must be a matrix");
+    Rf_error("br_mat_vec_mul_(): A must be a matrix");
   }
   
   bool ta = Rf_asLogical(ta_);
@@ -37,15 +37,15 @@ SEXP br_mat_vec_mul_(SEXP y_, SEXP A_, SEXP x_,
   int N = Rf_ncols(A_);
   
   if (M == 0 || N == 0) {
-    Rf_error("Dimensions of zero are not supported");
+    Rf_error("br_mat_vec_mul_(): Dimensions of zero are not supported");
   }
   
   if (!ta && ((Rf_length(x_) != N || Rf_length(y_) != M))) {
-    Rf_error("x, y are non-conformable with 'A'");
+    Rf_error("br_mat_vec_mul_(): x, y are non-conformable with 'A'");
   } 
   
   if (ta && (Rf_length(x_) != M || Rf_length(y_) != N)) {
-    Rf_error("x, y are non-conformable with 't(A)'");
+    Rf_error("br_mat_vec_mul_(): x, y are non-conformable with 't(A)'");
   }
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -95,27 +95,27 @@ SEXP br_mat_vec_mul_asq_(SEXP A_, SEXP x_, SEXP alpha_, SEXP ta_) {
   // Confirm dimensions
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   if (!Rf_isMatrix(A_)) {
-    Rf_error("br_mat_mat_mul_(): A must be a matrix");
+    Rf_error("br_mat_vec_mul_asq_(): A must be a matrix");
   }
   
   int M = Rf_nrows(A_);
   int N = Rf_ncols(A_);
   
   if (M == 0 || N == 0) {
-    Rf_error("Dimensions of zero are not supported");
+    Rf_error("br_mat_vec_mul_asq_(): Dimensions of zero are not supported");
   }
   
   if (M != N) {
-    Rf_error("'A' matrix must be square");
+    Rf_error("br_mat_vec_mul_asq_(): 'A' matrix must be square");
   }
   
   if (Rf_length(x_) != N) {
-    Rf_error("x, is non-conformable with 'A'");
+    Rf_error("br_mat_vec_mul_asq_(): x, is non-conformable with 'A'");
   } 
   
   double *y = malloc(N * sizeof(double));
   if (y == NULL) {
-    Rf_error("'y' allocation failed");
+    Rf_error("br_mat_vec_mul_asq_(): 'y' allocation failed");
   }
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

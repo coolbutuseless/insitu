@@ -166,7 +166,9 @@ UNARYOP(zero ,  OP_ZERO)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Array of unary functions performed by index
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void (*unaryfunc_byidx[30]) (double *x, int *idx, int idx_len) = {
+#define NUNARYOPS 30
+
+void (*unaryfunc_byidx[NUNARYOPS]) (double *x, int *idx, int idx_len) = {
   br_abs_byidx  , //  0
   br_sqrt_byidx , //  1
   br_floor_byidx, //  2
@@ -202,7 +204,7 @@ void (*unaryfunc_byidx[30]) (double *x, int *idx, int idx_len) = {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Array of unary functions over full vector
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void (*unaryfunc_full[30]) (double *x, int len) = {
+void (*unaryfunc_full[NUNARYOPS]) (double *x, int len) = {
   br_abs_full  ,  //  0
   br_sqrt_full ,  //  1
   br_floor_full,  //  2
@@ -235,6 +237,39 @@ void (*unaryfunc_full[30]) (double *x, int len) = {
   br_zero_full    // 29
 };
 
+char *opnames[NUNARYOPS] = {
+  "abs"  ,
+  "sqrt" ,
+  "floor",
+  "ceil" ,
+  "trunc",
+  "exp"  ,
+  "log"  ,
+  "log2" ,
+  "log10",
+  "cos"  ,
+  "sin"  ,
+  "tan"  ,
+  "not"  ,
+  "expm1",
+  "log1p",
+  "acos" ,
+  "asin" ,
+  "atan" ,
+  "acosh",
+  "asinh",
+  "atanh",
+  "cosh" ,
+  "sinh" ,
+  "tanh" ,
+  "sign" ,
+  "cospi",
+  "sinpi",
+  "tanpi",
+  "is_na",
+  "zero" 
+};
+
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Main R dispatch for unary ops
@@ -242,8 +277,11 @@ void (*unaryfunc_full[30]) (double *x, int len) = {
 SEXP br_op_unary_(SEXP op_, SEXP x_, SEXP idx_, SEXP where_, SEXP cols_) {
   
   int op = Rf_asInteger(op_);
-  if (op < 0 || op >= 30) {
-    Rf_error("[%s() %s:%d] 'op' out of range [0, 29]", __FUNCTION__, __FILE__, __LINE__);
+  if (op < 0 || op >= NUNARYOPS) {
+    Rf_error(
+      "[br_op_unary_('%s') Loc:1] 'op' out of range [0, %i]", 
+      opnames[op], NUNARYOPS - 1
+    );
   }
   
   void (*unary_byidx) (double *x, int *idx, int idx_len) = unaryfunc_byidx[op];
@@ -262,18 +300,20 @@ SEXP br_op_unary_(SEXP op_, SEXP x_, SEXP idx_, SEXP where_, SEXP cols_) {
   // If 'cols' specified, must be a matrix
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   if (!Rf_isNull(cols_)) {
-    if (!Rf_isMatrix(x_)) Rf_error("Specified 'cols' by 'x' is not a matrix");
+    if (!Rf_isMatrix(x_)) {
+      Rf_error("[br_op_unary_('%s') Loc:2] Specified 'cols' but 'x' is not a matrix", opnames[op]);
+    }
     int status = 0;
     int *cols = ridx_to_idx(cols_, Rf_ncols(x_), &status);
     if (status != 0) {
-      Rf_error("ridx_to_idx() failed. #1309");
+      Rf_error("[br_op_unary_('%s') Loc:3] ridx_to_idx() failed.", opnames[op]);
     }
     if (!Rf_isNull(idx_)) {
       int status = 0;
       int *idx = ridx_to_idx(idx_, Rf_nrows(x_), &status);
       if (status != 0) {
         free(cols);
-        Rf_error("ridx_to_idx() failed. #1310");
+        Rf_error("[br_op_unary_('%s') Loc:4] ridx_to_idx() failed.", opnames[op]);
       }
       for (int i = 0; i < Rf_length(cols_); ++i) {
         unary_byidx(REAL(x_) + cols[i] * Rf_nrows(x_), idx, Rf_length(idx_));
@@ -284,7 +324,7 @@ SEXP br_op_unary_(SEXP op_, SEXP x_, SEXP idx_, SEXP where_, SEXP cols_) {
       int status = 0;
       int *idx = lgl_to_idx(where_, &idx_len, &status);
       if (status != 0) {
-        Rf_error("lgl_to_idx(). 2302");
+        Rf_error("[br_op_unary_('%s') Loc:5] lgl_to_idx() failed.", opnames[op]);
       }
       for (int i = 0; i < Rf_length(cols_); ++i) {
         unary_byidx(REAL(x_) + cols[i] * Rf_nrows(x_), idx, idx_len);
@@ -311,7 +351,7 @@ SEXP br_op_unary_(SEXP op_, SEXP x_, SEXP idx_, SEXP where_, SEXP cols_) {
       int status = 0;
       int *idx = ridx_to_idx(idx_, Rf_nrows(x_), &status);
       if (status != 0) {
-        Rf_error("ridx_to_idx() failed. #1311");
+        Rf_error("[br_op_unary_('%s') Loc:6] ridx_to_idx() failed.", opnames[op]);
       }
       for (int col = 0; col < Rf_ncols(x_); ++col) {
         unary_byidx(REAL(x_) + col * Rf_nrows(x_), idx, Rf_length(idx_));
@@ -324,7 +364,7 @@ SEXP br_op_unary_(SEXP op_, SEXP x_, SEXP idx_, SEXP where_, SEXP cols_) {
         int status = 0;
         int *idx = lgl_to_idx(where_, &idx_len, &status);
         if (status != 0) {
-          Rf_error("lgl_to_idx(). 2303");
+          Rf_error("[br_op_unary_('%s') Loc:7] lgl_to_idx() failed.", opnames[op]);
         }
         for (int col = 0; col < Rf_ncols(x_); ++col) {
           unary_byidx(REAL(x_) + col * Rf_nrows(x_), idx, idx_len);
@@ -336,17 +376,20 @@ SEXP br_op_unary_(SEXP op_, SEXP x_, SEXP idx_, SEXP where_, SEXP cols_) {
         int status = 0;
         int *idx = lgl_to_idx(where_, &idx_len, &status);
         if (status != 0) {
-          Rf_error("lgl_to_idx(). 2304");
+          Rf_error("[br_op_unary_('%s') Loc:8] lgl_to_idx() failed.", opnames[op]);
         }
         unary_byidx(REAL(x_), idx, idx_len);
         free(idx);
       } else {
-        Rf_error("Length mismatch: len(where) [%.0f] != len(x) [%.0f] or nrow(x) [%i]",
+        Rf_error(
+          "[br_op_unary_('%s') Loc:9] Length mismatch: len(where) [%.0f] != len(x) [%.0f] or nrow(x) [%i]", 
+          opnames[op], 
                  (double)Rf_length(where_), (double)Rf_length(x_),
-                 Rf_nrows(x_));
+                 Rf_nrows(x_)
+        );
       }
     } else {
-      Rf_error("Error. Code 8876. Should never happen!");
+      Rf_error("[br_op_unary_('%s') Loc:10] " "Sanity check failed", opnames[op]);
     }
     
     return x_;
@@ -359,7 +402,7 @@ SEXP br_op_unary_(SEXP op_, SEXP x_, SEXP idx_, SEXP where_, SEXP cols_) {
     int status = 0;
     int *idx = ridx_to_idx(idx_, Rf_length(x_), &status);
     if (status != 0) {
-      Rf_error("ridx_to_idx() failed. #1312");
+      Rf_error("[br_op_unary_('%s') Loc:11] ridx_to_idx() failed.", opnames[op]);
     }
     unary_byidx(REAL(x_), idx, Rf_length(idx_));
     free(idx);
@@ -370,21 +413,23 @@ SEXP br_op_unary_(SEXP op_, SEXP x_, SEXP idx_, SEXP where_, SEXP cols_) {
       int status = 0;
       int *idx = lgl_to_idx(where_, &idx_len, &status);
       if (status != 0) {
-        Rf_error("lgl_to_idx(). 2305");
+        Rf_error("[br_op_unary_('%s') Loc:12] lgl_to_idx() failed.", opnames[op]);
       }
       unary_byidx(REAL(x_), idx, idx_len);
       free(idx);
       return x_;
     } else {
-      Rf_error("Length mismatch: len(where) [%.0f] != len(x) [%.0f] ",
-               (double)Rf_length(where_), (double)Rf_length(x_));
+      Rf_error(
+        "[br_op_unary_('%s') Loc:13] Length mismatch: len(where) [%.0f] != len(x) [%.0f] ", 
+        opnames[op], (double)Rf_length(where_), (double)Rf_length(x_)
+      );
     }
   } else {
-    Rf_error("Error. Code 8877. Should never happen!");
+    Rf_error("[br_op_unary_('%s') Loc:14] Sanity check failed", opnames[op]);
   }
   
   
-  Rf_error("Error. Code 8878. Should never happen!");
+  Rf_error("[br_op_unary_('%s') Loc:15] Sanity check failed", opnames[op]);
 }
 
 

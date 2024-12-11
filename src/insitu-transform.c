@@ -88,7 +88,7 @@ static inline void assert_mat44(SEXP mat_) {
     return;
   }
   
-  Rf_error("Argument is not a 4x4 numeric matrix");
+  Rf_error("assert_mat44(): Argument is not a 4x4 numeric matrix");
 }
 
 

@@ -25,7 +25,7 @@ SEXP br_mat_transpose_(SEXP mat_) {
   
   double *tmp = malloc((size_t)rows * (size_t)cols * sizeof(double));
   if (tmp == NULL) {
-    Rf_error("Could not allocate 'tmp'");
+    Rf_error("br_mat_transpose_(): Could not allocate 'tmp'");
   }
   
   R_xlen_t len = Rf_xlength(mat_);
