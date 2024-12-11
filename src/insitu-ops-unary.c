@@ -242,7 +242,9 @@ void (*unaryfunc_full[30]) (double *x, int len) = {
 SEXP br_op_unary_(SEXP op_, SEXP x_, SEXP idx_, SEXP where_, SEXP cols_) {
   
   int op = Rf_asInteger(op_);
-  if (op < 0 || op >= 30) Rf_error("'op' out of range [0, 29]");
+  if (op < 0 || op >= 30) {
+    Rf_error("[%s() %s:%d] 'op' out of range [0, 29]", __FUNCTION__, __FILE__, __LINE__);
+  }
   
   void (*unary_byidx) (double *x, int *idx, int idx_len) = unaryfunc_byidx[op];
   void (*unary_full ) (double *x, int len)               = unaryfunc_full [op];
