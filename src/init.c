@@ -20,10 +20,7 @@ extern SEXP br_copy_(SEXP x_, SEXP y_, SEXP n_, SEXP xi_, SEXP yi_);
 
 extern SEXP br_fill_seq_(SEXP x_, SEXP from_, SEXP to_, SEXP step_);
 
-extern SEXP fmadd_(SEXP a_, SEXP b_, SEXP c_);
-extern SEXP fmsub_(SEXP a_, SEXP b_, SEXP c_);
-extern SEXP fnmadd_(SEXP a_, SEXP b_, SEXP c_);
-extern SEXP fnmsub_(SEXP a_, SEXP b_, SEXP c_);
+extern SEXP br_fma_(SEXP op_, SEXP x_, SEXP a_, SEXP b_);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Unary
@@ -97,10 +94,7 @@ static const R_CallMethodDef CEntries[] = {
   
   {"br_fill_seq_", (DL_FUNC) &br_fill_seq_, 4},
   
-  {"fmadd_" , (DL_FUNC) &fmadd_ , 3},
-  {"fmsub_" , (DL_FUNC) &fmsub_ , 3},
-  {"fnmadd_", (DL_FUNC) &fnmadd_, 3},
-  {"fnmsub_", (DL_FUNC) &fnmsub_, 3},
+  {"br_fma_", (DL_FUNC) &br_fma_, 4},
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Unary

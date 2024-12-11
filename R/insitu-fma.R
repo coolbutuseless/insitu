@@ -29,7 +29,7 @@
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_fmadd <- function(x, a, b) {
-  invisible(.Call(fmadd_, x, a, b))
+  invisible(.Call(br_fma_, 0L, x, a, b))
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -37,7 +37,7 @@ br_fmadd <- function(x, a, b) {
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_fmsub <- function(x, a, b) {
-  invisible(.Call(fmsub_, x, a, b))
+  invisible(.Call(br_fma_, 1L, x, a, b))
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -45,7 +45,7 @@ br_fmsub <- function(x, a, b) {
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_fnmadd <- function(x, a, b) {
-  invisible(.Call(fnmadd_, x, a, b))
+  invisible(.Call(br_fma_, 2L, x, a, b))
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -53,7 +53,7 @@ br_fnmadd <- function(x, a, b) {
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_fnmsub <- function(x, a, b) {
-  invisible(.Call(fnmsub_, x, a, b))
+  invisible(.Call(br_fma_, 3L, x, a, b))
 }
 
 
