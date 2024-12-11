@@ -19,7 +19,8 @@
 \alias{br_max}
 \alias{br_min}
 \alias{br_assign}
-\alias{br_distsq}
+\alias{br_sumsq}
+\alias{br_diffsq}
 \title{Math operations taking two arguments}
 \usage{
 br_add(x, y, idx = NULL, where = NULL, cols = NULL)
@@ -58,7 +59,9 @@ br_min(x, y, idx = NULL, where = NULL, cols = NULL)
 
 br_assign(x, y, idx = NULL, where = NULL, cols = NULL)
 
-br_distsq(x, y, idx = NULL, where = NULL, cols = NULL)
+br_sumsq(x, y, idx = NULL, where = NULL, cols = NULL)
+
+br_diffsq(x, y, idx = NULL, where = NULL, cols = NULL)
 }
 \arguments{
 \item{x}{numeric vector. This vector will be modified by-reference to 
