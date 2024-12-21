@@ -62,6 +62,7 @@ extern SEXP br_mat_mat_mul_full_(SEXP C_, SEXP A_, SEXP B_,
 extern SEXP br_mat_mat_mul_bsq_(SEXP A_, SEXP B_, SEXP alpha_, SEXP tb_);
 
 extern SEXP br_mat_transpose_(SEXP mat_);
+extern SEXP br_mat_roll_(SEXP mat_, SEXP rows_, SEXP cols_);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Transforms 3-D
@@ -143,6 +144,7 @@ static const R_CallMethodDef CEntries[] = {
   {"br_mat_mat_mul_bsq_" , (DL_FUNC) &br_mat_mat_mul_bsq_ , 4},
   
   {"br_mat_transpose_", (DL_FUNC) &br_mat_transpose_, 1},
+  {"br_mat_roll_"     , (DL_FUNC) &br_mat_roll_     , 3},
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Transforms 3-D

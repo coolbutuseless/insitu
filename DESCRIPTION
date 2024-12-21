@@ -15,7 +15,6 @@ Description: Using by-reference semantics, functions in this package are crafted
     copy-on-modify semantics.
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
 RoxygenNote: 7.3.2
 Suggests: 
     knitr,

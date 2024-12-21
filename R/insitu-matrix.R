@@ -138,3 +138,24 @@ br_mat_transpose <- function(mat) {
 }
 
 
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#' Roll elements of a matrix
+#' 
+#' @param mat matrix
+#' @param rows,cols Number of rows and columns to roll
+#' @return None. Matrix is modified by-reference and returned invisibly
+#' @examples
+#' m <- matrix(as.numeric(1:6), 2, 3)
+#' m
+#' br_mat_roll(m, rows = 3)
+#' m
+#' @export
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+br_mat_roll <- function(mat, rows = 0, cols = 0) {
+  invisible(
+    .Call(br_mat_roll_, mat, rows, cols)
+  )
+}
+
+

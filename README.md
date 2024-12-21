@@ -55,6 +55,7 @@ number of garbage collection operations is also reduced.
 | `br_mat_hypot2(d, mat)` `br_mat_hypot3(d, mat)` | distance from point to origin |
 | `br_mat_dist2(d, mat1, mat2)`, `br_mat_dist3(d, mat1, mat2)` | distance between points |
 | `br_mat_transpose(mat)` | matrix transpose |
+| `br_mat_roll(mat, rows, cols)` | roll a matrix |
 
 | 3D Matrix transforms  | Description                                    |
 |-----------------------|------------------------------------------------|
@@ -227,10 +228,10 @@ knitr::kable(bm)
 
 | expression           |     min |  median |   itr/sec | mem_alloc |
 |:---------------------|--------:|--------:|----------:|----------:|
-| conv_nested(x, y)    | 60.99ms | 61.12ms |  16.31941 |    88.5KB |
-| conv_vec(x, y)       |  10.1ms | 10.99ms |  91.74539 |    34.6MB |
-| conv_fft(x, y)       |   3.6ms |  3.68ms | 270.37936 |     380KB |
-| conv_vec_byref(x, y) |  2.87ms |  3.01ms | 324.42194 |   108.4KB |
+| conv_nested(x, y)    | 60.41ms | 61.06ms |  16.38299 |    88.5KB |
+| conv_vec(x, y)       | 10.06ms | 11.26ms |  89.45468 |    34.6MB |
+| conv_fft(x, y)       |   3.6ms |  3.67ms | 271.91246 |     380KB |
+| conv_vec_byref(x, y) |  2.87ms |  2.98ms | 326.16396 |   108.4KB |
 
 ## Matrix-matrix multiplication
 
@@ -267,8 +268,8 @@ bench::mark(
     #> # A tibble: 2 × 6
     #>   expression                   min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>              <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 br_mat_mat_mul(C, A, B)    149ms    149ms      6.72    7.87KB     0   
-    #> 2 A %*% B                    150ms    150ms      6.66    7.63MB     2.22
+    #> 1 br_mat_mat_mul(C, A, B)    149ms    151ms      6.64    7.87KB     0   
+    #> 2 A %*% B                    150ms    150ms      6.65    7.63MB     2.22
 
 Note in the above benchmark that `br_mat_ma_mul()` only allocates
 several **kilobytes** of R memory, while `A %*% B` allocates several
@@ -297,8 +298,8 @@ bench::mark(
     #> # A tibble: 2 × 6
     #>   expression                    min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>               <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 br_mat_mat_mul_bsq(A, B)   74.2ms   75.3ms      13.3    4.87KB     0   
-    #> 2 A %*% B                    74.9ms     75ms      13.3    3.81MB     2.22
+    #> 1 br_mat_mat_mul_bsq(A, B)   74.5ms     75ms      13.3    4.87KB     0   
+    #> 2 A %*% B                    74.2ms     75ms      13.3    3.81MB     2.22
 
 ## Matrix transforms
 
@@ -417,9 +418,9 @@ knitr::kable(bm)
 
 | expression |      min |   median |   itr/sec | mem_alloc |
 |:-----------|---------:|---------:|----------:|----------:|
-| ifelse     |   2.09ms |   2.57ms |  392.2461 |   13.74MB |
-| simple     | 652.15µs | 804.71µs | 1269.8160 |    5.34MB |
-| insitu     | 820.49µs | 834.72µs | 1184.5332 |        0B |
+| ifelse     |   2.04ms |   2.59ms |  392.5246 |   13.74MB |
+| simple     | 653.25µs | 793.76µs | 1265.3547 |    5.34MB |
+| insitu     | 819.96µs | 834.53µs | 1187.1767 |        0B |
 
 ## 2-D Matrix transforms
 
@@ -480,3 +481,113 @@ for (t in 1:1000) {
   dev.flush()
 }
 ```
+
+## Game of life
+
+``` r
+library(grid)
+library(insitu)
+library(governor)
+
+# Open a fast graphics device
+x11(type = 'dbcairo', antialias = 'none')
+dev.control(displaylist = 'inhibit')  
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Initialise the game of life board
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+set.seed(1)
+
+gc(full = TRUE)
+N <- 300
+g <- matrix(sample(c(0, 1), N*N, replace = TRUE), N, N)
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Pre-allocate working space
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+gn  <- duplicate(g)  # Copies of board rolled 1 element in each neighbours
+gne <- duplicate(g)  # direction
+ge  <- duplicate(g)  # 
+gse <- duplicate(g)  # 
+gs  <- duplicate(g)  # 
+gsw <- duplicate(g)  # 
+gw  <- duplicate(g)  # 
+gnw <- duplicate(g)  # 
+
+gtot <- duplicate(g) # The total of the 8 surrounding neighbours at each pixel
+up1  <- duplicate(g) # Calculation space for updating the board
+up2  <- duplicate(g)
+up3  <- duplicate(g)
+
+gp   <- duplicate(g) # This will be the version plotted
+
+gov <- governor::gov_init(1/30)
+dev.flush()
+for (i in seq(1000)) {
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Copy the game board into each of the neighbours
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  br_copy(gn , g)
+  br_copy(gne, g)
+  br_copy(ge , g)
+  br_copy(gse, g)
+  br_copy(gs , g)
+  br_copy(gsw, g)
+  br_copy(gw , g)
+  br_copy(gnw, g)
+  
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Roll each of these matrix representations
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  br_mat_roll(gn , -1,  0)
+  br_mat_roll(gne, -1,  1)
+  br_mat_roll(ge ,  0,  1)
+  br_mat_roll(gse,  1,  1)
+  br_mat_roll(gs ,  1,  0)
+  br_mat_roll(gsw,  1, -1)
+  br_mat_roll(gw ,  0, -1)
+  br_mat_roll(gnw, -1, -1)
+  
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Sum at each matrix locaiton is the number of neighbours this location has
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  br_zero(gtot)
+  br_add(gtot, gn )
+  br_add(gtot, gne)
+  br_add(gtot, ge )
+  br_add(gtot, gse)
+  br_add(gtot, gs )
+  br_add(gtot, gsw)
+  br_add(gtot, gw )
+  br_add(gtot, gnw)  # gtot = sum of all live neighbours
+  
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Classic conway:
+  #   * if the location is alive and it has 2 or 3 neighbours it survives
+  #   * if the location is dead and there are exactly 3 neighbours ,it becomes alive
+  # (g == 1 & (gsum == 2L | gsum == 3)) | (g == 0 & gsum == 3)
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Make copies of the number of neighbours at each location
+  br_copy(up1, gtot)
+  br_copy(up2, gtot)
+  br_copy(up3, gtot)
+  
+  br_eq(up1, 2)   # up1 = gtot == 2
+  br_eq(up2, 3)   # up2 = gtot == 3
+  br_or(up1, up2) # up1 = (gtot == 2 | gtot == 3)
+  br_and(up1, g)  # up1 = (gtot == 2 | gtot == 3) & (g == 1)
+  br_not(g)       # g = (g == 0)
+  br_and(g, up2)  # g = (g == 0) & (gtot == 3)
+  br_or(g, up1)   # g = ((g == 0) & (gtot == 3)) | ( (gtot == 2 | gtot == 3) & (g == 1) )
+  
+  br_copy(gp, g)  # Make a copy of current board for plotting
+  br_not(gp)      # invert black/white
+  
+  dev.hold()
+  grid.raster(gp, interpolate = F)
+  dev.flush()
+  governor::gov_wait(gov)
+}
+```
+
+<img src="man/figures/game-of-life.png" width="75%"/>
