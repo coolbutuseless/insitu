@@ -55,15 +55,15 @@ number of garbage collection operations is also reduced.
 | `br_mat_dist2(d, mat1, mat2)`, `br_mat_dist3(d, mat1, mat2)` | distance between points |
 | `br_mat_transpose(mat)` | matrix transpose |
 
-| 3D Matrix transforms | Description                                    |
-|----------------------|------------------------------------------------|
-| `tf_create()`        | Create the identity transform                  |
-| `tf_reset()`         | Reset a transform to be the identity transform |
-| `tf_add_translate()` | Add translation to the transform               |
-| `tf_add_scale()`     | Add scaling to the transform                   |
-| `tf_add_rotate_x()`  | Add rotation about the x-axis to the transform |
-| `tf_add_rotate_y()`  | Add rotation about the y-axis to the transform |
-| `tf_add_rotate_z()`  | Add rotation about the z-axis to the transform |
+| 3D Matrix transforms  | Description                                    |
+|-----------------------|------------------------------------------------|
+| `tf3_create()`        | Create the identity transform                  |
+| `tf3_reset()`         | Reset a transform to be the identity transform |
+| `tf3_add_translate()` | Add translation to the transform               |
+| `tf3_add_scale()`     | Add scaling to the transform                   |
+| `tf3_add_rotate_x()`  | Add rotation about the x-axis to the transform |
+| `tf3_add_rotate_y()`  | Add rotation about the y-axis to the transform |
+| `tf3_add_rotate_z()`  | Add rotation about the z-axis to the transform |
 
 #### RNG
 
@@ -226,10 +226,10 @@ knitr::kable(bm)
 
 | expression           |     min |  median |   itr/sec | mem_alloc |
 |:---------------------|--------:|--------:|----------:|----------:|
-| conv_nested(x, y)    | 60.76ms | 61.17ms |  16.30687 |    88.5KB |
-| conv_vec(x, y)       | 10.17ms | 10.73ms |  92.85573 |    34.6MB |
-| conv_fft(x, y)       |  3.59ms |  3.67ms | 271.09028 |     380KB |
-| conv_vec_byref(x, y) |  2.87ms |  3.04ms | 322.65923 |   108.3KB |
+| conv_nested(x, y)    | 60.47ms | 60.94ms |  16.38701 |    88.5KB |
+| conv_vec(x, y)       |  10.1ms | 10.85ms |  90.97607 |    34.6MB |
+| conv_fft(x, y)       |  3.59ms |  3.68ms | 271.13520 |     380KB |
+| conv_vec_byref(x, y) |  2.86ms |     3ms | 326.78609 |   108.4KB |
 
 ## Matrix-matrix multiplication
 
@@ -266,8 +266,8 @@ bench::mark(
     #> # A tibble: 2 × 6
     #>   expression                   min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>              <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 br_mat_mat_mul(C, A, B)    149ms    150ms      6.66    7.87KB     0   
-    #> 2 A %*% B                    149ms    150ms      6.67    7.63MB     2.22
+    #> 1 br_mat_mat_mul(C, A, B)    148ms    149ms      6.71    7.87KB     0   
+    #> 2 A %*% B                    150ms    150ms      6.67    7.63MB     2.22
 
 Note in the above benchmark that `br_mat_ma_mul()` only allocates
 several **kilobytes** of R memory, while `A %*% B` allocates several
@@ -296,8 +296,8 @@ bench::mark(
     #> # A tibble: 2 × 6
     #>   expression                    min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>               <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 br_mat_mat_mul_bsq(A, B)   74.9ms   75.5ms      13.2    4.87KB     0   
-    #> 2 A %*% B                    73.6ms   74.8ms      13.4    3.81MB     2.23
+    #> 1 br_mat_mat_mul_bsq(A, B)   75.1ms   75.5ms      13.3    4.87KB     0   
+    #> 2 A %*% B                    74.4ms   74.9ms      13.4    3.81MB     2.23
 
 ## Matrix transforms
 
@@ -327,20 +327,20 @@ plot(1, xlim = c(-1.15, 1.15), ylim = c(-1.15, 1.15), asp = 1, axes = F, ann = F
 cols <- viridisLite::inferno(N, begin = 0.1, end = 0.9)
 
 # Create empty Transform
-tf <- tf_create() 
+tf <- tf3_create() 
 
 dev.flush()
 for (t in 1:1000) {
   # Create transform for this timestep
   tf |>
-    tf_reset() |>
-    tf_add_rotate_x( t / 100) |>
-    tf_add_rotate_y( t /  77 + pi / 3) |>
-    tf_add_rotate_z(-t /  50 + pi / 6)
+    tf3_reset() |>
+    tf3_add_rotate_x( t / 100) |>
+    tf3_add_rotate_y( t /  77 + pi / 3) |>
+    tf3_add_rotate_z(-t /  50 + pi / 6)
   
   # Apply transform to the points
   br_copy(mat, mat0)
-  tf_apply(mat, tf)
+  tf3_apply(mat, tf)
   
   # Clear the screen and plot the points for this timestep
   dev.hold()
@@ -414,8 +414,68 @@ suppressWarnings({
 knitr::kable(bm)
 ```
 
-| expression |      min |   median |  itr/sec | mem_alloc |
-|:-----------|---------:|---------:|---------:|----------:|
-| ifelse     |   2.19ms |   2.63ms |  377.963 |   13.74MB |
-| simple     | 651.78µs | 799.13µs | 1263.690 |    5.34MB |
-| insitu     | 820.66µs | 837.14µs | 1184.534 |        0B |
+| expression |      min |   median |   itr/sec | mem_alloc |
+|:-----------|---------:|---------:|----------:|----------:|
+| ifelse     |   2.24ms |   2.59ms |  384.2678 |   13.74MB |
+| simple     | 661.58µs | 801.14µs | 1246.2429 |    5.34MB |
+| insitu     | 820.49µs | 829.72µs | 1189.9668 |        0B |
+
+## 2-D Matrix transforms
+
+The following script opens a graphics windows renders in realtime 20,000
+points rotating about the centre
+
+``` r
+library(grid)
+library(insitu)
+
+# Open a fast graphics device
+x11(type = 'dbcairo', antialias = 'none')
+dev.control(displaylist = 'inhibit')  
+
+# Create random points in the unit cube
+N <- 10000
+set.seed(1)
+x <- runif(N, -2, 2)
+y <- runif(N, -2, 2)
+d <- rep(1, N)
+mat0 <- cbind(x, y, d)
+
+x <- runif(N, -2, 2)
+y <- runif(N, -2, 2)
+d <- rep(1, N)
+mat1 <- cbind(x, y, d)
+
+mat0a  <- duplicate(mat0)
+mat1a  <- duplicate(mat0)
+
+par(mai = c(0, 0, 0, 0))
+plot(1, xlim = c(-1.15, 1.15), ylim = c(-1.15, 1.15), asp = 1, axes = F, ann = F)
+
+cols <- viridisLite::cividis(N, begin = 0.1, end = 0.9)
+
+# Create empty Transform
+tf0 <- tf2_create() 
+tf1 <- tf2_create() 
+
+dev.flush()
+for (t in 1:1000) {
+  # Create transform for this timestep
+  tf0 |> tf2_reset() |> tf2_add_rotate(-t /  50 + pi / 6)
+  tf1 |> tf2_reset() |> tf2_add_rotate( t /  77 + pi / 6) 
+  
+  # Apply transform to the points
+  br_copy(mat0a, mat0)
+  tf2_apply(mat0a, tf0)
+  
+  br_copy(mat1a, mat1)
+  tf2_apply(mat1a, tf1)
+  
+  # Clear the screen and plot the points for this timestep
+  dev.hold()
+  grid.rect(gp = gpar(fill = 'black'))
+  points(mat0a, pch = '.', cex = 2, col = 'white')
+  points(mat1a, pch = '.', cex = 2, col = 'lightblue')
+  dev.flush()
+}
+```

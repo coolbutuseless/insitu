@@ -76,13 +76,13 @@ that the number of garbage collection operations is also reduced.
 
 | 3D Matrix transforms | Description |
 |----------------------|-------------|
-| `tf_create()`        | Create the identity transform |
-| `tf_reset()`         | Reset a transform to be the identity transform |
-| `tf_add_translate()` | Add translation to the transform |
-| `tf_add_scale()` | Add scaling to the transform |
-| `tf_add_rotate_x()` | Add rotation about the x-axis to the transform |
-| `tf_add_rotate_y()` | Add rotation about the y-axis to the transform |
-| `tf_add_rotate_z()` | Add rotation about the z-axis to the transform |
+| `tf3_create()`        | Create the identity transform |
+| `tf3_reset()`         | Reset a transform to be the identity transform |
+| `tf3_add_translate()` | Add translation to the transform |
+| `tf3_add_scale()` | Add scaling to the transform |
+| `tf3_add_rotate_x()` | Add rotation about the x-axis to the transform |
+| `tf3_add_rotate_y()` | Add rotation about the y-axis to the transform |
+| `tf3_add_rotate_z()` | Add rotation about the z-axis to the transform |
 
 
 #### RNG
@@ -354,20 +354,20 @@ plot(1, xlim = c(-1.15, 1.15), ylim = c(-1.15, 1.15), asp = 1, axes = F, ann = F
 cols <- viridisLite::inferno(N, begin = 0.1, end = 0.9)
 
 # Create empty Transform
-tf <- tf_create() 
+tf <- tf3_create() 
 
 dev.flush()
 for (t in 1:1000) {
   # Create transform for this timestep
   tf |>
-    tf_reset() |>
-    tf_add_rotate_x( t / 100) |>
-    tf_add_rotate_y( t /  77 + pi / 3) |>
-    tf_add_rotate_z(-t /  50 + pi / 6)
+    tf3_reset() |>
+    tf3_add_rotate_x( t / 100) |>
+    tf3_add_rotate_y( t /  77 + pi / 3) |>
+    tf3_add_rotate_z(-t /  50 + pi / 6)
   
   # Apply transform to the points
   br_copy(mat, mat0)
-  tf_apply(mat, tf)
+  tf3_apply(mat, tf)
   
   # Clear the screen and plot the points for this timestep
   dev.hold()
@@ -443,5 +443,66 @@ bench::mark(
 )
 ```
 
+
+
+## 2-D Matrix transforms
+
+The following script opens a graphics windows renders in realtime 20,000 points
+rotating about the centre
+
+```{r eval = FALSE}
+library(grid)
+library(insitu)
+
+# Open a fast graphics device
+x11(type = 'dbcairo', antialias = 'none')
+dev.control(displaylist = 'inhibit')  
+
+# Create random points in the unit cube
+N <- 10000
+set.seed(1)
+x <- runif(N, -2, 2)
+y <- runif(N, -2, 2)
+d <- rep(1, N)
+mat0 <- cbind(x, y, d)
+
+x <- runif(N, -2, 2)
+y <- runif(N, -2, 2)
+d <- rep(1, N)
+mat1 <- cbind(x, y, d)
+
+mat0a  <- duplicate(mat0)
+mat1a  <- duplicate(mat0)
+
+par(mai = c(0, 0, 0, 0))
+plot(1, xlim = c(-1.15, 1.15), ylim = c(-1.15, 1.15), asp = 1, axes = F, ann = F)
+
+cols <- viridisLite::cividis(N, begin = 0.1, end = 0.9)
+
+# Create empty Transform
+tf0 <- tf2_create() 
+tf1 <- tf2_create() 
+
+dev.flush()
+for (t in 1:1000) {
+  # Create transform for this timestep
+  tf0 |> tf2_reset() |> tf2_add_rotate(-t /  50 + pi / 6)
+  tf1 |> tf2_reset() |> tf2_add_rotate( t /  77 + pi / 6) 
+  
+  # Apply transform to the points
+  br_copy(mat0a, mat0)
+  tf2_apply(mat0a, tf0)
+  
+  br_copy(mat1a, mat1)
+  tf2_apply(mat1a, tf1)
+  
+  # Clear the screen and plot the points for this timestep
+  dev.hold()
+  grid.rect(gp = gpar(fill = 'black'))
+  points(mat0a, pch = '.', cex = 2, col = 'white')
+  points(mat1a, pch = '.', cex = 2, col = 'lightblue')
+  dev.flush()
+}
+```
 
 

@@ -1,6 +1,7 @@
 
-# insitu 0.1.3.9016
+# insitu 0.1.3.9017
 
+* [9017] Added 2D transforms
 * [9016] `br_copy_if()` replaced with binaryop `br_assign()`
 * [9016] `br_zero()` refactored to become a standard unaryop
 * [9015] Global dispatch for unary/binary ops using array of func pointers

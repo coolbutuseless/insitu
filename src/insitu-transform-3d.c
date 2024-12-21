@@ -95,7 +95,7 @@ static inline void assert_mat44(SEXP mat_) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Reset a transformation matrix back to the identity
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SEXP tf_reset_(SEXP mat_) {
+SEXP tf3_reset_(SEXP mat_) {
   
   assert_mat44(mat_);
   double *mat = REAL(mat_);
@@ -113,7 +113,7 @@ SEXP tf_reset_(SEXP mat_) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Add translation
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SEXP tf_add_translate_(SEXP mat_, SEXP x_, SEXP y_, SEXP z_) {
+SEXP tf3_add_translate_(SEXP mat_, SEXP x_, SEXP y_, SEXP z_) {
   
   static double t[16] = { 1, 0, 0, 0, 
                           0, 1, 0, 0,
@@ -140,7 +140,7 @@ SEXP tf_add_translate_(SEXP mat_, SEXP x_, SEXP y_, SEXP z_) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Add scaling
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SEXP tf_add_scale_(SEXP mat_, SEXP x_, SEXP y_, SEXP z_) {
+SEXP tf3_add_scale_(SEXP mat_, SEXP x_, SEXP y_, SEXP z_) {
   
   static double t[16] = { 1, 0, 0, 0, 
                           0, 1, 0, 0,
@@ -166,7 +166,7 @@ SEXP tf_add_scale_(SEXP mat_, SEXP x_, SEXP y_, SEXP z_) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Add a rotation around the z axis
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SEXP tf_add_rotate_x_(SEXP mat_, SEXP theta_) {
+SEXP tf3_add_rotate_x_(SEXP mat_, SEXP theta_) {
   
   static double t[16] = { 1, 0, 0, 0, 
                           0, 1, 0, 0,
@@ -194,7 +194,7 @@ SEXP tf_add_rotate_x_(SEXP mat_, SEXP theta_) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Add a rotation around the z axis
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SEXP tf_add_rotate_y_(SEXP mat_, SEXP theta_) {
+SEXP tf3_add_rotate_y_(SEXP mat_, SEXP theta_) {
   
   static double t[16] = { 1, 0, 0, 0, 
                           0, 1, 0, 0,
@@ -222,7 +222,7 @@ SEXP tf_add_rotate_y_(SEXP mat_, SEXP theta_) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Add a rotation around the z axis
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SEXP tf_add_rotate_z_(SEXP mat_, SEXP theta_) {
+SEXP tf3_add_rotate_z_(SEXP mat_, SEXP theta_) {
   
   static double t[16] = { 1, 0, 0, 0, 
                           0, 1, 0, 0,

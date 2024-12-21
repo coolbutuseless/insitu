@@ -1,59 +1,59 @@
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' Create identity transform
+#' Create identity transform for 2-D
 #' 
-#' @return 4x4 identity matrix
+#' @return 3x3 identity matrix
 #' @examples
-#' tf_create()
+#' tf2_create()
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-tf_create <- function() {
-  diag(4)
+tf2_create <- function() {
+  diag(3)
 }
 
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' Reset a transformation matrix back to the identity matrix
-#' @param mat 4x4 transformation matrix
+#' Reset a 2-D transformation matrix back to the identity matrix
+#' 
+#' @param mat 3x3 transformation matrix
 #' @return None. \code{mat} modified by reference and returned invisibly
 #' @examples
-#' tf <- matrix(1, 4, 4)
-#' tf_reset(tf)
+#' tf <- matrix(1, 3, 3)
+#' tf2_reset(tf)
 #' tf
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-tf_reset <- function(mat) {
+tf2_reset <- function(mat) {
   invisible(
-    .Call(tf_reset_, mat)
+    .Call(tf2_reset_, mat)
   )
 }
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' Apply a 3D transform to a matrix of coordinates
+#' Apply a 2-D transform to a matrix of coordinates
 #'
-#' @param mat matrix with at least 4 columns reprsenting (x, y, z) and d
-#' @param tf 4x4 transformation matrix
+#' @param mat matrix with at least 3 columns representing (x, y) and d
+#' @param tf 3x3 transformation matrix
 #' @return None. \code{mat} is modified by reference and returned invisibly
 #' @examples
-#' tf <- tf_create()
-#' tf <- tf_add_translate(tf, 1, 2, 3)
+#' tf <- tf2_create()
+#' tf <- tf2_add_translate(tf, 1, 2)
 #' mat <- cbind(
 #'   x = as.numeric(1:6),
 #'   y = as.numeric(1:6),
-#'   z = as.numeric(1:6),
 #'   d = 1
 #' )
 #' tf
 #' mat
 #' 
-#' tf_apply(mat, tf)
+#' tf2_apply(mat, tf)
 #' mat
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-tf_apply <- function(mat, tf) {
+tf2_apply <- function(mat, tf) {
   invisible(
     .Call(br_mat_mat_mul_bsq_, mat, tf, alpha = 1, tb = TRUE)
   )
@@ -64,18 +64,18 @@ tf_apply <- function(mat, tf) {
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' Add translation to a transformation matrix
 #' 
-#' @inheritParams tf_reset
-#' @param x,y,z translation
+#' @inheritParams tf2_reset
+#' @param x,y translation
 #' @return None. \code{mat} modified by reference and returned invisibly
 #' @examples
-#' tf <- tf_create()
-#' tf_add_translate(tf, 1, 2, 3)
+#' tf <- tf2_create()
+#' tf2_add_translate(tf, 1, 2)
 #' tf
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-tf_add_translate <- function(mat, x = 0, y = 0, z = 0) {
+tf2_add_translate <- function(mat, x = 0, y = 0) {
   invisible(
-    .Call(tf_add_translate_, mat, x, y, z)
+    .Call(tf2_add_translate_, mat, x, y)
   )
 }
 
@@ -84,18 +84,18 @@ tf_add_translate <- function(mat, x = 0, y = 0, z = 0) {
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' Add scaling to a transformation matrix
 #' 
-#' @inheritParams tf_reset
-#' @param x,y,z scaling
+#' @inheritParams tf2_reset
+#' @param x,y scaling
 #' @return None. \code{mat} modified by reference and returned invisibly
 #' @examples
-#' tf <- tf_create()
-#' tf_add_scale(tf, 1, 2, 3)
+#' tf <- tf2_create()
+#' tf2_add_scale(tf, 1, 2)
 #' tf
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-tf_add_scale <- function(mat, x = 1, y = x, z = x) {
+tf2_add_scale <- function(mat, x = 1, y = x) {
   invisible(
-    .Call(tf_add_scale_, mat, x, y, z)
+    .Call(tf2_add_scale_, mat, x, y)
   )
 }
 
@@ -104,42 +104,61 @@ tf_add_scale <- function(mat, x = 1, y = x, z = x) {
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' Add rotation to a transformation matrix
 #' 
-#' @inheritParams tf_reset
+#' @inheritParams tf2_reset
 #' @param theta rotation angle (radians)
 #' @return None. \code{mat} modified by reference and returned invisibly
 #' @examples
-#' tf <- tf_create()
-#' tf_add_rotate_x(tf, pi/6)
+#' tf <- tf2_create()
+#' tf2_add_rotate(tf, pi/6)
 #' tf
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-tf_add_rotate_x <- function(mat, theta) {
+tf2_add_rotate <- function(mat, theta) {
   invisible(
-    .Call(tf_add_rotate_x_, mat, theta)
+    .Call(tf2_add_rotate_, mat, theta)
   )
 }
 
 
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname tf_add_rotate_x
-#' @export
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-tf_add_rotate_y <- function(mat, theta) {
-  invisible(
-    .Call(tf_add_rotate_y_, mat, theta)
-  )
+
+if (FALSE) {
+  
+  set.seed(1)
+  N <- 100
+  x <- runif(N, 0.5, 1)
+  y <- runif(N, 0.5, 1)
+  mat0 <- cbind(x, y, 1)  
+  mat <- duplicate(mat0)
+  
+  par(mai = c(0.1, 0.1, 0.1, 0.1))
+  plot(1, xlim = c(-1.15, 1.15), ylim = c(-1.15, 1.15), asp = 1, axes = T, ann = T)
+  points(mat0, pch = 19)
+  
+  tf <- tf2_create() |> 
+    tf2_add_translate(-0.75, -0.75) |>
+    tf2_add_rotate(180 * pi / 180) |>
+    tf2_add_translate(0.75, 0.75)
+  
+  br_copy(mat, mat0)
+  tf2_apply(mat, tf)
+  
+  points(mat, pch = 19, cex = 0.5, col = 'red')
+  
 }
 
 
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname tf_add_rotate_x
-#' @export
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-tf_add_rotate_z <- function(mat, theta) {
-  invisible(
-    .Call(tf_add_rotate_z_, mat, theta)
-  )
-}
+
+
+
+
+
+
+
+
+
+
+
+
 
