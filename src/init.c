@@ -3,18 +3,19 @@
 #include <R.h>
 #include <Rinternals.h>
 
-extern SEXP is_altrep_(SEXP x_);
+extern SEXP is_altrep_ (SEXP x_);
 extern SEXP is_mutable_(SEXP x_);
 extern SEXP get_refcnt_(SEXP x_);
-extern SEXP duplicate_(SEXP x_);
+extern SEXP duplicate_ (SEXP x_);
 
-extern SEXP alloc_n_  (SEXP n_);
+extern SEXP alloc_n_    (SEXP n_);
 extern SEXP alloc_along_(SEXP x_);
 
-extern SEXP br_sort_(SEXP x_, SEXP decreasing_);
+extern SEXP br_sort_   (SEXP x_, SEXP decreasing_);
 extern SEXP br_shuffle_(SEXP x_);
-extern SEXP br_rev_(SEXP x_);
-extern SEXP br_runif_(SEXP x_, SEXP min_, SEXP max_);
+extern SEXP br_rev_    (SEXP x_);
+extern SEXP br_runif_  (SEXP x_, SEXP min_, SEXP max_);
+extern SEXP br_roll_   (SEXP x_, SEXP dist_);
 
 extern SEXP br_copy_(SEXP x_, SEXP y_, SEXP n_, SEXP xi_, SEXP yi_);
 
@@ -95,8 +96,9 @@ static const R_CallMethodDef CEntries[] = {
 
   {"br_sort_"   , (DL_FUNC) &br_sort_    , 2},
   {"br_shuffle_", (DL_FUNC) &br_shuffle_ , 1},
-  {"br_rev_", (DL_FUNC) &br_rev_ , 1},
+  {"br_rev_"    , (DL_FUNC) &br_rev_     , 1},
   {"br_runif_"  , (DL_FUNC) &br_runif_   , 3},
+  {"br_roll_"   , (DL_FUNC) &br_roll_    , 2},
   
   {"br_copy_"    , (DL_FUNC) &br_copy_    , 5},
   

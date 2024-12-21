@@ -35,6 +35,7 @@ number of garbage collection operations is also reduced.
 | `br_fmadd()`, `br_fmsub()`, `br_fnmadd()`, `br_fnmsub()` | Fused multiply add (and variants) |
 | `br_runif(x, lower = 0, upper = 1)` | Fill vector with uniform random numbers |
 | `br_rev(x)` | Reverse vector |
+| `br_roll(x, dist)` | Roll the elements of a vector |
 | `br_shuffle(x)` | Shuffle the elements of a vector |
 | `br_sort(x)` | Sort the elements of a vector |
 | `br_copy(x, y, n, xi, yi)` | copy ‘n’ elements from ‘y’ into ‘x’ starting at ‘xi’ and ‘yi’ |
@@ -226,10 +227,10 @@ knitr::kable(bm)
 
 | expression           |     min |  median |   itr/sec | mem_alloc |
 |:---------------------|--------:|--------:|----------:|----------:|
-| conv_nested(x, y)    | 60.47ms | 60.94ms |  16.38701 |    88.5KB |
-| conv_vec(x, y)       |  10.1ms | 10.85ms |  90.97607 |    34.6MB |
-| conv_fft(x, y)       |  3.59ms |  3.68ms | 271.13520 |     380KB |
-| conv_vec_byref(x, y) |  2.86ms |     3ms | 326.78609 |   108.4KB |
+| conv_nested(x, y)    | 60.99ms | 61.12ms |  16.31941 |    88.5KB |
+| conv_vec(x, y)       |  10.1ms | 10.99ms |  91.74539 |    34.6MB |
+| conv_fft(x, y)       |   3.6ms |  3.68ms | 270.37936 |     380KB |
+| conv_vec_byref(x, y) |  2.87ms |  3.01ms | 324.42194 |   108.4KB |
 
 ## Matrix-matrix multiplication
 
@@ -266,8 +267,8 @@ bench::mark(
     #> # A tibble: 2 × 6
     #>   expression                   min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>              <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 br_mat_mat_mul(C, A, B)    148ms    149ms      6.71    7.87KB     0   
-    #> 2 A %*% B                    150ms    150ms      6.67    7.63MB     2.22
+    #> 1 br_mat_mat_mul(C, A, B)    149ms    149ms      6.72    7.87KB     0   
+    #> 2 A %*% B                    150ms    150ms      6.66    7.63MB     2.22
 
 Note in the above benchmark that `br_mat_ma_mul()` only allocates
 several **kilobytes** of R memory, while `A %*% B` allocates several
@@ -296,8 +297,8 @@ bench::mark(
     #> # A tibble: 2 × 6
     #>   expression                    min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>               <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 br_mat_mat_mul_bsq(A, B)   75.1ms   75.5ms      13.3    4.87KB     0   
-    #> 2 A %*% B                    74.4ms   74.9ms      13.4    3.81MB     2.23
+    #> 1 br_mat_mat_mul_bsq(A, B)   74.2ms   75.3ms      13.3    4.87KB     0   
+    #> 2 A %*% B                    74.9ms     75ms      13.3    3.81MB     2.22
 
 ## Matrix transforms
 
@@ -416,9 +417,9 @@ knitr::kable(bm)
 
 | expression |      min |   median |   itr/sec | mem_alloc |
 |:-----------|---------:|---------:|----------:|----------:|
-| ifelse     |   2.24ms |   2.59ms |  384.2678 |   13.74MB |
-| simple     | 661.58µs | 801.14µs | 1246.2429 |    5.34MB |
-| insitu     | 820.49µs | 829.72µs | 1189.9668 |        0B |
+| ifelse     |   2.09ms |   2.57ms |  392.2461 |   13.74MB |
+| simple     | 652.15µs | 804.71µs | 1269.8160 |    5.34MB |
+| insitu     | 820.49µs | 834.72µs | 1184.5332 |        0B |
 
 ## 2-D Matrix transforms
 

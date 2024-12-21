@@ -54,6 +54,7 @@ that the number of garbage collection operations is also reduced.
 | `br_fmadd()`, `br_fmsub()`, `br_fnmadd()`, `br_fnmsub()` | Fused multiply add (and variants) |
 | `br_runif(x, lower = 0, upper = 1)` | Fill vector with uniform random numbers                                |
 | `br_rev(x)`                         | Reverse vector                                                         |
+| `br_roll(x, dist)`                  | Roll the elements of a vector |
 | `br_shuffle(x)`                     | Shuffle the elements of a vector                                       |
 | `br_sort(x)`                        | Sort the elements of a vector                                          |
 | `br_copy(x, y, n, xi, yi)`          | copy 'n' elements from 'y' into 'x' starting at 'xi' and 'yi' |
