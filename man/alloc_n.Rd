@@ -30,6 +30,6 @@ are not initialized.
 }
 \examples{
 x <- alloc_n(10)
-br_fill_seq(x)
+br_seq(x)
 x
 }

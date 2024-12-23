@@ -1,6 +1,7 @@
 
-# insitu 0.1.3.9017
+# insitu 0.1.3.9018
 
+* [9018] get/set rows/cols from matrices
 * [9017] add `br_roll()` and `br_mat_roll()`. Game-of-life example.
 * [9017] Added 2D transforms
 * [9016] `br_copy_if()` replaced with binaryop `br_assign()`

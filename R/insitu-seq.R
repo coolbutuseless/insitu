@@ -13,23 +13,23 @@
 #' @examples
 #' # fill 1:10
 #' x <- alloc_n(10)
-#' br_fill_seq(x)
+#' br_seq(x)
 #' x
 #' 
 #' 
 #' # fill from 1 to 100
 #' x <- alloc_n(10)
-#' br_fill_seq(x, from = 1, to = 100)
+#' br_seq(x, from = 1, to = 100)
 #' x
 #' 
 #' # fill from 0 in steps of 2.5
 #' x <- alloc_n(10)
-#' br_fill_seq(x, from = 0, step = 0.25)
+#' br_seq(x, from = 0, step = 0.25)
 #' x
 #' 
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-br_fill_seq <- function(x, from = 1, to = NULL, step = NULL) {
-  invisible(.Call(br_fill_seq_, x, from, to, step))
+br_seq <- function(x, from = 1, to = NULL, step = NULL) {
+  invisible(.Call(br_seq_, x, from, to, step))
 }
 

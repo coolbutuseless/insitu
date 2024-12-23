@@ -58,7 +58,7 @@ that the number of garbage collection operations is also reduced.
 | `br_shuffle(x)`                     | Shuffle the elements of a vector                                       |
 | `br_sort(x)`                        | Sort the elements of a vector                                          |
 | `br_copy(x, y, n, xi, yi)`          | copy 'n' elements from 'y' into 'x' starting at 'xi' and 'yi' |
-| `br_fill_seq(x, from, to, step)`    | Fill vector with a sequence |
+| `br_seq(x, from, to, step)`    | Fill vector with a sequence |
 | `br_abs()`, `br_sqrt()`,`br_floor()`,`br_ceil()`, `br_trunc()`, `br_round()`, `br_exp()`, `br_log()`, `br_cos()`, `br_sin()`, `br_tan()`, `br_not()`, `br_expm1()`, `br_log1p()`, `br_acos()`,`br_asin()`, `br_atan()`,`br_acosh()`,`br_asinh()`,`br_atanh()`,`br_cosh()`, `br_sinh()`,`br_tanh()`, `br_sign()`, `br_cospi()`, `br_sinpi()`, `br_tanpi()`, `br_cumsum()`, `br_cumprod()`, `br_cummax()`, `br_cummin()`, `br_log2()`, `br_log10()`, `br_is_na()` | Standard single argument math operations |
 | `br_add()`, `br_sub()`, `br_mul()`, `br_div()`, `br_eq()`, `br_ne()`, `br_lt()`, `br_le()`, `br_gt()`, `br_ge()`, `br_and()`, `br_or()`, `br_rem()`, `br_idiv()`, `br_max()`, `br_min()`, `br_mat_hypot()` | Standard two-argument math operations | 
 
@@ -75,6 +75,7 @@ that the number of garbage collection operations is also reduced.
 | `br_mat_dist2(d, mat1, mat2)`, `br_mat_dist3(d, mat1, mat2)` | distance between points |
 | `br_mat_transpose(mat)` | matrix transpose |
 | `br_mat_roll(mat, rows, cols)` | roll a matrix | 
+| `br_mat_col_get()`, `br_mat_col_set()`, `br_mat_row_get()`, `br_mat_row_set()` | Get/set individual rows/cols from a matrix |
 
 | 3D Matrix transforms | Description |
 |----------------------|-------------|

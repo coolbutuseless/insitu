@@ -39,7 +39,7 @@ number of garbage collection operations is also reduced.
 | `br_shuffle(x)` | Shuffle the elements of a vector |
 | `br_sort(x)` | Sort the elements of a vector |
 | `br_copy(x, y, n, xi, yi)` | copy ‘n’ elements from ‘y’ into ‘x’ starting at ‘xi’ and ‘yi’ |
-| `br_fill_seq(x, from, to, step)` | Fill vector with a sequence |
+| `br_seq(x, from, to, step)` | Fill vector with a sequence |
 | `br_abs()`, `br_sqrt()`,`br_floor()`,`br_ceil()`, `br_trunc()`, `br_round()`, `br_exp()`, `br_log()`, `br_cos()`, `br_sin()`, `br_tan()`, `br_not()`, `br_expm1()`, `br_log1p()`, `br_acos()`,`br_asin()`, `br_atan()`,`br_acosh()`,`br_asinh()`,`br_atanh()`,`br_cosh()`, `br_sinh()`,`br_tanh()`, `br_sign()`, `br_cospi()`, `br_sinpi()`, `br_tanpi()`, `br_cumsum()`, `br_cumprod()`, `br_cummax()`, `br_cummin()`, `br_log2()`, `br_log10()`, `br_is_na()` | Standard single argument math operations |
 | `br_add()`, `br_sub()`, `br_mul()`, `br_div()`, `br_eq()`, `br_ne()`, `br_lt()`, `br_le()`, `br_gt()`, `br_ge()`, `br_and()`, `br_or()`, `br_rem()`, `br_idiv()`, `br_max()`, `br_min()`, `br_mat_hypot()` | Standard two-argument math operations |
 
@@ -56,6 +56,7 @@ number of garbage collection operations is also reduced.
 | `br_mat_dist2(d, mat1, mat2)`, `br_mat_dist3(d, mat1, mat2)` | distance between points |
 | `br_mat_transpose(mat)` | matrix transpose |
 | `br_mat_roll(mat, rows, cols)` | roll a matrix |
+| `br_mat_col_get()`, `br_mat_col_set()`, `br_mat_row_get()`, `br_mat_row_set()` | Get/set individual rows/cols from a matrix |
 
 | 3D Matrix transforms  | Description                                    |
 |-----------------------|------------------------------------------------|
@@ -228,10 +229,10 @@ knitr::kable(bm)
 
 | expression           |     min |  median |   itr/sec | mem_alloc |
 |:---------------------|--------:|--------:|----------:|----------:|
-| conv_nested(x, y)    | 60.41ms | 61.06ms |  16.38299 |    88.5KB |
-| conv_vec(x, y)       | 10.06ms | 11.26ms |  89.45468 |    34.6MB |
-| conv_fft(x, y)       |   3.6ms |  3.67ms | 271.91246 |     380KB |
-| conv_vec_byref(x, y) |  2.87ms |  2.98ms | 326.16396 |   108.4KB |
+| conv_nested(x, y)    | 60.41ms | 60.97ms |  16.39597 |    88.5KB |
+| conv_vec(x, y)       |  10.3ms | 11.31ms |  89.28606 |    34.6MB |
+| conv_fft(x, y)       |  3.59ms |  3.67ms | 271.47060 |     380KB |
+| conv_vec_byref(x, y) |   2.9ms |  3.08ms | 319.63870 |   108.4KB |
 
 ## Matrix-matrix multiplication
 
@@ -268,8 +269,8 @@ bench::mark(
     #> # A tibble: 2 × 6
     #>   expression                   min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>              <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 br_mat_mat_mul(C, A, B)    149ms    151ms      6.64    7.87KB     0   
-    #> 2 A %*% B                    150ms    150ms      6.65    7.63MB     2.22
+    #> 1 br_mat_mat_mul(C, A, B)    148ms    149ms      6.72    7.87KB     0   
+    #> 2 A %*% B                    149ms    150ms      6.67    7.63MB     2.22
 
 Note in the above benchmark that `br_mat_ma_mul()` only allocates
 several **kilobytes** of R memory, while `A %*% B` allocates several
@@ -298,8 +299,8 @@ bench::mark(
     #> # A tibble: 2 × 6
     #>   expression                    min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>               <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 br_mat_mat_mul_bsq(A, B)   74.5ms     75ms      13.3    4.87KB     0   
-    #> 2 A %*% B                    74.2ms     75ms      13.3    3.81MB     2.22
+    #> 1 br_mat_mat_mul_bsq(A, B)   74.5ms   75.1ms      13.3    4.87KB     0   
+    #> 2 A %*% B                    75.1ms   78.3ms      12.8    3.81MB     2.13
 
 ## Matrix transforms
 
@@ -418,9 +419,9 @@ knitr::kable(bm)
 
 | expression |      min |   median |   itr/sec | mem_alloc |
 |:-----------|---------:|---------:|----------:|----------:|
-| ifelse     |   2.04ms |   2.59ms |  392.5246 |   13.74MB |
-| simple     | 653.25µs | 793.76µs | 1265.3547 |    5.34MB |
-| insitu     | 819.96µs | 834.53µs | 1187.1767 |        0B |
+| ifelse     |   2.41ms |   2.86ms |  347.3317 |   13.74MB |
+| simple     | 648.05µs | 828.88µs | 1215.6116 |    5.34MB |
+| insitu     |  820.7µs | 848.09µs | 1166.0463 |        0B |
 
 ## 2-D Matrix transforms
 

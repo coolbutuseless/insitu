@@ -159,3 +159,55 @@ br_mat_roll <- function(mat, rows = 0, cols = 0) {
 }
 
 
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#' Get/set a column or row of a matrix
+#' 
+#' @param vec vector space. For \emph{get} operations, vector length must 
+#'    match the row or column length of the matirx.  When doing a \code{set}
+#'    operation, \code{vec} may also be a single value (which will be repeated
+#'    to fill the row/column)
+#' @param mat matrix
+#' @param i index of row or column
+#' @return None. For \code{get} operations, \code{vec} is modified by-reference 
+#'      and returned invisibly.  For \code{set} operations, \code{mat} is modified
+#'      by reference and returned invisibly.
+#' @examples
+#' m <- matrix(as.numeric(1:6), 2, 3)
+#' m
+#' v <- alloc_n(nrow(m))
+#' br_mat_col_get(m, 2, v)
+#' v
+#' @export
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+br_mat_col_get <- function(mat, i, vec) {
+  invisible(
+    .Call(br_mat_col_get_, mat, i, vec)
+  )
+}
+
+#' @rdname br_mat_col_get
+#' @export
+br_mat_col_set <- function(mat, i, vec) {
+  invisible(
+    .Call(br_mat_col_set_, mat, i, vec)
+  )
+}
+
+#' @rdname br_mat_col_get
+#' @export
+br_mat_row_get <- function(mat, i, vec) {
+  invisible(
+    .Call(br_mat_row_get_, mat, i, vec)
+  )
+}
+
+#' @rdname br_mat_col_get
+#' @export
+br_mat_row_set <- function(mat, i, vec) {
+  invisible(
+    .Call(br_mat_row_set_, mat, i, vec)
+  )
+}
+
+

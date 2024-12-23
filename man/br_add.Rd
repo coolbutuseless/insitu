@@ -21,6 +21,7 @@
 \alias{br_assign}
 \alias{br_sumsq}
 \alias{br_diffsq}
+\alias{br_mod}
 \title{Math operations taking two arguments}
 \usage{
 br_add(x, y, idx = NULL, where = NULL, cols = NULL)
@@ -62,6 +63,8 @@ br_assign(x, y, idx = NULL, where = NULL, cols = NULL)
 br_sumsq(x, y, idx = NULL, where = NULL, cols = NULL)
 
 br_diffsq(x, y, idx = NULL, where = NULL, cols = NULL)
+
+br_mod(x, y, idx = NULL, where = NULL, cols = NULL)
 }
 \arguments{
 \item{x}{numeric vector. This vector will be modified by-reference to 

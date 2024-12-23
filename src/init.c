@@ -19,7 +19,7 @@ extern SEXP br_roll_   (SEXP x_, SEXP dist_);
 
 extern SEXP br_copy_(SEXP x_, SEXP y_, SEXP n_, SEXP xi_, SEXP yi_);
 
-extern SEXP br_fill_seq_(SEXP x_, SEXP from_, SEXP to_, SEXP step_);
+extern SEXP br_seq_(SEXP x_, SEXP from_, SEXP to_, SEXP step_);
 
 extern SEXP br_fma_(SEXP op_, SEXP x_, SEXP a_, SEXP b_);
 
@@ -64,6 +64,11 @@ extern SEXP br_mat_mat_mul_bsq_(SEXP A_, SEXP B_, SEXP alpha_, SEXP tb_);
 extern SEXP br_mat_transpose_(SEXP mat_);
 extern SEXP br_mat_roll_(SEXP mat_, SEXP rows_, SEXP cols_);
 
+extern SEXP br_mat_col_get_(SEXP mat_, SEXP i_, SEXP vec_);
+extern SEXP br_mat_col_set_(SEXP mat_, SEXP i_, SEXP vec_);
+extern SEXP br_mat_row_get_(SEXP mat_, SEXP i_, SEXP vec_);
+extern SEXP br_mat_row_set_(SEXP mat_, SEXP i_, SEXP vec_);
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Transforms 3-D
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -91,21 +96,16 @@ static const R_CallMethodDef CEntries[] = {
   {"is_mutable_" , (DL_FUNC) &is_mutable_  , 1},
   {"get_refcnt_" , (DL_FUNC) &get_refcnt_  , 1},
   {"duplicate_"  , (DL_FUNC) &duplicate_   , 1},
-  
   {"alloc_n_"    , (DL_FUNC) &alloc_n_     , 1},
-  {"alloc_along_"  , (DL_FUNC) &alloc_along_   , 1},
-
-  {"br_sort_"   , (DL_FUNC) &br_sort_    , 2},
-  {"br_shuffle_", (DL_FUNC) &br_shuffle_ , 1},
-  {"br_rev_"    , (DL_FUNC) &br_rev_     , 1},
-  {"br_runif_"  , (DL_FUNC) &br_runif_   , 3},
-  {"br_roll_"   , (DL_FUNC) &br_roll_    , 2},
-  
-  {"br_copy_"    , (DL_FUNC) &br_copy_    , 5},
-  
-  {"br_fill_seq_", (DL_FUNC) &br_fill_seq_, 4},
-  
-  {"br_fma_", (DL_FUNC) &br_fma_, 4},
+  {"alloc_along_", (DL_FUNC) &alloc_along_ , 1},
+  {"br_sort_"    , (DL_FUNC) &br_sort_     , 2},
+  {"br_shuffle_" , (DL_FUNC) &br_shuffle_  , 1},
+  {"br_rev_"     , (DL_FUNC) &br_rev_      , 1},
+  {"br_runif_"   , (DL_FUNC) &br_runif_    , 3},
+  {"br_roll_"    , (DL_FUNC) &br_roll_     , 2},
+  {"br_copy_"    , (DL_FUNC) &br_copy_     , 5},
+  {"br_seq_"     , (DL_FUNC) &br_seq_      , 4},
+  {"br_fma_"     , (DL_FUNC) &br_fma_      , 4},
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Unary
@@ -145,6 +145,11 @@ static const R_CallMethodDef CEntries[] = {
   
   {"br_mat_transpose_", (DL_FUNC) &br_mat_transpose_, 1},
   {"br_mat_roll_"     , (DL_FUNC) &br_mat_roll_     , 3},
+  
+  {"br_mat_col_get_", (DL_FUNC) &br_mat_col_get_, 3},
+  {"br_mat_col_set_", (DL_FUNC) &br_mat_col_set_, 3},
+  {"br_mat_row_get_", (DL_FUNC) &br_mat_row_get_, 3},
+  {"br_mat_row_set_", (DL_FUNC) &br_mat_row_set_, 3},
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Transforms 3-D

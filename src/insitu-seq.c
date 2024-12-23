@@ -15,7 +15,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Fill the vector with a sequence
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SEXP br_fill_seq_(SEXP x_, SEXP from_, SEXP to_, SEXP step_) {
+SEXP br_seq_(SEXP x_, SEXP from_, SEXP to_, SEXP step_) {
   
   double *x = REAL(x_);
   
@@ -48,7 +48,7 @@ SEXP br_fill_seq_(SEXP x_, SEXP from_, SEXP to_, SEXP step_) {
       x[i] = from + (double)(i * step);
     }
   } else {
-    Rf_error("br_fill_seq_() One of 'to' and 'step' must be non-NULL");
+    Rf_error("br_seq_() One of 'to' and 'step' must be non-NULL");
   }
   
   
