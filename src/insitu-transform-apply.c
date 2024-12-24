@@ -166,6 +166,7 @@ SEXP tf_apply_(SEXP A0_, SEXP B_) {
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   memcpy(REAL(A0_), C, Arows * dim * sizeof(double));
   free(C);
+  free(A);
   return(A0_);
 }
 
