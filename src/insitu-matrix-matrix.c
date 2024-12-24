@@ -11,6 +11,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#include "utils-data-frame.h"
+
 
 // #ifdef USE_NEW_ACCELERATE
 // # define ACCELERATE_NEW_LAPACK
@@ -110,7 +112,6 @@ SEXP br_mat_mat_mul_full_(SEXP C_, SEXP A_, SEXP B_,
 }
 
 
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Special case:
 //  - B is square
@@ -118,12 +119,12 @@ SEXP br_mat_mat_mul_full_(SEXP C_, SEXP A_, SEXP B_,
 //  - Result is written back into A
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 SEXP br_mat_mat_mul_bsq_(SEXP A_, SEXP B_, SEXP alpha_, SEXP tb_) {
-  
+
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Confirm dimensions are conformable
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   if (!Rf_isMatrix(A_) || !Rf_isMatrix(B_)) {
-    Rf_error("br_mat_mat_mul_bsq_(): A, B & C must all be matrices");
+    Rf_error("br_mat_mat_mul_bsq_(): A & B must be matrices");
   }
   
   if (Rf_nrows(B_) != Rf_ncols(B_)) {
@@ -196,4 +197,5 @@ SEXP br_mat_mat_mul_bsq_(SEXP A_, SEXP B_, SEXP alpha_, SEXP tb_) {
   free(C);
   return(A_);
 }
+
 

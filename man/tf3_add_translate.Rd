@@ -18,7 +18,7 @@ None. \code{mat} modified by reference and returned invisibly
 Add translation to a transformation matrix
 }
 \examples{
-tf <- tf3_create()
+tf <- tf3_new()
 tf3_add_translate(tf, 1, 2, 3)
 tf
 }

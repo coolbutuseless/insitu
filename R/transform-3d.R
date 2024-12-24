@@ -5,10 +5,10 @@
 #' 
 #' @return 4x4 identity matrix
 #' @examples
-#' tf3_create()
+#' tf3_new()
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-tf3_create <- function() {
+tf3_new <- function() {
   diag(4)
 }
 
@@ -32,30 +32,43 @@ tf3_reset <- function(mat) {
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' Apply a 3D transform to a matrix of coordinates
+#' Apply a 3D affine transform to a matrix or data.frame of coordinates
 #'
-#' @param mat matrix with at least 4 columns representing (x, y, z) and d
+#' @param x matrix or data.frame.  If a matrix, the first two columns must be 
+#'        x,y coordinates.  If a data.frame, must contain columns 'x' and 'y'.
+#'        Other columns will not be affected.
 #' @param tf 4x4 transformation matrix
 #' @return None. \code{mat} is modified by reference and returned invisibly
 #' @examples
-#' tf <- tf3_create()
-#' tf <- tf3_add_translate(tf, 1, 2, 3)
-#' mat <- cbind(
+#' # Transform a matrix
+#' tf <- tf3_new()
+#' tf <- tf3_add_translate(tf, 1, 10, 100)
+#' x <- cbind(
 #'   x = as.numeric(1:6),
 #'   y = as.numeric(1:6),
 #'   z = as.numeric(1:6),
-#'   d = 1
+#'   other = 999
 #' )
 #' tf
-#' mat
+#' x
 #' 
-#' tf3_apply(mat, tf)
-#' mat
+#' tf3_apply(x, tf)
+#' x
+#' 
+#' # Transform a data.frame
+#' x <- data.frame(
+#'   other = 'hello',
+#'   x = as.numeric(1:6),
+#'   y = as.numeric(1:6),
+#'   z = as.numeric(1:6)
+#' )
+#' tf3_apply(x, tf)
+#' x
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-tf3_apply <- function(mat, tf) {
+tf3_apply <- function(x, tf) {
   invisible(
-    .Call(br_mat_mat_mul_bsq_, mat, tf, alpha = 1, tb = TRUE)
+    .Call(tf_apply_, x, tf)
   )
 }
 
@@ -68,7 +81,7 @@ tf3_apply <- function(mat, tf) {
 #' @param x,y,z translation
 #' @return None. \code{mat} modified by reference and returned invisibly
 #' @examples
-#' tf <- tf3_create()
+#' tf <- tf3_new()
 #' tf3_add_translate(tf, 1, 2, 3)
 #' tf
 #' @export
@@ -88,7 +101,7 @@ tf3_add_translate <- function(mat, x = 0, y = 0, z = 0) {
 #' @param x,y,z scaling
 #' @return None. \code{mat} modified by reference and returned invisibly
 #' @examples
-#' tf <- tf3_create()
+#' tf <- tf3_new()
 #' tf3_add_scale(tf, 1, 2, 3)
 #' tf
 #' @export
@@ -108,7 +121,7 @@ tf3_add_scale <- function(mat, x = 1, y = x, z = x) {
 #' @param theta rotation angle (radians)
 #' @return None. \code{mat} modified by reference and returned invisibly
 #' @examples
-#' tf <- tf3_create()
+#' tf <- tf3_new()
 #' tf3_add_rotate_x(tf, pi/6)
 #' tf
 #' @export

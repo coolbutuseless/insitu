@@ -5,10 +5,10 @@
 #' 
 #' @return 3x3 identity matrix
 #' @examples
-#' tf2_create()
+#' tf2_new()
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-tf2_create <- function() {
+tf2_new <- function() {
   diag(3)
 }
 
@@ -33,29 +33,41 @@ tf2_reset <- function(mat) {
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' Apply a 2-D transform to a matrix of coordinates
+#' Apply a 2-D affine transform to a matrix or data.frame of coordinates
 #'
-#' @param mat matrix with at least 3 columns representing (x, y) and d
+#' @param x matrix or data.frame.  If a matrix, the first two columns must be 
+#'        x,y coordinates.  If a data.frame, must contain columns 'x' and 'y'.
+#'        Other columns will not be affected.
 #' @param tf 3x3 transformation matrix
 #' @return None. \code{mat} is modified by reference and returned invisibly
 #' @examples
-#' tf <- tf2_create()
-#' tf <- tf2_add_translate(tf, 1, 2)
-#' mat <- cbind(
+#' # Transform a matrix
+#' tf <- tf2_new()
+#' tf <- tf2_add_translate(tf, 1, 10)
+#' x <- cbind(
 #'   x = as.numeric(1:6),
 #'   y = as.numeric(1:6),
-#'   d = 1
+#'   other = 999
 #' )
 #' tf
-#' mat
+#' x
 #' 
-#' tf2_apply(mat, tf)
-#' mat
+#' tf2_apply(x, tf)
+#' x
+#' 
+#' # Transform a data.frame
+#' x <- data.frame(
+#'   other = 'hello',
+#'   x = as.numeric(1:6),
+#'   y = as.numeric(1:6)
+#' )
+#' tf2_apply(x, tf)
+#' x
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-tf2_apply <- function(mat, tf) {
+tf2_apply <- function(x, tf) {
   invisible(
-    .Call(br_mat_mat_mul_bsq_, mat, tf, alpha = 1, tb = TRUE)
+    .Call(tf_apply_, x, tf)
   )
 }
 
@@ -68,7 +80,7 @@ tf2_apply <- function(mat, tf) {
 #' @param x,y translation
 #' @return None. \code{mat} modified by reference and returned invisibly
 #' @examples
-#' tf <- tf2_create()
+#' tf <- tf2_new()
 #' tf2_add_translate(tf, 1, 2)
 #' tf
 #' @export
@@ -88,7 +100,7 @@ tf2_add_translate <- function(mat, x = 0, y = 0) {
 #' @param x,y scaling
 #' @return None. \code{mat} modified by reference and returned invisibly
 #' @examples
-#' tf <- tf2_create()
+#' tf <- tf2_new()
 #' tf2_add_scale(tf, 1, 2)
 #' tf
 #' @export
@@ -108,7 +120,7 @@ tf2_add_scale <- function(mat, x = 1, y = x) {
 #' @param theta rotation angle (radians)
 #' @return None. \code{mat} modified by reference and returned invisibly
 #' @examples
-#' tf <- tf2_create()
+#' tf <- tf2_new()
 #' tf2_add_rotate(tf, pi/6)
 #' tf
 #' @export
@@ -135,7 +147,7 @@ if (FALSE) {
   plot(1, xlim = c(-1.15, 1.15), ylim = c(-1.15, 1.15), asp = 1, axes = T, ann = T)
   points(mat0, pch = 19)
   
-  tf <- tf2_create() |> 
+  tf <- tf2_new() |> 
     tf2_add_translate(-0.75, -0.75) |>
     tf2_add_rotate(180 * pi / 180) |>
     tf2_add_translate(0.75, 0.75)

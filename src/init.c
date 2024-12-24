@@ -69,6 +69,8 @@ extern SEXP br_mat_col_set_(SEXP mat_, SEXP i_, SEXP vec_);
 extern SEXP br_mat_row_get_(SEXP mat_, SEXP i_, SEXP vec_);
 extern SEXP br_mat_row_set_(SEXP mat_, SEXP i_, SEXP vec_);
 
+extern SEXP tf_apply_(SEXP A_, SEXP B_);
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Transforms 3-D
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -150,6 +152,8 @@ static const R_CallMethodDef CEntries[] = {
   {"br_mat_col_set_", (DL_FUNC) &br_mat_col_set_, 3},
   {"br_mat_row_get_", (DL_FUNC) &br_mat_row_get_, 3},
   {"br_mat_row_set_", (DL_FUNC) &br_mat_row_set_, 3},
+  
+  {"tf_apply_" , (DL_FUNC) &tf_apply_ , 2},
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Transforms 3-D

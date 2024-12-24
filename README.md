@@ -60,7 +60,7 @@ number of garbage collection operations is also reduced.
 
 | 3D Matrix transforms  | Description                                    |
 |-----------------------|------------------------------------------------|
-| `tf3_create()`        | Create the identity transform                  |
+| `tf3_new()`           | Create the identity transform                  |
 | `tf3_reset()`         | Reset a transform to be the identity transform |
 | `tf3_add_translate()` | Add translation to the transform               |
 | `tf3_add_scale()`     | Add scaling to the transform                   |
@@ -229,10 +229,10 @@ knitr::kable(bm)
 
 | expression           |     min |  median |   itr/sec | mem_alloc |
 |:---------------------|--------:|--------:|----------:|----------:|
-| conv_nested(x, y)    | 60.41ms | 60.97ms |  16.39597 |    88.5KB |
-| conv_vec(x, y)       |  10.3ms | 11.31ms |  89.28606 |    34.6MB |
-| conv_fft(x, y)       |  3.59ms |  3.67ms | 271.47060 |     380KB |
-| conv_vec_byref(x, y) |   2.9ms |  3.08ms | 319.63870 |   108.4KB |
+| conv_nested(x, y)    | 60.61ms | 60.92ms |  16.35797 |    88.5KB |
+| conv_vec(x, y)       | 10.43ms | 11.21ms |  88.69776 |    34.6MB |
+| conv_fft(x, y)       |  3.59ms |  3.69ms | 269.72180 |     380KB |
+| conv_vec_byref(x, y) |  2.89ms |  3.01ms | 325.15263 |   108.4KB |
 
 ## Matrix-matrix multiplication
 
@@ -270,7 +270,7 @@ bench::mark(
     #>   expression                   min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>              <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
     #> 1 br_mat_mat_mul(C, A, B)    148ms    149ms      6.72    7.87KB     0   
-    #> 2 A %*% B                    149ms    150ms      6.67    7.63MB     2.22
+    #> 2 A %*% B                    150ms    150ms      6.63    7.63MB     2.21
 
 Note in the above benchmark that `br_mat_ma_mul()` only allocates
 several **kilobytes** of R memory, while `A %*% B` allocates several
@@ -299,8 +299,8 @@ bench::mark(
     #> # A tibble: 2 × 6
     #>   expression                    min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>               <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 br_mat_mat_mul_bsq(A, B)   74.5ms   75.1ms      13.3    4.87KB     0   
-    #> 2 A %*% B                    75.1ms   78.3ms      12.8    3.81MB     2.13
+    #> 1 br_mat_mat_mul_bsq(A, B)   74.6ms   75.6ms      13.2    4.87KB     0   
+    #> 2 A %*% B                    75.2ms   75.5ms      13.2    3.81MB     2.20
 
 ## Matrix transforms
 
@@ -321,8 +321,7 @@ set.seed(1)
 x <- runif(N, -1, 1)
 y <- runif(N, -1, 1)
 z <- runif(N, -1, 1)
-d <- rep(1, N)
-mat0 <- cbind(x, y, z, d)
+mat0 <- cbind(x, y, z)
 mat  <- duplicate(mat0)
 
 plot(1, xlim = c(-1.15, 1.15), ylim = c(-1.15, 1.15), asp = 1, axes = F, ann = F)
@@ -330,7 +329,7 @@ plot(1, xlim = c(-1.15, 1.15), ylim = c(-1.15, 1.15), asp = 1, axes = F, ann = F
 cols <- viridisLite::inferno(N, begin = 0.1, end = 0.9)
 
 # Create empty Transform
-tf <- tf3_create() 
+tf <- tf3_new() 
 
 dev.flush()
 for (t in 1:1000) {
@@ -417,11 +416,11 @@ suppressWarnings({
 knitr::kable(bm)
 ```
 
-| expression |      min |   median |   itr/sec | mem_alloc |
-|:-----------|---------:|---------:|----------:|----------:|
-| ifelse     |   2.41ms |   2.86ms |  347.3317 |   13.74MB |
-| simple     | 648.05µs | 828.88µs | 1215.6116 |    5.34MB |
-| insitu     |  820.7µs | 848.09µs | 1166.0463 |        0B |
+| expression |      min |  median |   itr/sec | mem_alloc |
+|:-----------|---------:|--------:|----------:|----------:|
+| ifelse     |   2.15ms |   2.7ms |  372.6618 |   13.74MB |
+| simple     | 653.05µs | 826.6µs | 1212.3969 |    5.34MB |
+| insitu     | 820.57µs |   844µs | 1072.3224 |        0B |
 
 ## 2-D Matrix transforms
 
@@ -441,13 +440,11 @@ N <- 10000
 set.seed(1)
 x <- runif(N, -2, 2)
 y <- runif(N, -2, 2)
-d <- rep(1, N)
-mat0 <- cbind(x, y, d)
+mat0 <- cbind(x, y)
 
 x <- runif(N, -2, 2)
 y <- runif(N, -2, 2)
-d <- rep(1, N)
-mat1 <- cbind(x, y, d)
+mat1 <- cbind(x, y)
 
 mat0a  <- duplicate(mat0)
 mat1a  <- duplicate(mat0)
@@ -458,8 +455,8 @@ plot(1, xlim = c(-1.15, 1.15), ylim = c(-1.15, 1.15), asp = 1, axes = F, ann = F
 cols <- viridisLite::cividis(N, begin = 0.1, end = 0.9)
 
 # Create empty Transform
-tf0 <- tf2_create() 
-tf1 <- tf2_create() 
+tf0 <- tf2_new() 
+tf1 <- tf2_new() 
 
 dev.flush()
 for (t in 1:1000) {

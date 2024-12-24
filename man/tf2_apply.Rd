@@ -2,12 +2,14 @@
 % Please edit documentation in R/transform-2d.R
 \name{tf2_apply}
 \alias{tf2_apply}
-\title{Apply a 2-D transform to a matrix of coordinates}
+\title{Apply a 2-D affine transform to a matrix or data.frame of coordinates}
 \usage{
-tf2_apply(mat, tf)
+tf2_apply(x, tf)
 }
 \arguments{
-\item{mat}{matrix with at least 3 columns representing (x, y) and d}
+\item{x}{matrix or data.frame.  If a matrix, the first two columns must be 
+x,y coordinates.  If a data.frame, must contain columns 'x' and 'y'.
+Other columns will not be affected.}
 
 \item{tf}{3x3 transformation matrix}
 }
@@ -15,19 +17,29 @@ tf2_apply(mat, tf)
 None. \code{mat} is modified by reference and returned invisibly
 }
 \description{
-Apply a 2-D transform to a matrix of coordinates
+Apply a 2-D affine transform to a matrix or data.frame of coordinates
 }
 \examples{
-tf <- tf2_create()
-tf <- tf2_add_translate(tf, 1, 2)
-mat <- cbind(
+# Transform a matrix
+tf <- tf2_new()
+tf <- tf2_add_translate(tf, 1, 10)
+x <- cbind(
   x = as.numeric(1:6),
   y = as.numeric(1:6),
-  d = 1
+  other = 999
 )
 tf
-mat
+x
 
-tf2_apply(mat, tf)
-mat
+tf2_apply(x, tf)
+x
+
+# Transform a data.frame
+x <- data.frame(
+  other = 'hello',
+  x = as.numeric(1:6),
+  y = as.numeric(1:6)
+)
+tf2_apply(x, tf)
+x
 }

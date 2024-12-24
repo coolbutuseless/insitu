@@ -2,12 +2,14 @@
 % Please edit documentation in R/transform-3d.R
 \name{tf3_apply}
 \alias{tf3_apply}
-\title{Apply a 3D transform to a matrix of coordinates}
+\title{Apply a 3D affine transform to a matrix or data.frame of coordinates}
 \usage{
-tf3_apply(mat, tf)
+tf3_apply(x, tf)
 }
 \arguments{
-\item{mat}{matrix with at least 4 columns representing (x, y, z) and d}
+\item{x}{matrix or data.frame.  If a matrix, the first two columns must be 
+x,y coordinates.  If a data.frame, must contain columns 'x' and 'y'.
+Other columns will not be affected.}
 
 \item{tf}{4x4 transformation matrix}
 }
@@ -15,20 +17,31 @@ tf3_apply(mat, tf)
 None. \code{mat} is modified by reference and returned invisibly
 }
 \description{
-Apply a 3D transform to a matrix of coordinates
+Apply a 3D affine transform to a matrix or data.frame of coordinates
 }
 \examples{
-tf <- tf3_create()
-tf <- tf3_add_translate(tf, 1, 2, 3)
-mat <- cbind(
+# Transform a matrix
+tf <- tf3_new()
+tf <- tf3_add_translate(tf, 1, 10, 100)
+x <- cbind(
   x = as.numeric(1:6),
   y = as.numeric(1:6),
   z = as.numeric(1:6),
-  d = 1
+  other = 999
 )
 tf
-mat
+x
 
-tf3_apply(mat, tf)
-mat
+tf3_apply(x, tf)
+x
+
+# Transform a data.frame
+x <- data.frame(
+  other = 'hello',
+  x = as.numeric(1:6),
+  y = as.numeric(1:6),
+  z = as.numeric(1:6)
+)
+tf3_apply(x, tf)
+x
 }

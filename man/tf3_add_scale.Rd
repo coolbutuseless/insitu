@@ -18,7 +18,7 @@ None. \code{mat} modified by reference and returned invisibly
 Add scaling to a transformation matrix
 }
 \examples{
-tf <- tf3_create()
+tf <- tf3_new()
 tf3_add_scale(tf, 1, 2, 3)
 tf
 }

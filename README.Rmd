@@ -79,7 +79,7 @@ that the number of garbage collection operations is also reduced.
 
 | 3D Matrix transforms | Description |
 |----------------------|-------------|
-| `tf3_create()`        | Create the identity transform |
+| `tf3_new()`        | Create the identity transform |
 | `tf3_reset()`         | Reset a transform to be the identity transform |
 | `tf3_add_translate()` | Add translation to the transform |
 | `tf3_add_scale()` | Add scaling to the transform |
@@ -348,8 +348,7 @@ set.seed(1)
 x <- runif(N, -1, 1)
 y <- runif(N, -1, 1)
 z <- runif(N, -1, 1)
-d <- rep(1, N)
-mat0 <- cbind(x, y, z, d)
+mat0 <- cbind(x, y, z)
 mat  <- duplicate(mat0)
 
 plot(1, xlim = c(-1.15, 1.15), ylim = c(-1.15, 1.15), asp = 1, axes = F, ann = F)
@@ -357,7 +356,7 @@ plot(1, xlim = c(-1.15, 1.15), ylim = c(-1.15, 1.15), asp = 1, axes = F, ann = F
 cols <- viridisLite::inferno(N, begin = 0.1, end = 0.9)
 
 # Create empty Transform
-tf <- tf3_create() 
+tf <- tf3_new() 
 
 dev.flush()
 for (t in 1:1000) {
@@ -466,13 +465,11 @@ N <- 10000
 set.seed(1)
 x <- runif(N, -2, 2)
 y <- runif(N, -2, 2)
-d <- rep(1, N)
-mat0 <- cbind(x, y, d)
+mat0 <- cbind(x, y)
 
 x <- runif(N, -2, 2)
 y <- runif(N, -2, 2)
-d <- rep(1, N)
-mat1 <- cbind(x, y, d)
+mat1 <- cbind(x, y)
 
 mat0a  <- duplicate(mat0)
 mat1a  <- duplicate(mat0)
@@ -483,8 +480,8 @@ plot(1, xlim = c(-1.15, 1.15), ylim = c(-1.15, 1.15), asp = 1, axes = F, ann = F
 cols <- viridisLite::cividis(N, begin = 0.1, end = 0.9)
 
 # Create empty Transform
-tf0 <- tf2_create() 
-tf1 <- tf2_create() 
+tf0 <- tf2_new() 
+tf1 <- tf2_new() 
 
 dev.flush()
 for (t in 1:1000) {
