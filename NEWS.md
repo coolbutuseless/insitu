@@ -1,6 +1,7 @@
 
-# insitu 0.1.3.9019
+# insitu 0.1.3.9020
 
+* [9020] Expose `is_altrep()`, `is_mutable()` and `get_refcnt()`
 * [9019] `tf2_apply()` and `tf3_apply()` now work on data.frames.
 * [9018] get/set rows/cols from matrices
 * [9017] add `br_roll()` and `br_mat_roll()`. Game-of-life example.

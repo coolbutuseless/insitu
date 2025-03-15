@@ -7,7 +7,7 @@
 #'
 #' @return logical
 #'
-#' @noRd
+#' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 is_altrep <- function(x) {
   .Call(is_altrep_, x)
@@ -21,7 +21,7 @@ is_altrep <- function(x) {
 #'
 #' @return logical
 #'
-#' @noRd
+#' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 is_mutable <- function(x) {
   .Call(is_mutable_, x)
@@ -35,7 +35,7 @@ is_mutable <- function(x) {
 #'
 #' @return integer
 #'
-#' @noRd
+#' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 get_refcnt <- function(x) {
   .Call(get_refcnt_, x)
