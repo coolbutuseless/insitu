@@ -1,6 +1,7 @@
 
-# insitu 0.1.3.9020
+# insitu 0.1.3.9021
 
+* [9021] Add `br_round_fast()` which is 10x faster than `br_round()`
 * [9020] Expose `is_altrep()`, `is_mutable()` and `get_refcnt()`
 * [9019] `tf2_apply()` and `tf3_apply()` now work on data.frames.
 * [9018] get/set rows/cols from matrices

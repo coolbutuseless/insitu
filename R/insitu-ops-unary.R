@@ -301,6 +301,27 @@ br_round <- function(x, digits) { invisible(.Call(br_op_unary_round_, x, digits)
 
 
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#' Fast Round
+#'
+#' This rounding is about 10x faster than the standard rounding function.  It 
+#' uses properties of the bit precision of IEEE-754 floating point numbers to
+#' perform the founding with a simple add/subtract operation
+#' 
+#' @inheritParams br_abs
+#' @param digits number of decimal places
+#' @return \code{x} modified by reference and returned invisibly
+#' @examples
+#' x <- c(1.234, 5.6789)
+#' br_round(x, 2)
+#' x
+#' @export
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+br_round_fast <- function(x, digits) { invisible(.Call(br_op_unary_round_fast_, x, digits)) }
+
+
+
+
 
 if (FALSE) {
   

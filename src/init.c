@@ -28,7 +28,8 @@ extern SEXP br_fma_(SEXP op_, SEXP x_, SEXP a_, SEXP b_);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 extern SEXP br_op_unary_(SEXP op_, SEXP x_, SEXP idx_, SEXP where_, SEXP cols_);
 extern SEXP br_op_unary_cumulative_(SEXP op_, SEXP x_);
-extern SEXP br_op_unary_round_(SEXP x_, SEXP digits_);
+extern SEXP br_op_unary_round_     (SEXP x_, SEXP digits_);
+extern SEXP br_op_unary_round_fast_(SEXP x_, SEXP digits_);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Binary
@@ -115,6 +116,7 @@ static const R_CallMethodDef CEntries[] = {
   {"br_op_unary_"     , (DL_FUNC) &br_op_unary_     , 5},
   {"br_op_unary_cumulative_", (DL_FUNC) &br_op_unary_cumulative_, 2},
   {"br_op_unary_round_"     , (DL_FUNC) &br_op_unary_round_     , 2},
+  {"br_op_unary_round_fast_", (DL_FUNC) &br_op_unary_round_fast_, 2},
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Binary
