@@ -2,9 +2,12 @@
 % Please edit documentation in R/insitu-ops-unary.R
 \name{br_round_fast}
 \alias{br_round_fast}
+\alias{br_round_fast_unchecked}
 \title{Fast Round}
 \usage{
 br_round_fast(x, digits)
+
+br_round_fast_unchecked(x, digits)
 }
 \arguments{
 \item{x}{numeric vector. This vector will be modified by-reference to 
@@ -16,6 +19,11 @@ contain the result of the calculation}
 \code{x} modified by reference and returned invisibly
 }
 \description{
+Input must be within limits of range of \code{int64_t}, not be \code{nan}
+and not be infinite.  If these pre-requisites are guaranteed, use 
+\code{br_round_fast_unchecked()}.
+}
+\details{
 This rounding is about 10x faster than the standard rounding function.  It 
 uses properties of the bit precision of IEEE-754 floating point numbers to
 perform the founding with a simple add/subtract operation

@@ -304,6 +304,10 @@ br_round <- function(x, digits) { invisible(.Call(br_op_unary_round_, x, digits)
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' Fast Round
 #'
+#' Input must be within limits of range of \code{int64_t}, not be \code{nan}
+#' and not be infinite.  If these pre-requisites are guaranteed, use 
+#' \code{br_round_fast_unchecked()}.
+#'
 #' This rounding is about 10x faster than the standard rounding function.  It 
 #' uses properties of the bit precision of IEEE-754 floating point numbers to
 #' perform the founding with a simple add/subtract operation
@@ -318,6 +322,11 @@ br_round <- function(x, digits) { invisible(.Call(br_op_unary_round_, x, digits)
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 br_round_fast <- function(x, digits) { invisible(.Call(br_op_unary_round_fast_, x, digits)) }
+
+
+#' @rdname br_round_fast
+#' @export
+br_round_fast_unchecked <- function(x, digits) { invisible(.Call(br_op_unary_round_fast_unchecked_, x, digits)) }
 
 
 
