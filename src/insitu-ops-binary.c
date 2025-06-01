@@ -250,8 +250,8 @@ SEXP br_op_binary_(SEXP op_, SEXP x_, SEXP y_, SEXP idx_, SEXP where_, SEXP cols
   int op = Rf_asInteger(op_);
   if (op < 0 || op >= NBINARYOPS) {
     Rf_error(
-      "[br_op_binary_('%s') Loc:1] 'op' %d out of range [0, %i]", 
-      binary_names[op], op, NBINARYOPS - 1
+      "[br_op_binary_() Loc:1] 'op' %d out of range [0, %i]", 
+      op, NBINARYOPS - 1
     );
   }
   int (*binfunc) (double *x, double *y, int xlen, int ylen, int *idx, int idx_len) = 
