@@ -1,6 +1,7 @@
 
-# insitu 0.1.3.9021
+# insitu 0.1.3.9023
 
+* [9023] Add `br_replace()`  2025-06-29
 * [9022] fix some build errors
 * [9021] Add `br_round_fast()` which is 10x faster than `br_round()`
 * [9020] Expose `is_altrep()`, `is_mutable()` and `get_refcnt()`

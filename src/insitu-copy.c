@@ -73,7 +73,6 @@ SEXP br_copy_(SEXP x_, SEXP y_, SEXP n_, SEXP xi_, SEXP yi_) {
 }
 
 
-#define UNROLL 4
 
 
 

@@ -37,3 +37,46 @@ br_copy <- function(x, y, n = NULL, xi = 1L, yi = 1L) {
   invisible(.Call(br_copy_, x, y, n, xi, yi))
 }
 
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#' Replace elements of one vector with another
+#' 
+#' This is similar to \code{br_copy()} except that \code{xi} and \code{yi}
+#' are vectors of indices into \code{x} and \code{y}, respectively.
+#' 
+#' @inheritParams br_fmadd
+#' @param y A numeric vector
+#' @param xi destination indices in \code{x} for the replacement operation
+#' @param yi source indices in \code{y} for the replacement. If NULL (the default),
+#'        then values are taken sequentially from \code{y}
+#' 
+#' @return \code{x} argument is modified by-reference and returned invisibly
+#' @examples
+#' #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#' # sequential y indices assumed if 'yi' is NULL (the default)
+#' #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#' x <- c(1, 2, 3, 4, 5)
+#' y <- c(99, 98)
+#' xi <- c(1L, 3L)
+#' 
+#' br_replace(x, xi, y)
+#' x
+#' 
+#' 
+#' #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#' # explicit y
+#' #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#' x <- c(1, 2, 3, 4, 5)
+#' y <- c(99, 98, 97, 96)
+#' xi <- c(1L, 3L)
+#' yi <- c(4L, 3L)
+#' 
+#' br_replace(x, xi, y, yi)
+#' x
+#' @export
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+br_replace <- function(x, xi, y, yi = NULL) {
+  invisible(.Call(br_replace_, x, y, xi, yi))
+}
+
+
