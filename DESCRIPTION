@@ -15,7 +15,7 @@ Description: Using by-reference semantics, functions in this package are crafted
     copy-on-modify semantics.
 License: MIT + file LICENSE
 Encoding: UTF-8
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Suggests: 
     knitr,
     rmarkdown,
