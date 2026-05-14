@@ -236,8 +236,8 @@ SEXP br_op_unary_(SEXP op_, SEXP x_, SEXP idx_, SEXP where_, SEXP cols_) {
   int op = Rf_asInteger(op_);
   if (op < 0 || op >= NUNARYOPS) {
     Rf_error(
-      "[br_op_unary_('%s') Loc:1] 'op' out of range [0, %i]", 
-      opnames[op], NUNARYOPS - 1
+      "[br_op_unary_(%i) Loc:1] 'op' out of range [0, %i]", 
+      op, NUNARYOPS - 1
     );
   }
   
