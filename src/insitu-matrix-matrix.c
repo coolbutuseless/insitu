@@ -144,8 +144,8 @@ SEXP br_mat_mat_mul_bsq_(SEXP A_, SEXP B_, SEXP alpha_, SEXP tb_) {
   int Crows = ta ? Rf_ncols(A_) : Rf_nrows(A_);
   int Ccols = tb ? Rf_nrows(B_) : Rf_ncols(B_);
   
-  size_t Csize = (size_t)Crows * (size_t)Ccols * sizeof(double);
-  double *C = malloc(Csize);
+  size_t Csize = (size_t)Rf_xlength(A_) * sizeof(double);
+  double *C = (double *)calloc((size_t)Rf_xlength(A_), sizeof(double));
   if (C == NULL) {
     Rf_error("br_mat_mat_mul_bsq_(): Failed to allocate 'C'");
   }
@@ -193,6 +193,10 @@ SEXP br_mat_mat_mul_bsq_(SEXP A_, SEXP B_, SEXP alpha_, SEXP tb_) {
       &LDC FCONE FCONE
   );
   
+  if (Csize > (size_t)Rf_xlength(A_) * sizeof(double)) {
+    free(C);
+    Rf_error("br_mat_mat_mul_bsq_(): Output size exceeds destination buffer");
+  }
   memcpy(REAL(A_), C, Csize);
   free(C);
   return(A_);
