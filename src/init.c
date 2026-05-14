@@ -96,9 +96,8 @@ extern SEXP tf2_add_rotate_   (SEXP mat_, SEXP theta_);
 static const R_CallMethodDef CEntries[] = {
 
   {"is_altrep_"  , (DL_FUNC) &is_altrep_   , 1},
-  {"is_mutable_" , (DL_FUNC) &is_mutable_  , 1},
-  {"get_refcnt_" , (DL_FUNC) &get_refcnt_  , 1},
   {"duplicate_"  , (DL_FUNC) &duplicate_   , 1},
+  
   {"alloc_n_"    , (DL_FUNC) &alloc_n_     , 1},
   {"alloc_along_", (DL_FUNC) &alloc_along_ , 1},
   {"br_sort_"    , (DL_FUNC) &br_sort_     , 2},
