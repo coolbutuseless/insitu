@@ -28,7 +28,7 @@ int *lgl_to_idx(SEXP lgl_, int *len, int *status) {
     for (int i = 0; i < Rf_length(lgl_); ++i) {
       *len += ptr[i] != 0;
     } 
-    idx = malloc(*len * sizeof(int));
+    idx = malloc((size_t)*len * sizeof(int));
     if (idx == NULL) {
       *status = 1;
       Rf_warning("lgl_to_idx_(): Couldn't allocate 'idx' (Loc: 1)");
@@ -45,7 +45,7 @@ int *lgl_to_idx(SEXP lgl_, int *len, int *status) {
     for (int i = 0; i < Rf_length(lgl_); ++i) {
       *len += ptr[i] != 0;
     } 
-    idx = malloc(*len * sizeof(int));
+    idx = malloc((size_t)*len * sizeof(int));
     if (idx == NULL) {
       *status = 1;
       Rf_warning("lgl_to_idx_(): Couldn't allocate 'idx' (Loc: 2)");
@@ -74,7 +74,7 @@ int *lgl_to_idx(SEXP lgl_, int *len, int *status) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 int *ridx_to_idx(SEXP idx_, int ref_len, int *status) {
   
-  int *idx = malloc(Rf_length(idx_) * sizeof(int));
+  int *idx = malloc((size_t)Rf_length(idx_) * sizeof(int));
   if (idx == NULL) {
     Rf_error("ridx_to_idx_(): Could not allocate 'idx'");
   }

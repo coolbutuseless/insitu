@@ -14,17 +14,19 @@
 
 void roll_vec(double *src, int len, int dist) {
 
-  double *tmp = malloc(dist * sizeof(double));
+  if (len < dist) Rf_error("roll_vec(): len < dist");
+  
+  double *tmp = malloc((size_t)dist * sizeof(double));
   if (tmp == NULL) Rf_error("br_mat_roll_()/roll_vec(): Failed to allocate 'tmp'");
   
   // Copy bytes at end into temporary storage
-  memcpy(tmp, src + len - dist, dist * sizeof(double));
+  memcpy(tmp, src + len - dist, (size_t)dist * sizeof(double));
   
   // Roll values format
-  memmove(src + dist, src, (len - dist) * sizeof(double));
+  memmove(src + dist, src, (size_t)(len - dist) * sizeof(double));
   
   // Copy temp storage back into the start of 'x'
-  memcpy(src, tmp, dist * sizeof(double));
+  memcpy(src, tmp, (size_t)dist * sizeof(double));
   
   free(tmp);
 }
@@ -59,17 +61,17 @@ SEXP br_mat_roll_(SEXP x_, SEXP rows_, SEXP cols_) {
     int dist = cols * nrows;
     double *src = REAL(x_);
     
-    double *tmp = malloc(dist * sizeof(double));
+    double *tmp = malloc((size_t)dist * sizeof(double));
     if (tmp == NULL) Rf_error("br_mat_roll_(): Failed to allocate 'tmp'");
     
     // Copy bytes at end into temporary storage
-    memcpy(tmp, src + len - dist, dist * sizeof(double));
+    memcpy(tmp, src + len - dist, (size_t)dist * sizeof(double));
     
     // Roll values format
-    memmove(src + dist, src, (len - dist) * sizeof(double));
+    memmove(src + dist, src, (size_t)(len - dist) * sizeof(double));
     
     // Copy temp storage back into the start of 'x'
-    memcpy(src, tmp, dist * sizeof(double));
+    memcpy(src, tmp, (size_t)dist * sizeof(double));
     
     free(tmp);
   }

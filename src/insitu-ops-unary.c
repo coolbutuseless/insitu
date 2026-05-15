@@ -316,7 +316,7 @@ SEXP br_op_unary_(SEXP op_, SEXP x_, SEXP idx_, SEXP where_, SEXP cols_) {
     int cols_len = 0;
     if (Rf_asLogical(cols_) == NA_LOGICAL) {
       // Perform over all columns
-      cols = malloc(Rf_ncols(x_) * sizeof(int));
+      cols = malloc((size_t)Rf_ncols(x_) * sizeof(int));
       if (cols == NULL) {
         Rf_error(
           "[br_op_unary_('%s') Loc:5] Failed to allocate 'cols'",

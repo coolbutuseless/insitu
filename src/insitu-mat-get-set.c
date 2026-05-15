@@ -36,7 +36,7 @@ SEXP br_mat_col_get_(SEXP mat_, SEXP i_, SEXP vec_) {
   double *mat = REAL(mat_);
   double *vec = REAL(vec_);
   
-  memcpy(vec, mat + i * rows, rows * sizeof(double));
+  memcpy(vec, mat + i * rows, (size_t)rows * sizeof(double));
   
   return vec_;
 }
@@ -64,7 +64,7 @@ SEXP br_mat_col_set_(SEXP mat_, SEXP i_, SEXP vec_) {
   } else if (Rf_length(vec_) == rows) {
     double *mat = REAL(mat_);
     double *vec = REAL(vec_);
-    memcpy(mat + i * rows, vec, rows * sizeof(double));
+    memcpy(mat + i * rows, vec, (size_t)rows * sizeof(double));
   } else {
     Rf_error("'vec' length does not match number of matrix rows. %i != %i", 
              Rf_length(vec_), rows);

@@ -335,7 +335,7 @@ SEXP br_op_binary_(SEXP op_, SEXP x_, SEXP y_, SEXP idx_, SEXP where_, SEXP cols
   
   if (Rf_asLogical(cols_) == NA_LOGICAL) {
     // Perform over all columns
-    cols = malloc(Rf_ncols(x_) * sizeof(int));
+    cols = malloc((size_t)Rf_ncols(x_) * sizeof(int));
     if (cols == NULL) {
       Rf_error(
         "[br_op_binary_('%s') Loc:7] Failed to allocate 'cols'",

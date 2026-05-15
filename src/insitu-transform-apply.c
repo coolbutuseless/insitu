@@ -77,11 +77,11 @@ SEXP tf_apply_(SEXP A0_, SEXP B_) {
   int Arows = Rf_nrows(A0_);
   int Acols = dim + 1; // coordinates + 'd'
 
-  double *A = malloc(Arows * Acols * sizeof(double));
+  double *A = malloc((size_t)(Arows * Acols) * sizeof(double));
   if (A == NULL) Rf_error("tf_apply_(): Could not allocate 'A'");
   
   // Copy the coordinates we weree given
-  memcpy(A, REAL(A0_), dim * Arows * sizeof(double));
+  memcpy(A, REAL(A0_), (size_t)(dim * Arows) * sizeof(double));
   
   // Set the homogenous coordinate 'w' to '1'
   for (int i = 0; i < Arows; ++i) {
@@ -164,7 +164,7 @@ SEXP tf_apply_(SEXP A0_, SEXP B_) {
   // Copy results in 'C' directly into A0.
   // Ignore the homogenous coordinate
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  memcpy(REAL(A0_), C, Arows * dim * sizeof(double));
+  memcpy(REAL(A0_), C, (size_t)(Arows * dim) * sizeof(double));
   free(C);
   free(A);
   return(A0_);
@@ -216,12 +216,12 @@ SEXP tf_df_apply_(SEXP df_, SEXP B_) {
     z_ = get_df_col_or_error(df_, "z");
   }
   
-  double *A = malloc(Arows * Acols * sizeof(double));
+  double *A = malloc((size_t)(Arows * Acols) * sizeof(double));
   if (A == NULL) Rf_error("tf_df_apply_(): Could not allocate 'A'");
-  memcpy(A + 0 * Arows, REAL(x_), Arows * sizeof(double));
-  memcpy(A + 1 * Arows, REAL(y_), Arows * sizeof(double));
+  memcpy(A + 0 * Arows, REAL(x_), (size_t)Arows * sizeof(double));
+  memcpy(A + 1 * Arows, REAL(y_), (size_t)Arows * sizeof(double));
   if (dim == 3) {
-    memcpy(A + 2 * Arows, REAL(z_), Arows * sizeof(double));
+    memcpy(A + 2 * Arows, REAL(z_), (size_t)Arows * sizeof(double));
   }
 
   
@@ -307,10 +307,10 @@ SEXP tf_df_apply_(SEXP df_, SEXP B_) {
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Copy results in 'C' directly into the 'df_' columns
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  memcpy(REAL(x_), C + 0 * Crows, Crows * sizeof(double));
-  memcpy(REAL(y_), C + 1 * Crows, Crows * sizeof(double));
+  memcpy(REAL(x_), C + 0 * Crows, (size_t)Crows * sizeof(double));
+  memcpy(REAL(y_), C + 1 * Crows, (size_t)Crows * sizeof(double));
   if (dim == 3) {
-    memcpy(REAL(z_), C + 2 * Crows, Crows * sizeof(double));
+    memcpy(REAL(z_), C + 2 * Crows, (size_t)Crows * sizeof(double));
   }
   
   

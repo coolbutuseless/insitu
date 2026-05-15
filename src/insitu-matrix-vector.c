@@ -113,7 +113,7 @@ SEXP br_mat_vec_mul_asq_(SEXP A_, SEXP x_, SEXP alpha_, SEXP ta_) {
     Rf_error("br_mat_vec_mul_asq_(): x, is non-conformable with 'A'");
   } 
   
-  double *y = malloc(N * sizeof(double));
+  double *y = malloc((size_t)N * sizeof(double));
   if (y == NULL) {
     Rf_error("br_mat_vec_mul_asq_(): 'y' allocation failed");
   }
@@ -151,7 +151,7 @@ SEXP br_mat_vec_mul_asq_(SEXP A_, SEXP x_, SEXP alpha_, SEXP ta_) {
       &INCY FCONE
   );
   
-  memcpy(x, y, N * sizeof(double));
+  memcpy(x, y, (size_t)N * sizeof(double));
   free(y);
   return(x_);
 }
